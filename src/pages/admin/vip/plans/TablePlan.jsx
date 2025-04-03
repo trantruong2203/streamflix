@@ -103,9 +103,7 @@ function TablePlan({ find, page, setPage, handleEdit }) {
                 open={open}
                 onClose={onClose}
                handleDelete={handleDelete}
-            />
-
-            <ModalChooseCategories plans={plans}/>
+            />        
         </div>
     );
 }

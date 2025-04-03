@@ -1,15 +1,18 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useContext, useState } from 'react'
 import './App.css'
-import AdminDashboard from './pages/admin/home_admin/AdminDashboard'
+import AdminDashboard from './pages/admin/home_admin/AdminDashboard';
+import Home from './pages/client/home/Home'
+import { ContextAuth } from "./context/AuthProvider";
+
 
 function App() {
-  const [count, setCount] = useState(0)
+ 
+  const { accountLogin } = useContext(ContextAuth);
+console.log(accountLogin);
 
   return (
     <>
-     <AdminDashboard/>
+    {accountLogin?.role === "admin" ? <AdminDashboard/> :   <Home/>}
     </>
   )
 }

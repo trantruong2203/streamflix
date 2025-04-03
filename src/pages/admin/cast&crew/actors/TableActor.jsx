@@ -7,7 +7,7 @@ import ModalDelete from '../../../../components/admin/ModalDelete';
 import { useNotification } from '../../../../context/NotificationProvide';
 import { deleteDocument } from '../../../../services/firebaseService';
 
-function TableActor({ page, setPage, find, handleEdit, actor }) {
+function TableActor({ page, setPage, find, handleEdit }) {
     const actors = useContext(ActorContext);
     const [deleteId, setDeleteId] = useState(null);
     const [open, setOpen] = useState(false);

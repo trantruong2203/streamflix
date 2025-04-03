@@ -44,8 +44,7 @@ function Menu(props) {
                             showMenu ? `flex flex-col transition-all duration-300 overflow-hidden 
         ${show === e.id ? "max-h-[200px] opacity-100 scale-100 visible" : "max-h-0 opacity-0 scale-95 invisible"}
       ` :
-                                ` 
-      absolute flex flex-col left-full  top-0 min-w-[150px]  rounded-sm transition-all duration-300 
+                                `absolute flex flex-col left-full  top-0 min-w-[150px]  rounded-sm transition-all duration-300 
       ${show === e.id ? "opacity-100 scale-100 visible" : "opacity-0 scale-95 invisible"}
     `
                         }>

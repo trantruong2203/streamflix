@@ -33,9 +33,29 @@ function Categories(props) {
 
     return (
         <div>
-            <MainHeader  handleOpen={handleOpen} handleSearch={handleSearch} title="List Categories"  />
-            <ModalCategory errors={errors}  setErrors={setErrors} open={open} handleClose={handleClose} category={category} setCategory={setCategory}/>
-            <TableCategory handleEdit={handleEdit} handleOpen={handleOpen} category={category} setCategory={setCategory} find={find} setFind={setFind} page={page} setPage={setPage} />
+            <MainHeader 
+                handleOpen={handleOpen} 
+                handleSearch={handleSearch} 
+                title="List Categories" 
+            />
+            <ModalCategory 
+                errors={errors}
+                setErrors={setErrors}
+                open={open}
+                handleClose={handleClose}
+                category={category}
+                setCategory={setCategory}
+            />
+            <TableCategory 
+                handleEdit={handleEdit}
+                handleOpen={handleOpen}
+                category={category}
+                setCategory={setCategory}
+                find={find}
+                setFind={setFind}
+                page={page}
+                setPage={setPage}
+            />
         </div>
     );
 }

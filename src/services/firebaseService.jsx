@@ -44,9 +44,12 @@ export const updateDocument = async (collectionName,values) => {
     const imgUrl = await uploadImageToCloudinary(values.imgUrl,collectionName);
     values.imgUrl = imgUrl;
   }
-  await updateDoc(doc(collection(db, collectionName), values.id), values);
+  const {id, ...data } = values;
+  // Update the document in the collection    
+  await updateDoc(doc(collection(db, collectionName), values.id), data);
 };
 
+// Fetch all documents from a given collection
 export const deleteDocument = async (collectionName, docId) => {
 
   await deleteDoc(doc(collection(db, collectionName), docId));

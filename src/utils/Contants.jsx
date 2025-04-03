@@ -12,17 +12,17 @@ export const listMenu = [
             {
                 id: 1,
                 title: "Movies",
-                path: "media_management/Movie"
+                path: "media_management/movie"
             },
             {
                 id: 2,
                 title: "Episodes",
-                path: "media_management/Episode"
+                path: "media_management/episodes"
             },
             {
                 id: 3,
                 title: "Trailer",
-                path: "media_management/Trailer"
+                path: "media_management/trailer"
             }
         ]
     },
@@ -34,17 +34,17 @@ export const listMenu = [
             {
                 id: 1,
                 title: "Package",
-                path: "vip/Package"
+                path: "vip/package"
             },
             {
                 id: 2,
-                title: "Peature",
-                path: "vip/Peature"
+                title: "Feature",
+                path: "vip/Feature"
             },
             {
                 id: 3,
                 title: "Plans",
-                path: "vip/Plans"
+                path: "vip/plans"
             }
         ]
     },
@@ -56,17 +56,17 @@ export const listMenu = [
             {
                 id: 1,
                 title: "Like ",
-                path: "engagement_pages/Like"
+                path: "engagement_pages/like"
             },
             {
                 id: 2,
                 title: "Watchlist ",
-                path: "engagement_pages/Watchlist  "
+                path: "engagement_pages/watchlist  "
             },
             {
                 id: 3,
                 title: "Comment",
-                path: "engagement_pages/Comment "
+                path: "engagement_pages/comment "
             }
         ]
     },
@@ -95,9 +95,15 @@ export const listMenu = [
 
 ];
 
+export const ROLES = {
+    ADMIN: 'admin',        // Quản trị viên cấp cao
+    MODERATOR: 'moderator', // Quản trị viên cấp trung (người kiểm duyệt)
+    USER: 'user',          // Người dùng thông thường
+};
+const SECRET_KEY = "220396";
 const  upload_preset = "truong";
 const  cloud_name = "dao84jp9k" ;
 const apiKey = '363671622292875';
 const apiSecret = 'GbmeEupa0n55XTJXBvKraZW20Rc'; 
 
-export { upload_preset, cloud_name, apiKey, apiSecret } ;
+export { upload_preset, cloud_name, apiKey, apiSecret, SECRET_KEY } ;

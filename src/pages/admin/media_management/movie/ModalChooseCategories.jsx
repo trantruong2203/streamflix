@@ -1,26 +1,39 @@
 import { Avatar, Box, Button, Dialog, DialogTitle, MenuItem, TextField } from '@mui/material';
 import React from 'react';
-import { FaUserTie } from 'react-icons/fa';
-import { MdCategory, MdSupervisedUserCircle } from 'react-icons/md';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-function ModalChooseCategories({ open, handleClose, dataChoose, typeChoose, handleSelect, dataSelect }) {
+
+function ModalChooseCategories({ open, handleClose, dataChoose, typeChoose, handleSelect, dataSelect, handleSearch, find }) {
 
     const checkId = (id) => dataSelect.includes(id);
+    const searchChoose = dataChoose.filter((item) =>
+        item.name?.toLowerCase().includes(find?.toLowerCase())
+    );
 
     return (
         <div>
             <Dialog onClose={handleClose} open={open} PaperProps={{
                 sx: { width: "40vw", maxWidth: "80vw" }, // Giới hạn maxWidth để không quá lớn
             }} >
-                <DialogTitle sx={{ fontSize: 40, fontFamily: 'fantasy' }}>Choose {typeChoose}</DialogTitle>
+                <div className="flex items-center justify-between p-3">
+                    <DialogTitle sx={{ fontSize: 40, fontFamily: 'fantasy', margin: 0 }}>
+                        Choose {typeChoose}
+                    </DialogTitle>
+                    <TextField 
+                        size="small"
+                        placeholder={`Search ${typeChoose}...`}
+                        sx={{ width: '200px' }}
+                        variant="outlined"
+                        onChange={handleSearch}
+                    />
+                </div>
                 <div className="mt-2 flex flex-wrap gap-2 p-3">
-                    {dataChoose.map(
+                    {searchChoose.map(
                         (category, index) => (
-                            typeChoose === "categories" ? <Button sx={{ background: checkId(category.id) ? "gray" : "", color: checkId(category.id) ? "white" : "" }} key={index} onClick={() => handleSelect(category.id)} variant="outlined">
+                            typeChoose === "categories" ?
+                             <Button sx={{ background: checkId(category.id) ? "gray" : "", color: checkId(category.id) ? "white" : "" }} key={index} onClick={() => handleSelect(category.id,typeChoose)} variant="outlined">
                                 {category.name}
                             </Button> : <>
-                                <div onClick={() => handleSelect(category.id)} key={index}
+                                <div onClick={() => handleSelect(category.id,typeChoose)} key={index}
                                     className='flex flex-col items-center font-bold p-3'>
                                     <Avatar
                                         alt="Remy Sharp"

@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -15,14 +15,16 @@
     "@mui/icons-material": "^6.4.7",
     "@mui/material": "^6.4.7",
     "@mui/x-data-grid": "^7.27.3",
+    "@radix-ui/react-dialog": "^1.1.6",
     "@tailwindcss/vite": "^4.0.12",
     "crypto-js": "^4.2.0",
     "firebase": "^11.4.0",
+    "jsonwebtoken": "^9.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.3.0",
-    "swiper": "^11.2.5",
+    "swiper": "^11.2.6",
     "tailwindcss": "^4.0.12"
   },
   "devDependencies": {

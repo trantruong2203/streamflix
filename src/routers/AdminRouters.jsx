@@ -12,10 +12,10 @@ import Profile from '../pages/admin/profile/Profile';
 import Feature from '../pages/admin/vip/feature/Feature';
 
 import { Route, Routes } from 'react-router-dom';
-import Trailer from '../pages/admin/media_management/trailer/Trailer.Jsx';
+import Trailer from '../pages/admin/media_management/trailer/Trailer.jsx';
 import Package from '../pages/admin/vip/package/Package';
 import Plans from '../pages/admin/vip/plans/Plans';
-
+import MovieDetail from '../pages/client/detail/MovieDetail';
 
 function AdminRouters(props) {
     const router = [
@@ -31,7 +31,8 @@ function AdminRouters(props) {
         { path: "/media_management/trailer", element: <Trailer /> },
         { path: "/vip/feature", element: <Feature /> },
         { path: "/vip/package", element: <Package /> },
-        { path: "/vip/plans", element: <Plans /> }
+        { path: "/vip/plans", element: <Plans /> },
+        
 
     ]
     return (

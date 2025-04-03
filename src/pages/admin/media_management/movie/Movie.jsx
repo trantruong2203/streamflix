@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import MainHeader from '../../../../components/admin/MainHeader';
-import ModalAddMovie from './ModalAddMovie';
 import ModalChooseCategories from './ModalChooseCategories';
 import { ContextCategories } from '../../../../context/CategoriesProvider';
 import { ActorContext } from '../../../../context/ActorProvide';
 import { CharacterContext } from '../../../../context/CharactersProvider';
 import logo from '../../../../assets/DeWatermark.ai_1742354548201-removebg-preview.png'
-
+import ModalAddMovie from './ModalAddMovie';
+import TableMovie from './TableMovie';
 const inner = {
     name: "",
     description: "",
@@ -28,10 +28,17 @@ function Movie(props) {
     const [movie, setMovie] = useState(inner);
     const [dataChoose, setDataChoose] = useState([]);
     const [typeChoose, setTypeChoose] = useState("");
-
     const categories = useContext(ContextCategories);
     const actors = useContext(ActorContext);
     const characters = useContext(CharacterContext);
+    const [find, setFind] = useState("");
+    const [errors, setErrors] = useState([]);
+    const [page, setPage] = useState(0);
+
+    const handleSearch = (e) => {
+        setFind(e.target.value);
+        setPage(0);
+    };
 
     const handleChoose = (type) => {
         setTypeChoose(type);
@@ -46,11 +53,13 @@ function Movie(props) {
                 setDataChoose(characters);
                 break;
         }
+        setFind("");
         setOpenModalChoose(true);
+        
     }
 
-    const handleSelect = (id) => {
-        switch (typeChoose) {
+    const handleSelect = (id,type) => {     
+        switch (type) {
             case "categories":
                 setMovie(pre => {
                     return { ...movie, listCate: toggleSelection(pre.listCate, id) }
@@ -67,6 +76,7 @@ function Movie(props) {
                 });
                 break;
         }
+        
     }
 
     const toggleSelection = (list, id) => {
@@ -87,25 +97,33 @@ function Movie(props) {
 
     const handleOpenAddMovie = () => {
         setOpenAddMovie(true);
+        setErrors(inner);
+        setMovie(inner);    
     };
 
     const handleCloseAddMovie = () => setOpenAddMovie(false);
 
-    const handopenModalChoose = () => {
-        setOpenModalChoose(true);
-    };
-
     const handleCloseModalChoose = () => setOpenModalChoose(false);
+
+    const handleEdit = (row) => {
+        setMovie(row);
+        setOpenAddMovie(true);
+        setErrors(inner);
+ ;   }
 
     return (
         <div>
-            <MainHeader handleOpen={handleOpenAddMovie} handleClose={handleCloseAddMovie} title="Movie" />
+            <MainHeader handleOpen={handleOpenAddMovie} handleClose={handleCloseAddMovie} handleSearch={handleSearch} title="Movie" />
             <ModalAddMovie
                 open={openAddMovie}
                 handleClose={handleCloseAddMovie}
                 handleChoose={handleChoose}
                 movie={movie}
+                handleSelect={handleSelect}
                 typeChoose={typeChoose}
+                setMovie={setMovie}
+                errors={errors}
+                setErrors={setErrors}
             />
             <ModalChooseCategories
                 open={openModalChoose}
@@ -114,7 +132,10 @@ function Movie(props) {
                 typeChoose={typeChoose}
                 handleSelect={handleSelect}
                 dataSelect={dataSelect()}
+                handleSearch={handleSearch}
+                find={find}
             />
+            <TableMovie handleEdit={handleEdit} openAddMovie={openAddMovie} page={page} find={find} setPage={setPage}  />
         </div>
     );
 }

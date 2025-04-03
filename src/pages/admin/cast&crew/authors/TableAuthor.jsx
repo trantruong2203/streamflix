@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useMemo } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import { AuthorsContext } from '../../../../context/AuthorsProvider';
@@ -8,17 +8,22 @@ import { MdDeleteForever } from 'react-icons/md';
 import ModalDelete from '../../../../components/admin/ModalDelete';
 import { useNotification } from '../../../../context/NotificationProvide';
 import { deleteDocument } from '../../../../services/firebaseService';
+import { converDescription } from '../../../../services/FunctionRepon';
 
 
-function TableAuthor({ find, page, handleEdit, setPage }) {
+function TableAuthor({ find = '', page, handleEdit, setPage }) {
     const authors = useContext(AuthorsContext);
     const [deleteId, setDeleteId] = useState(null);
     const [open, setOpen] = useState(false);
-    const searchAuthor = authors.filter((author) =>
-        author.name.toLowerCase().includes(find.toLowerCase())
-    );
+    
+    const searchAuthor = useMemo(() => {
+        if (!find) return authors;
+        return authors.filter((author) =>
+            author.name.toLowerCase().includes(find.toLowerCase())
+        );
+    }, [authors, find]);
 
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
     const showNotification = useNotification();
 
     const handleChangePage = (event, newPage) => {
@@ -49,20 +54,19 @@ function TableAuthor({ find, page, handleEdit, setPage }) {
                 onClose();
             } catch (error) {
                 console.error("Lỗi khi xóa:", error);
+                showNotification("Failed to delete author. Please try again.", "error");
             }
         }
     };
 
-    const convertName = (description) => {
-        return description.length > 50 ? description.substring(0, 50) + "..." : description;
-    };
+    
 
 
 
     return (
         <div>
             <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <Table sx={{ minWidth: 650 }} aria-label="authors table">
                     <TableHead>
                         <TableRow>
                             <TableCell>ID</TableCell>
@@ -82,20 +86,26 @@ function TableAuthor({ find, page, handleEdit, setPage }) {
                                     {rowsPerPage * page + 1 + index}
                                 </TableCell>
                                 <TableCell align='left'>
-                                    <Avatar alt="Cindy Baker" src={row.imgUrl} />
+                                    <Avatar alt={`${row.name}'s avatar`} src={row.imgUrl} />
                                 </TableCell>
                                 <TableCell align="left">{row.name}</TableCell>
-                                <TableCell align="left">{convertName(row.description)}</TableCell>
+                                <TableCell align="left">{row.description}</TableCell>
                                 <TableCell align="left" sx={{ whiteSpace: "nowrap" }}>
-                                    {/* Các nút sửa và xóa ở đây */}
-                                    <Button sx={{ marginLeft: "10px" }} onClick={ () => handleEdit(row)}  variant="contained" color="primary">
+                                    <Button 
+                                        sx={{ marginLeft: "10px" }} 
+                                        onClick={() => handleEdit(row)}  
+                                        variant="contained" 
+                                        color="primary"
+                                        aria-label="Edit author"
+                                    >
                                         <FaEdit />
                                     </Button>
                                     <Button 
                                         onClick={() => onOpen(row.id)} 
                                         variant="contained" 
-                                        color="error"  // Đổi màu thành error cho nút delete
-                                        sx={{ ml: 1 }}  // Thêm margin left
+                                        color="error"
+                                        sx={{ ml: 1 }}
+                                        aria-label="Delete author"
                                     >
                                         <MdDeleteForever />
                                     </Button>

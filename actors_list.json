@@ -1,0 +1,52 @@
+[
+    {
+        "description": "Cooper",
+        "imgUrl": "https://res.cloudinary.com/dao84jp9k/image/upload/v1743558541/actors/xvjlo3hlv5m63s4fkeai.webp",
+        "name": "Matthew McConaughey"
+    },
+    {
+        "description": "Arthur Fleck",
+        "imgUrl": "https://upload.wikimedia.org/wikipedia/en/e/e1/Joaquin_Phoenix_as_the_Joker.jpeg",
+        "name": "Joaquin Phoenix"
+    },
+    {
+        "description": "Iron Man",
+        "imgUrl": "https://upload.wikimedia.org/wikipedia/en/7/70/Iron_Man_bleeding_edge.jpg",
+        "name": "Robert Downey Jr."
+    },
+    {
+        "description": "John Wick",
+        "imgUrl": "https://upload.wikimedia.org/wikipedia/en/9/9a/John_Wick_TeaserPoster.jpg",
+        "name": "Keanu Reeves"
+    },
+    {
+        "description": "Jack Dawson",
+        "imgUrl": "https://upload.wikimedia.org/wikipedia/en/2/22/Jack_Dawson_Titanic.png",
+        "name": "Leonardo DiCaprio"
+    },
+    {
+        "description": "Sherlock Holmes",
+        "imgUrl": "https://upload.wikimedia.org/wikipedia/en/e/e0/Robert_Downey_Jr._as_Sherlock_Holmes.jpg",
+        "name": "Robert Downey Jr."
+    },
+    {
+        "description": "Thor",
+        "imgUrl": "https://upload.wikimedia.org/wikipedia/en/f/fc/Chris_Hemsworth_as_Thor.jpg",
+        "name": "Chris Hemsworth"
+    },
+    {
+        "description": "Spider-Man",
+        "imgUrl": "https://upload.wikimedia.org/wikipedia/en/0/02/Spider-Man_in_Captain_America_Civil_War.png",
+        "name": "Tom Holland"
+    },
+    {
+        "description": "Wonder Woman",
+        "imgUrl": "https://upload.wikimedia.org/wikipedia/en/e/ed/Wonder_Woman_%282017_film%29.jpg",
+        "name": "Gal Gadot"
+    },
+    {
+        "description": "Deadpool",
+        "imgUrl": "https://upload.wikimedia.org/wikipedia/en/3/3a/Deadpool_2_poster.jpg",
+        "name": "Ryan Reynolds"
+    }
+]
