@@ -23,34 +23,35 @@ const Login = ({ open, handleClose, handleSignup }) => {
   const accounts = useContext(AccountsContext);
   const { saveLocal } = useContext(ContextAuth);
   const showNotification = useNotification();
+  const [error, setError] = useState("");
  
   const handleInput = (e) => {
     setAccount({ ...account, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!accounts) {
-      showNotification("No account found", "error");
-      console.log("No account found");
-      return;
-      
+  const validation = () => {
+    const newError = {};
+    if (!account.useOrEmail) {
+      newError.useOrEmail = "Please enter your email or username";
     }
-    
-    const foundAccount = accounts.find(
-      acc => (acc.email === account.useOrEmail || acc.useName === account.useOrEmail) && 
-             acc.password === account.password
-    );
-    
-    if (foundAccount) {
+    if (!account.password) {
+      newError.password = "Please enter your password";
+    }
+    setError(newError);
+    return Object.values(newError).every((item) => item === "");
+  }
+
+
+  const handleSubmit = () => {
+    if (!validation()) return;
+    const foundAccount = accounts.find( acc => (acc.email === account.useOrEmail || acc.useName === account.useOrEmail) && acc.password === account.password);
+    if (!foundAccount) {
+      showNotification("Invalid email/username or password", "error")
+    }else {
       saveLocal("account",foundAccount);
       showNotification("Login success", "success");
       handleClose();
-      console.log("Đăng nhập thành công");
       setAccount(inner);
-    } else {
-      showNotification("No account found ", "error");
-      console.log("Đăng nhập thất bại");
     }
   };
 
@@ -81,6 +82,8 @@ const Login = ({ open, handleClose, handleSignup }) => {
           value={account.useOrEmail}
           name="useOrEmail"
           onChange={handleInput}
+          error={!!error.useOrEmail}
+          helperText={error.useOrEmail}
           required
           sx={{
             "& .MuiOutlinedInput-root": {
@@ -103,6 +106,8 @@ const Login = ({ open, handleClose, handleSignup }) => {
           value={account.password}
           name="password"
           onChange={handleInput}
+          error={!!error.password}
+          helperText={error.password}
           required
           InputProps={{
             endAdornment: (

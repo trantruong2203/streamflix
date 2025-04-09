@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MainHeader from '../../../../components/admin/MainHeader';
 import TableAuthor from '../authors/TableAuthor'
 import ModalAuthor from '../authors/ModalAuthor'
-import logo from "../../../../assets/logo.png"
+import logo from "../../../../assets/DeWatermark.ai_1742354548201-removebg-preview.png"
 
 const inner = {name: "", description: "", imgUrl : logo};
 function Authors(props) {

@@ -3,7 +3,7 @@ import { Search, Person, Menu, Close } from "@mui/icons-material";
 import logo from "../../assets/DeWatermark.ai_1742354548201-removebg-preview.png";
 import { Link } from "react-router-dom";
 import { ContextAuth } from "../../context/AuthProvider";
-
+import ModalUser from "./ModalUser";
 
 const menuItems = [
     { path: "/main/categories", label: "Thể Loại" },
@@ -11,7 +11,8 @@ const menuItems = [
     { path: "/main/movies", label: "Phim Lẻ" },
     { path: "/main/rentmovie", label: "Phim Thuê" },
     { path: "/main/actors", label: "Hỗ Trợ" },
-    { path: "/main/schedule", label: "Lịch Chiếu" }
+    { path: "/main/vip", label: "Gói Stream Flix" },
+
 ];
 
 const SearchBar = () => (
@@ -51,7 +52,11 @@ function Header({ handleLogin }) {
 
     return (
         <>
-            <header style={{ background: "linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))" }} 
+            <header style={{ 
+                background: isScrolled 
+                    ? "rgba(0, 0, 0, 0.9)" 
+                    : "linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0))" 
+            }} 
                     className="fixed top-0 right-0 left-0 z-10 py-1 px-4 md:px-6 flex justify-between items-center transition-all duration-300">
                 <div className="flex items-center gap-2 md:gap-5">
                     <Link to="/main">
@@ -79,9 +84,7 @@ function Header({ handleLogin }) {
                 )}
 
                 <div className="hidden md:flex items-center">
-                    {accountLogin ?  <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center cursor-pointer">
-                        <Person className="text-black" />
-                    </div>  : <button onClick={handleLogin} className="bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold mr-4 cursor-pointer">
+                    {accountLogin ?  <ModalUser />  : <button onClick={handleLogin} className="bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold mr-4 cursor-pointer">
                         Đăng Nhập
                     </button> }
                     

@@ -28,10 +28,6 @@ function TableActor({ page, setPage, find, handleEdit }) {
         item.name?.toLowerCase().includes(find.toLowerCase())
     );
 
-    const convertName = (description) => {
-        return description.length > 50 ? description.substring(0, 50) + "..." : description;
-    };
-
     const onOpen = (id) => {
         setDeleteId(id);
         setOpen(true);
@@ -82,7 +78,7 @@ function TableActor({ page, setPage, find, handleEdit }) {
                                     <Avatar alt="Cindy Baker" src={row.imgUrl} />
                                 </TableCell>
                                 <TableCell align="left">{row.name}</TableCell>
-                                <TableCell align="left">{convertName(row.description)}</TableCell>
+                                <TableCell align="left">{row.description}</TableCell>
                                 <TableCell align="left" sx={{ whiteSpace: "nowrap" }}>
                                     {/* Các nút sửa và xóa ở đây */}
                                     <Button onClick={() => handleEdit(row)} variant="contained" color="primary">

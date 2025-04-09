@@ -17,9 +17,9 @@ function AuthProvider({ children }) {
 
             // Mã hóa bằng AES
             const encryptedValue = CryptoJS.AES.encrypt(value, SECRET_KEY).toString();
-
+            
             localStorage.setItem(key, encryptedValue);
-            setAccountLogin(value);
+            setAccountLogin(JSON.parse(value));
         } catch (error) {
             console.error("Error saving to localStorage:", error);
         }

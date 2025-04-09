@@ -17,6 +17,8 @@
     "@mui/x-data-grid": "^7.27.3",
     "@radix-ui/react-dialog": "^1.1.6",
     "@tailwindcss/vite": "^4.0.12",
+    "antd": "^5.24.6",
+    "axios": "^1.8.4",
     "crypto-js": "^4.2.0",
     "firebase": "^11.4.0",
     "jsonwebtoken": "^9.0.2",

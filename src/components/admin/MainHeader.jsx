@@ -1,15 +1,38 @@
-import React, { useState } from 'react';
-import { TextField, Button } from '@mui/material';
-import { FaPlus } from "react-icons/fa";
+import React from 'react';
+import { Button, TextField } from '@mui/material';
+import { FaPlus, FaSearch, FaUpload } from 'react-icons/fa';
 
-
-function MainHeader({title, handleOpen, handleSearch}) {
+function MainHeader({ title, handleOpen, handleSearch, handleOpenMultiple }) {
     return (
-        <div>
-             <div className='flex max-md:flex-col justify-between gap-3 my-3'>
-                <div className='text-xl font-medium'>{title}</div>
-                <TextField onChange={handleSearch} id="outlined-basic" label="Enter keywords..." variant="outlined" size='small' />
-                <Button onClick={handleOpen}  variant="contained"><FaPlus className='mr-2' /> Add</Button>
+        <div className='flex justify-between items-center mb-4'>
+            <h1 className='text-2xl font-bold'>{title}</h1>
+            <div className='flex gap-2'>
+                <TextField
+                    size="small"
+                    placeholder="Search..."
+                    onChange={handleSearch}
+                    InputProps={{
+                        startAdornment: <FaSearch className='mr-2' />
+                    }}
+                />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleOpen}
+                    startIcon={<FaPlus />}
+                >
+                    Thêm mới
+                </Button>
+                {handleOpenMultiple && (
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={handleOpenMultiple}
+                        startIcon={<FaUpload />}
+                    >
+                        Thêm nhiều
+                    </Button>
+                )}
             </div>
         </div>
     );

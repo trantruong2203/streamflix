@@ -7,3 +7,11 @@ export const converDescription = (description) => {
       }
       return description;
 }
+
+export const filterMovieByPlan = (data, plans, level) => {
+
+   return data?.filter(e => {
+      const plan = plans.find(p => p.id == e.planID);
+       return plan?.level <= level 
+   })
+};

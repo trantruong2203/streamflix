@@ -12,12 +12,14 @@ import { FaUsers, FaRegEdit, FaTrashAlt } from "react-icons/fa";
 import { converDescription } from '../../../../services/FunctionRepon';
 import { ActorContext } from '../../../../context/ActorProvide';
 import { CharacterContext } from '../../../../context/CharactersProvider';
+import { PlansContext } from '../../../../context/PlansProvider';
 function TableMovie({ handleEdit, page, find, setPage }) {
     const movies = useContext(MoviesContext);
     const authors = useContext(AuthorsContext);
     const categories = useContext(ContextCategories);
     const actors = useContext(ActorContext)
     const character = useContext(CharacterContext)
+    const plans = useContext(PlansContext);
     
     // State declarations
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -106,16 +108,20 @@ function TableMovie({ handleEdit, page, find, setPage }) {
                     <TableHead>
                         <TableRow className="bg-gray-100">
                             <TableCell>ID</TableCell>
-                            <TableCell className="flex items-center gap-2">
-                                <MdMovie className="text-primary" /> Name
+                            <TableCell >
+                                <div className="flex items-center gap-2">
+                                  <MdMovie className="text-li" /> Name
+                                </div>
                             </TableCell>
                             <TableCell>Image</TableCell>
                             <TableCell>Description</TableCell>
-                            <TableCell className="flex items-center gap-2">
-                                <MdAccessTime className="text-primary" /> Duration
+                            <TableCell>                               
+                                Plan
                             </TableCell>
-                            <TableCell className="flex items-center gap-2">
+                            <TableCell>
+                                <div className="flex items-center gap-2">
                                 <MdPerson className="text-primary" /> Author
+                                </div>
                             </TableCell>
                             <TableCell>Categories</TableCell>
                             <TableCell>Entities</TableCell>
@@ -138,7 +144,7 @@ function TableMovie({ handleEdit, page, find, setPage }) {
                                 <TableCell>
                                     {converDescription(row.description)}
                                 </TableCell>
-                                <TableCell>{row.duration}</TableCell>
+                                <TableCell>{getOjectById(plans, row.planID)?.title}</TableCell>
                                 <TableCell>{getOjectById(authors, row.authorID)?.name || "Unknown Author"}</TableCell>
                                 <TableCell>
                                     <Button

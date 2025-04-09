@@ -1,93 +1,85 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import './PlayMovie.css';
+import axios from 'axios';
 
 function PlayMovie() {
-    const { id } = useParams();
+    const { slug } = useParams();
     const [movieData, setMovieData] = useState(null);
-    const [isPlaying, setIsPlaying] = useState(true);
-    const [currentTime, setCurrentTime] = useState(0);
-    const [duration, setDuration] = useState(0);
+    const [selectedServer, setSelectedServer] = useState(0);
+    const [selectedEpisode, setSelectedEpisode] = useState(0);
 
     useEffect(() => {
-        // TODO: Thay thế bằng API call thực tế
         const fetchMovieData = async () => {
             try {
-                // const response = await fetch(`/api/movies/${id}`);
-                // const data = await response.json();
-                // setMovieData(data);
-                
-                // Dữ liệu mẫu
-                setMovieData({
-                    title: "Tên Phim",
-                    description: "Mô tả phim sẽ được hiển thị ở đây...",
-                    releaseYear: 2024,
-                    genres: ["Hành động", "Phiêu lưu"],
-                    duration: "120 phút"
-                });
+                const response = await axios.get(`https://phimapi.com/phim/${slug}`);
+                setMovieData(response.data);
             } catch (error) {
                 console.error("Lỗi khi lấy dữ liệu phim:", error);
             }
         };
 
         fetchMovieData();
-    }, [id]);
-
-    const handlePlayPause = () => {
-        setIsPlaying(!isPlaying);
-    };
-
-    const handleTimeUpdate = (e) => {
-        setCurrentTime(e.target.currentTime);
-    };
-
-    const handleLoadedMetadata = (e) => {
-        setDuration(e.target.duration);
-    };
-
-    const formatTime = (time) => {
-        const minutes = Math.floor(time / 60);
-        const seconds = Math.floor(time % 60);
-        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    };
+    }, [slug]);
 
     if (!movieData) {
-        return <div className="loading">Đang tải...</div>;
+        return <div className="flex items-center justify-center min-h-screen text-white text-lg">Đang tải...</div>;
     }
 
+    const handleServerChange = (e) => {
+        setSelectedServer(parseInt(e.target.value));
+        setSelectedEpisode(0);
+    };
+
+    const handleEpisodeChange = (e) => {
+        setSelectedEpisode(parseInt(e.target.value));
+    };
+
     return (
-        <div className="play-movie-container">
-            <div className="video-wrapper">
+        <div className="max-w-7xl mx-auto px-4 py-8 bg-gray-900 min-h-screen text-white">
+            <div className="relative w-full pt-[56.25%] mb-8 rounded-lg overflow-hidden">
                 <iframe 
-                    src="https://player.phimapi.com/player/?url=https://s4.phim1280.tv/20250402/G8eqQ3lQ/index.m3u8" 
+                    src={movieData.episodes[selectedServer].server_data[selectedEpisode].link_embed} 
                     title="Video Player" 
-                    className="video-player"
+                    className="absolute top-0 left-0 w-full h-full border-none"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                 ></iframe>
             </div>
             
-            <div className="movie-info">
-                <h1>{movieData.title}</h1>
-                <p className="description">{movieData.description}</p>
-                <div className="movie-meta">
-                    <span>Thời lượng: {movieData.duration}</span>
-                    <span>Năm phát hành: {movieData.releaseYear}</span>
-                    <span>Thể loại: {movieData.genres.join(", ")}</span>
+            <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+                <h1 className="text-2xl font-bold mb-4">{movieData.movie.name}</h1>
+                <p className="text-gray-300 mb-4">{movieData.content}</p>
+                <div className="flex flex-wrap gap-2">
+                    <span className="bg-gray-700 px-3 py-1 rounded text-sm">Thời lượng: {movieData.movie.time}</span>
+                    <span className="bg-gray-700 px-3 py-1 rounded text-sm">Năm phát hành: {movieData.movie.year}</span>
+                    <span className="bg-gray-700 px-3 py-1 rounded text-sm">Thể loại: {movieData.movie.category?.map(cat => cat.name).join(", ")}</span>
                 </div>
             </div>
 
-            <div className="video-controls">
-                <button onClick={handlePlayPause} className="control-button">
-                    {isPlaying ? 'Tạm dừng' : 'Phát'}
-                </button>
-                <div className="progress-bar">
-                    <div 
-                        className="progress" 
-                        style={{ width: `${(currentTime / duration) * 100}%` }}
-                    ></div>
-                </div>
-                <span className="time">{formatTime(currentTime)} / {formatTime(duration)}</span>
+            <div className="flex flex-wrap gap-4 mb-8">
+                <select 
+                    value={selectedServer} 
+                    onChange={handleServerChange}
+                    className="px-4 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-red-500 min-w-[200px]"
+                >
+                    {movieData.episodes.map((server, index) => (
+                        <option key={index} value={index}>
+                            {server.server_name}
+                        </option>
+                    ))}
+                </select>
+
+                <select 
+                    value={selectedEpisode} 
+                    onChange={handleEpisodeChange}
+                    className="px-4 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-red-500 min-w-[200px]"
+                >
+                    {movieData.episodes[selectedServer].server_data.map((episode, index) => (
+                        <option key={index} value={index}>
+                            {episode.name}
+                        </option>
+                    ))}
+                </select>
             </div>
         </div>
     );

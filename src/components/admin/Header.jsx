@@ -2,7 +2,7 @@ import { Avatar } from '@mui/material';
 import React, { useState } from 'react';
 import { FaSearch } from "react-icons/fa";
 import { IoMail, IoNotifications } from "react-icons/io5";
-
+import ModalAccount from './ModalAccount';
 function Header(props) {
     return (
         <div>
@@ -15,7 +15,7 @@ function Header(props) {
                     <div > <FaSearch className='text-2xl' /> </div>
                     <IoMail className='text-2xl' />
                     <IoNotifications className='text-2xl' />
-                    <Avatar>Tr</Avatar>
+                    <ModalAccount />
                     
                 </div>
             </div>

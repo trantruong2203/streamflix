@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc, onSnapshot, query, where, setDoc, getDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc, onSnapshot, query, where, setDoc, getDoc, writeBatch } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { db } from "../config/firebaseconfig";
 import { uploadImageToCloudinary } from "../config/cloudinaryConfig"; 
@@ -53,4 +53,34 @@ export const updateDocument = async (collectionName,values) => {
 export const deleteDocument = async (collectionName, docId) => {
 
   await deleteDoc(doc(collection(db, collectionName), docId));
+};
+
+// Thêm nhiều tài liệu vào một bộ sưu tập cùng lúc
+export const addMultipleDocuments = async (collectionName, documents) => {
+  try {
+    const batch = writeBatch(db);
+    
+    for (const document of documents) {
+      // Tạo một bản sao của document để tránh thay đổi dữ liệu gốc
+      const docData = { ...document };
+      
+      // Chỉ xử lý imgUrl nếu nó tồn tại và không phải undefined
+      if (docData.imgUrl && docData.imgUrl !== undefined) {
+        const imgUrl = await uploadImageToCloudinary(docData.imgUrl, collectionName);
+        docData.imgUrl = imgUrl;
+      } else {
+        // Nếu không có imgUrl, đặt giá trị mặc định hoặc xóa trường này
+        delete docData.imgUrl;
+      }
+      
+      const docRef = doc(collection(db, collectionName));
+      batch.set(docRef, docData);
+    }
+    
+    await batch.commit();
+    return true;
+  } catch (error) {
+    console.error('Error adding multiple documents:', error);
+    throw error;
+  }
 };

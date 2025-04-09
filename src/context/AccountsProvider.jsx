@@ -16,7 +16,6 @@ export const AccountsProvider = ({ children }) => {
     // Hủy lắng nghe khi component bị unmount
     return () => unsubscribe();
   }, []);
-console.log(accounts);
 
   return (
     <AccountsContext.Provider value={accounts}>
