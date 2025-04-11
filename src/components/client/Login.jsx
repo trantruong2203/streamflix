@@ -14,6 +14,9 @@ import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import { AccountsContext } from "../../context/AccountsProvider";
 import { ContextAuth } from "../../context/AuthProvider";
 import { useNotification } from "../../context/NotificationProvide";
+import { auth, googleProvider } from "../../config/firebaseconfig";
+import { signInWithPopup } from "firebase/auth";
+import { addDocument } from "../../services/firebaseService";
 
 const inner = {useOrEmail: "", password: ""};
 
@@ -41,7 +44,6 @@ const Login = ({ open, handleClose, handleSignup }) => {
     return Object.values(newError).every((item) => item === "");
   }
 
-
   const handleSubmit = () => {
     if (!validation()) return;
     const foundAccount = accounts.find( acc => (acc.email === account.useOrEmail || acc.useName === account.useOrEmail) && acc.password === account.password);
@@ -52,6 +54,35 @@ const Login = ({ open, handleClose, handleSignup }) => {
       showNotification("Login success", "success");
       handleClose();
       setAccount(inner);
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log(result);
+      
+      const user = result.user;
+      const existingCustomer = accounts.find(a => a.email === user.email);
+      let loggedInCustomer;
+
+      if (!existingCustomer) {
+          const newCustomer = {
+              useName: user.displayName,
+              imgUrl: user.photoURL,
+              email: user.email,
+          };
+          const newAccount = await addDocument('accounts', newCustomer);
+          loggedInCustomer = newAccount;
+      } else {
+          loggedInCustomer = existingCustomer;
+      }
+      saveLocal("account",loggedInCustomer);
+      showNotification("Login success", "success");
+      handleClose();
+      setAccount(inner);
+    } catch (error) {
+      showNotification("Login failed", "error");
     }
   };
 
@@ -69,8 +100,9 @@ const Login = ({ open, handleClose, handleSignup }) => {
           boxShadow: 24,
           p: 4,
         }}
+        className="bg-white rounded-lg shadow-xl p-6 transform transition-all duration-300 hover:scale-105"
       >
-        <Typography variant="h5" align="center" gutterBottom>
+        <Typography variant="h5" align="center" gutterBottom className="text-2xl font-bold text-gray-800 mb-6">
           Login
         </Typography>
 
@@ -85,6 +117,7 @@ const Login = ({ open, handleClose, handleSignup }) => {
           error={!!error.useOrEmail}
           helperText={error.useOrEmail}
           required
+          className="mb-4"
           sx={{
             "& .MuiOutlinedInput-root": {
               "&:hover fieldset": {
@@ -109,10 +142,11 @@ const Login = ({ open, handleClose, handleSignup }) => {
           error={!!error.password}
           helperText={error.password}
           required
+          className="mb-4"
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword(!showPassword)}>
+                <IconButton onClick={() => setShowPassword(!showPassword)} className="text-gray-500 hover:text-blue-500">
                   {showPassword ? <MdOutlineVisibilityOff /> : <MdOutlineVisibility />}
                 </IconButton>
               </InputAdornment>
@@ -131,25 +165,36 @@ const Login = ({ open, handleClose, handleSignup }) => {
         />
 
         <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
-          <Link href="#" variant="body2">
+          <Link href="#" variant="body2" className="text-blue-500 hover:text-blue-700 transition-colors duration-200">
             Forgot password?
           </Link>
         </Box>
 
-        <Button onClick={handleSubmit} fullWidth type="submit" variant="contained" sx={{ mt: 2 }} color="primary">
+        <Button 
+          onClick={handleSubmit} 
+          fullWidth 
+          type="submit" 
+          variant="contained" 
+          sx={{ mt: 2 }} 
+          color="primary"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
+        >
           Login
         </Button>
-        <Typography align="center" sx={{ mt: 2 }}>
-          Don't have an account? <a className="text-blue-600" onClick={handleSignup}>Sign up</a>
+        
+        <Typography align="center" sx={{ mt: 2 }} className="text-gray-600">
+          Don't have an account? <a className="text-blue-500 hover:text-blue-700 cursor-pointer transition-colors duration-200" onClick={handleSignup}>Sign up</a>
         </Typography>
 
-        <Typography align="center" sx={{ mt: 2 }}>Or</Typography>
+        <Typography align="center" sx={{ mt: 2 }} className="text-gray-500">Or</Typography>
 
         <Button
           fullWidth
           variant="contained"
-          sx={{ mt: 2, bgcolor: "red", color: "white" }}
+          sx={{ mt: 2 }}
           startIcon={<FaGoogle />}
+          onClick={signInWithGoogle}
+          className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
         >
           Continue with Google
         </Button>

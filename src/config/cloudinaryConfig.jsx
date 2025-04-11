@@ -40,7 +40,7 @@ export const deleteImageFromCloudinary = async (publicId) => {
   formData.append('signature', signature);
 
   try {
-    const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`, {
+    const response = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/destroy`, {
       method: 'POST',
       body: formData,
     });

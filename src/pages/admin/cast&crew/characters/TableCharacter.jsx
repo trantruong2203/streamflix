@@ -27,8 +27,8 @@ function TableCharacter({ page, setPage, find, handleEdit }) {
         item.name?.toLowerCase().includes(find.toLowerCase())
     );
 
-    const onOpen = (id) => {
-        setDeleteId(id);
+    const onOpen = (item) => {
+        setDeleteId(item);
         setOpen(true);
     };
     const onClose = () => {
@@ -87,7 +87,7 @@ function TableCharacter({ page, setPage, find, handleEdit }) {
                                     <Button onClick={() => handleEdit(row)} variant="contained" color="primary">
                                         <FaEdit />
                                     </Button>
-                                    <Button sx={{ marginLeft: "10px" }} onClick={() => onOpen(row.id)} variant="contained" color="secondary">
+                                    <Button sx={{ marginLeft: "10px" }} onClick={() => onOpen(row)} variant="contained" color="secondary">
                                         <MdDeleteForever />
                                     </Button>
                                 </TableCell>

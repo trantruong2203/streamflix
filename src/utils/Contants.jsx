@@ -12,17 +12,17 @@ export const listMenu = [
             {
                 id: 1,
                 title: "Movies",
-                path: "media_management/movie"
+                path: "/media_management/movie"
             },
             {
                 id: 2,
                 title: "Episodes",
-                path: "media_management/episodes"
+                path: "/media_management/episodes"
             },
             {
                 id: 3,
                 title: "Trailer",
-                path: "media_management/trailer"
+                path: "/media_management/trailer"
             }
         ]
     },
@@ -34,17 +34,17 @@ export const listMenu = [
             {
                 id: 1,
                 title: "Package",
-                path: "vip/package"
+                path: "/vip/package"
             },
             {
                 id: 2,
                 title: "Feature",
-                path: "vip/Feature"
+                path: "/vip/feature"
             },
             {
                 id: 3,
                 title: "Plans",
-                path: "vip/plans"
+                path: "/vip/plans"
             }
         ]
     },
@@ -56,17 +56,17 @@ export const listMenu = [
             {
                 id: 1,
                 title: "Like ",
-                path: "engagement_pages/like"
+                path: "/engagement_pages/like"
             },
             {
                 id: 2,
                 title: "Watchlist ",
-                path: "engagement_pages/watchlist  "
+                path: "/engagement_pages/watchlist  "
             },
             {
                 id: 3,
                 title: "Comment",
-                path: "engagement_pages/comment "
+                path: "/engagement_pages/comment "
             }
         ]
     },

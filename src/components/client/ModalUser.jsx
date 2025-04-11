@@ -17,7 +17,7 @@ function ModalUser(props) {
         <div className='relative'>
             <button type="button" onClick={handleClick}>
                 <Avatar>
-                    <img src="https://avatar.iran.liara.run/public" />
+                <img src={accountLogin?.imgUrl} />
                 </Avatar>
             </button>
             

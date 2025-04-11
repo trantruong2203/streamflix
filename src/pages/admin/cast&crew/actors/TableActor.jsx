@@ -9,7 +9,7 @@ import { deleteDocument } from '../../../../services/firebaseService';
 
 function TableActor({ page, setPage, find, handleEdit }) {
     const actors = useContext(ActorContext);
-    const [deleteId, setDeleteId] = useState(null);
+    const [deleteId, setDeleteId] = useState({});
     const [open, setOpen] = useState(false);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const showNotification = useNotification();
@@ -28,8 +28,8 @@ function TableActor({ page, setPage, find, handleEdit }) {
         item.name?.toLowerCase().includes(find.toLowerCase())
     );
 
-    const onOpen = (id) => {
-        setDeleteId(id);
+    const onOpen = (item) => {
+        setDeleteId(item);
         setOpen(true);
     };
 
@@ -49,8 +49,6 @@ function TableActor({ page, setPage, find, handleEdit }) {
             }
         }
     };
-
-
 
     return (
         <div>
@@ -84,7 +82,7 @@ function TableActor({ page, setPage, find, handleEdit }) {
                                     <Button onClick={() => handleEdit(row)} variant="contained" color="primary">
                                         <FaEdit />
                                     </Button>
-                                    <Button sx={{ marginLeft: "10px" }} onClick={() => onOpen(row.id)} variant="contained" color="secondary">
+                                    <Button sx={{ marginLeft: "10px" }} onClick={() => onOpen(row)} variant="contained" color="secondary">
                                         <MdDeleteForever />
                                     </Button>
                                 </TableCell>

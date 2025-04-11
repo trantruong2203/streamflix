@@ -8,24 +8,20 @@ import { MdDeleteForever } from 'react-icons/md';
 import ModalDelete from '../../../../components/admin/ModalDelete';
 import { useNotification } from '../../../../context/NotificationProvide';
 import { deleteDocument } from '../../../../services/firebaseService';
-import { converDescription } from '../../../../services/FunctionRepon';
 
 
-function TableAuthor({ find = '', page, handleEdit, setPage }) {
+function TableAuthor({ find, page, handleEdit, setPage }) {
     const authors = useContext(AuthorsContext);
-    const [deleteId, setDeleteId] = useState(null);
+    const [deleteId, setDeleteId] = useState({});
     const [open, setOpen] = useState(false);
-    
-    const searchAuthor = useMemo(() => {
-        if (!find) return authors;
-        return authors.filter((author) =>
-            author.name.toLowerCase().includes(find.toLowerCase())
-        );
-    }, [authors, find]);
-
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
     const showNotification = useNotification();
+    
+    const searchAuthor = authors.filter((item) => 
+        item.name?.toLowerCase().includes(find.toLowerCase())
+    );
 
+    
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -35,8 +31,8 @@ function TableAuthor({ find = '', page, handleEdit, setPage }) {
         setPage(0);
     };
 
-    const onOpen = (id) => {
-        setDeleteId(id);
+    const onOpen = (item) => {
+        setDeleteId(item);
         setOpen(true);
 
     };
@@ -101,7 +97,7 @@ function TableAuthor({ find = '', page, handleEdit, setPage }) {
                                         <FaEdit />
                                     </Button>
                                     <Button 
-                                        onClick={() => onOpen(row.id)} 
+                                        onClick={() => onOpen(row)} 
                                         variant="contained" 
                                         color="error"
                                         sx={{ ml: 1 }}
