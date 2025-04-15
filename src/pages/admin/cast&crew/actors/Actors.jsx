@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MainHeader from "../../../../components/admin/MainHeader"
 import TableActor from './TableActor';
 import ModalActor from './ModalActor';
@@ -7,12 +7,12 @@ import logo from "../../../../assets/DeWatermark.ai_1742354548201-removebg-previ
 const inner = {name: "", description: "", imgUrl : logo};
 
 function Actors(props) {
-    const [open, setOpen] = React.useState(false);
-    const [openMultiple, setOpenMultiple] = React.useState(false);
-    const [actor, setActor] = React.useState(inner);
-    const [errors, setErrors] = React.useState({});
-    const [find, setFind] = React.useState("");
-    const [page, setPage] = React.useState(0);
+    const [open, setOpen] = useState(false);
+    const [openMultiple, setOpenMultiple] = useState(false);
+    const [actor, setActor] = useState(inner);
+    const [errors, setErrors] = useState({});
+    const [find, setFind] = useState("");
+    const [page, setPage] =  useState(0);
 
     const handleClose = () => {
         setOpen(false);

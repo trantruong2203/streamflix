@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import SlideShow from '../slideshow/SlideShow';
 import SlideShowRent from '../slideshow/SlideShowRent';
 import SlideBanner from '../slideshow/SlideBanner';
+import SlideShowVip from '../slideshow/SlideShowVip';
 
 function Main(props) {
     const categories = useContext(ContextCategories);
@@ -38,8 +39,9 @@ function Main(props) {
                 </h2>
                 <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4'>
                     {categories.slice(0, 6).map((category) => (
-                        <div
+                        <Link 
                             key={category.id}
+                            to={`/main/movies/${category.id}`}
                             className={`relative group w-full aspect-square ${getRandomGradient()} rounded-xl p-4 
                             flex flex-col justify-between text-white 
                             transform transition-all duration-300 
@@ -58,7 +60,7 @@ function Main(props) {
                                     </svg>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
                 <Link to="/main/categories" className='inline-block mt-6'>
@@ -79,9 +81,8 @@ function Main(props) {
             {/* movies */}
             <div className='mt-8 space-y-8'>
                 <div className='bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-4 shadow-xl'>
-                    <SlideShow title="Phim Hàn Quốc Mới" />
-                    <SlideShow title="Phim Trung Quốc Mới" />
-                    <SlideShow title="Phim Mỹ Mới" />
+                    <SlideShow title="Phim Lẻ Mới" />
+                    <SlideShowVip title="Phim Vip Mới" />
                 </div>
                 <SlideShowRent />
             </div>

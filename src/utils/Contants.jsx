@@ -106,4 +106,10 @@ const  cloud_name = "dao84jp9k" ;
 const apiKey = '363671622292875';
 const apiSecret = 'GbmeEupa0n55XTJXBvKraZW20Rc'; 
 
+export const initialOptions = {
+    "client-id": "AQR7X4XDiS1loF8S3R2sb4Z99ji9_aSLruiZ8bfXRcjJhXQSforpMFljAJ03AfJSGcRrCJgGdVh66PES",
+    currency: "USD",
+    intent: "capture"
+  };
+
 export { upload_preset, cloud_name, apiKey, apiSecret, SECRET_KEY } ;

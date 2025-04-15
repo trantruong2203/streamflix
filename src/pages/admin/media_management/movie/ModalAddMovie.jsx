@@ -90,6 +90,17 @@ function ModalAddMovie({ open, handleClose, handleChoose, movie, handleSelect, s
             }
         }
     };
+    
+    const handleFileUploadBanner = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const result = new FileReader();
+            result.readAsDataURL(file);
+            result.onload = () => {
+                setMovie({ ...movie, imgBanner: result.result });
+            }
+        }
+    }
 
     const onSubmit = async () => {
         try {
@@ -163,7 +174,7 @@ function ModalAddMovie({ open, handleClose, handleChoose, movie, handleSelect, s
 
                         <Autocomplete
                             className='mt-2'
-                            options={plans.sort((a, b) => a.title.localeCompare(b.title))} 
+                            options={plans.sort((a, b) => a.title.localeCompare(b.title))}
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) => (
                                 <TextField
@@ -304,13 +315,30 @@ function ModalAddMovie({ open, handleClose, handleChoose, movie, handleSelect, s
                             />
                         </Button>
                         <Avatar sx={{ width: "100px", height: "100px", margin: "auto", marginTop: "20px" }} src={movie.imgUrl || logo} />
+
+                        <Button
+                            component="label"
+                            role={undefined}
+                            variant="contained"
+                            tabIndex={-1}
+                            startIcon={<CloudUploadIcon />}
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Upload Banner
+                            <VisuallyHiddenInput
+                                type="file"
+                                onChange={handleFileUploadBanner}
+                                accept="image/*"
+                            />
+                        </Button>
+                        <Avatar sx={{ width: "100px", height: "100px", margin: "auto", marginTop: "20px" }} src={movie.imgBanner || logo} />
                     </div>
 
                 </div>
                 <div className='flex justify-end'>
-                <Button onClick={onSubmit} color="primary" variant="contained" sx={{ width: "30px", padding: "5px", margin: " 5px" }}>
-                    {movie.id ? "Update" : "Add"}
-                </Button>
+                    <Button onClick={onSubmit} color="primary" variant="contained" sx={{ width: "30px", padding: "5px", margin: " 5px" }}>
+                        {movie.id ? "Update" : "Add"}
+                    </Button>
                 </div>
             </Dialog>
         </div>

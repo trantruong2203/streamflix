@@ -15,11 +15,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useContext, useState } from 'react';
 import { EpisodesContext } from '../../../../context/EpisodesProvider';
-import { getOjectById } from '../../../../services/FunctionRepon';
 import { MoviesContext } from '../../../../context/MoviesProvider';
 import { useNotification } from '../../../../context/NotificationProvide';
 import ModalDelete from '../../../../components/admin/ModalDelete';
 import { deleteDocument } from '../../../../services/firebaseService';
+import { getOjectById } from '../../../../services/FunctionRepon';
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
     '&:hover': {
@@ -37,10 +37,11 @@ function TableEpisodes({ find, page, setPage, handleEdit }) {
     const [open, setOpen] = useState(false);
     const showNotification = useNotification();
 
-
-    const searchEpisodes = episodes.filter((item) =>
-        item.name?.toLowerCase().includes(find.toLowerCase())
-    );
+    // Tìm kiếm theo tên phim thay vì tên tập phim
+    const searchEpisodes = episodes.filter((item) => {
+        const movie = getOjectById(movies, item.idMovie);
+        return movie?.name?.toLowerCase().includes(find.toLowerCase());
+    });
 
     // Xử lý thay đổi trang
     const handleChangePage = (event, newPage) => {
@@ -70,10 +71,11 @@ function TableEpisodes({ find, page, setPage, handleEdit }) {
         if (deleteId) {
             try {
                 await deleteDocument("episodes", deleteId);
-                showNotification("Episodes delete success !!!", "warning");
+                showNotification("Xóa tập phim thành công!", "success");
                 onClose();
             } catch (error) {
                 console.error("Lỗi khi xóa:", error);
+                showNotification("Có lỗi xảy ra khi xóa tập phim!", "error");
             }
         }
     };
@@ -91,7 +93,7 @@ function TableEpisodes({ find, page, setPage, handleEdit }) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {episodes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+                        {searchEpisodes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
                             <TableRow key={index}>
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell>{getOjectById(movies, row.idMovie)?.name}</TableCell>
@@ -123,6 +125,8 @@ function TableEpisodes({ find, page, setPage, handleEdit }) {
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+                labelRowsPerPage="Số hàng mỗi trang:"
+                labelDisplayedRows={({ from, to, count }) => `${from}-${to} của ${count}`}
             />
             
             <ModalDelete

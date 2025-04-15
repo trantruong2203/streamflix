@@ -102,13 +102,14 @@ function ModalActor({ open, actor = {}, setActor, handleClose, errors = {}, setE
                     error={!!errors.description}
                     helperText={errors.description}
                 />
+
                 <Button
                     component="label"
                     role={undefined}
                     variant="contained"
                     tabIndex={-1}
                     startIcon={<CloudUploadIcon />}
-                    sx={{mt: 2}}
+                    sx={{paddingTop: "20px" }}
                 >
                     Upload files
                     <VisuallyHiddenInput

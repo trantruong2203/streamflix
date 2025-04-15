@@ -13,6 +13,9 @@ import { FaHeart, FaPlay, FaPlus } from 'react-icons/fa';
 import { MdAttachMoney } from 'react-icons/md';
 import { EpisodesContext } from '../../../context/EpisodesProvider';
 import { TrailersContext } from '../../../context/TrailerProvider';
+import { ContextAuth } from '../../../context/AuthProvider';
+import { PlansContext } from '../../../context/PlansProvider';
+import { handleClick } from '../../../services/FunctionPlayMovie';
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -49,6 +52,8 @@ function MyDetail() {
     const trailers = useContext(TrailersContext);
     const categories = useContext(ContextCategories);
     const actors = useContext(ActorContext);
+    const {accountLogin} = useContext(ContextAuth);
+    const plans = useContext(PlansContext);
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -65,10 +70,17 @@ function MyDetail() {
     }
 
     return (
-        <div className="bg-gray-900 text-white flex">
-            <div className='px-6 py-30 w-1/4'>
+        <div >
+            <div >
+                <div className="relative">
+                    <img src={movie.imgBanner} className='h-[80vh] w-full mask-type-alpha fill-gray-700/70 object-cover ' alt="" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900"></div>
+                </div>
+            </div>
+            <div className="bg-gray-900 text-white flex">
+            <div className='px-6  w-1/4'>
             <div>
-                <img src={movie.imgUrl} className='h-full w-full object-cover ' alt="" />
+                <img src={movie.imgUrl} className='h-full w-full object-cover rounded-xl' alt="" />
             </div>
                 <div className='mt-4'>
                     <h2 className='text-2xl font-bold'>{movie.name}</h2>
@@ -76,9 +88,9 @@ function MyDetail() {
                     <p className='text-gray-400 text-sm mt-2'>{movie.description}</p>
                 </div>
             </div>
-            <div className="container mx-auto px-4 py-30 flex-1">
+            <div className="container mx-auto px-4 flex-1">
                 <div className='flex items-center gap-6'>
-                    <button type="button" onClick={() => navigate(`/play-my-movie/${id}`)} className='bg-gradient-to-r from-amber-200 to-yellow-400 text-black px-4 py-2 rounded-full font-bold flex items-center gap-2 shadow-lg cursor-pointer hover:shadow-amber-300/50 hover:shadow-xl transition-all duration-300'><FaPlay />Xem ngay</button>
+                    <button type="button" onClick={() => handleClick(movie, accountLogin, plans, navigate)} className='bg-gradient-to-r from-amber-200 to-yellow-400 text-black px-4 py-2 rounded-full font-bold flex items-center gap-2 shadow-lg cursor-pointer hover:shadow-amber-300/50 hover:shadow-xl transition-all duration-300'><FaPlay />Xem ngay</button>
                     <div className='cursor-pointer hover:text-amber-300 transition-all duration-300 flex items-center gap-2'>
                         <FaHeart className="text-center" /> 
                         <span>Yêu thích</span>
@@ -185,6 +197,7 @@ function MyDetail() {
                     
 
                 </Box>
+            </div>
             </div>
         </div>
     );

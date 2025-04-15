@@ -1,7 +1,9 @@
 export const getOjectById = (data, id) => {
-   return data?.find(e => e.id == id);
+   return data?.find(e => e.id === id);
 }
+
 export const converDescription = (description) => {
+      if (!description) return "";
       if (description.length > 50) {
          return description.slice(0, 50) + "...";
       }
@@ -9,9 +11,19 @@ export const converDescription = (description) => {
 }
 
 export const filterMovieByPlan = (data, plans, level) => {
-
    return data?.filter(e => {
-      const plan = plans.find(p => p.id == e.planID);
-       return plan?.level <= level 
+      const plan = plans.find(p => p.id === e.planID);
+      return plan?.level == level 
    })
+};
+
+
+
+export const filterMoviesByCategories = (movies, categories, categoryIds) => {
+   if (!categoryIds || categoryIds.length === 0) return movies;
+   
+   return movies.filter(movie => {
+      // Kiểm tra xem phim có chứa ít nhất một category trong danh sách categoryIds không
+      return movie.listCate.some(categoryId => categoryIds.includes(categoryId));
+   });
 };

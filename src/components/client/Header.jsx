@@ -11,9 +11,10 @@ const menuItems = [
     { path: "/main/categories", label: "Thể Loại" },
     { path: "/main/newmovie", label: "Phim Mới" },
     { path: "/main/movies", label: "Phim Lẻ" },
+    { path: "/main/series", label: "Phim Bộ" },
     { path: "/main/rentmovie", label: "Phim Thuê" },
     { path: "/main/actors", label: "Hỗ Trợ" },
-    { path: "/main/vip", label: "Gói Stream Flix" },
+    
 
 ];
 
@@ -133,7 +134,12 @@ function Header({ handleLogin }) {
                     </button>
                 </div>
 
-                <div className="hidden md:flex items-center">
+
+                <div className="hidden md:flex items-center gap-3">
+                <Link to="/main/vip" className={`text-white p-2 bg-yellow-500 rounded-full px-5 hover:bg-amber-300 cursor-pointer transition-all duration-100 ${accountLogin ? 'block' : 'hidden'} `} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                        Đăng ký gói
+                    </Link>
+
                     {accountLogin ? <ModalUser /> : <button onClick={handleLogin} className="bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold mr-4 cursor-pointer">
                         Đăng Nhập
                     </button>}

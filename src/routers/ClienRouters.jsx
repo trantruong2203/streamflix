@@ -27,8 +27,8 @@ const router = [
     {path: '/main/movies/detail/:id', element: <MyDetail/>},
     {path: '/play-my-movie/:id', element: <PlayMyMovie/>},
     {path: '/main/vip', element: <SubcriptionPlan/>},
-    {path: '/payment', element: <PaymentPage/>},
-    {path: '/payment/rent-movie', element: <RentMovie/>},
+    {path: '/payment/:id', element: <PaymentPage/>},
+    {path: '/payment/rent-movie/:id', element: <RentMovie/>},
     {path: '/payment/pay', element: <Pay/>},
 ];
 

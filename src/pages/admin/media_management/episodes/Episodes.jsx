@@ -12,7 +12,6 @@ function Episodes(props) {
     const [find, setFind] = useState("");
     const [page, setPage] = useState(0);
 
-
     const handleOpen = () => {
         setOpen(true);
         setEpisode(inner);
@@ -38,7 +37,8 @@ function Episodes(props) {
             <MainHeader
                 title="List Episodes"
                 handleOpen={handleOpen}
-                handleSearch={handleSearch} />
+                handleSearch={handleSearch}
+            />
             <ModalEpisodes
                 errors={errors}
                 setErrors={setErrors}
@@ -53,6 +53,7 @@ function Episodes(props) {
                 setPage={setPage}
                 handleEdit={handleEdit}
             />
+
         </div>
     );
 }

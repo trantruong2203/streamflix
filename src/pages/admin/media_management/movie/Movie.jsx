@@ -20,7 +20,8 @@ const inner = {
     likesCount: 0,
     viewsCount: 0,
     date: new Date(),
-    imgUrl: logo
+    imgUrl: logo,
+    imgBanner: logo
 };
 function Movie(props) {
     const [openAddMovie, setOpenAddMovie] = useState(false);
