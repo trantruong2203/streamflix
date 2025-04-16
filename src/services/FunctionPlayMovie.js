@@ -1,10 +1,10 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../config/firebaseconfig";
 
-export const handleClick = async (movie, isLoggedIn, plans, navigate) => {
-
+export const handleClick = async (movie, isLoggedIn, plans, navigate, notification) => {
     if (!isLoggedIn) {
-        message.warning('Bạn cần đăng nhập để xem phim');
+        notification('Bạn cần đăng nhập để xem phim', 'warning');
+        console.log("Bạn cần đăng nhập để xem phim");
         return;
     }
     const status = await checkVipEligibility(isLoggedIn.id, plans, movie);
@@ -12,12 +12,20 @@ export const handleClick = async (movie, isLoggedIn, plans, navigate) => {
         navigate(`/play-my-movie/${movie.id}`);
         return;
     }
+    
     // const checkRentMovie = await checkIfMovieRented(isLoggedIn.id, movie.id);
     // if (checkRentMovie) {
     //     navigate(`/play-my-movie/${movie.id}`);
     //     return;
     // }
+    
     const plan = plans.find(p => p.id === movie.planID);
+    if (!plan) {
+        notification.error('Không tìm thấy thông tin gói dịch vụ cho phim này');
+        console.error("Plan not found for this movie");
+        return;
+    }
+    
     if (plan.level > 2) {
         navigate(`/payment/rent-movie/${movie.id}`);
     } else {
@@ -30,7 +38,9 @@ export const checkVipEligibility = async (userId, plans, movie) => {
     try {
         // Fetch user's active subscription plans
         const userPlans = await getPlansByUser(userId, plans);
-        if (userPlans == 0) {
+        
+        // Kiểm tra nếu userPlans là null hoặc 0
+        if (userPlans === null || userPlans === 0) {
             console.log("User does not have an active VIP subscription.");
             return false; // No active VIP plan
         }
@@ -46,40 +56,50 @@ export const checkVipEligibility = async (userId, plans, movie) => {
 // Trả về level cao nhất của VIP theo id người dùng
 export const getPlansByUser = async (idUser, plans) => {
     try {
-      // Tạo truy vấn để lấy dữ liệu của người dùng dựa trên idUser
-      const vipQuery = query(collection(db, "subscriptions"), where("userId", "==", idUser));
-      const querySnapshot = await getDocs(vipQuery);
-      // Lưu trữ thông tin VIP hợp lệ (chưa hết hạn)
-      const vipData = [];
-  
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const currentDate = new Date();
-        const expiryDate = data.expiryDate ? data.expiryDate.toDate() : null;
-  
-        // Chỉ lấy các gói VIP chưa hết hạn
-        if (expiryDate && expiryDate > currentDate) {
-          vipData.push({
-            id: doc.id,
-            ...data,
-          });
+        if (!idUser) {
+            console.error("User ID is required");
+            return 0;
         }
-      });
+        
+        // Tạo truy vấn để lấy dữ liệu của người dùng dựa trên idUser
+        const vipQuery = query(collection(db, "subscriptions"), where("userId", "==", idUser));
+        const querySnapshot = await getDocs(vipQuery);
+        // Lưu trữ thông tin VIP hợp lệ (chưa hết hạn)
+        const vipData = [];
   
-      // Duyệt qua các plan và tìm VIP có level cao nhất dựa vào vipData
-      const highestVipLevels = vipData.map(vip => {
-        const planForVip = plans.find(plan => plan.id === vip.planId);
-        return planForVip ? planForVip.level : null; // Không tìm thấy kế hoạch tương ứng
-      });  
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const currentDate = new Date();
+            const expiryDate = data.expiryDate ? data.expiryDate.toDate() : null;
   
-      // Tìm cấp độ cao nhất từ các cấp độ VIP đã lấy
-      const maxVipLevel = highestVipLevels.reduce((highest, current) => {
-        return current > highest ? current : highest;
-      }, 0); // Bắt đầu với level thấp nhất là 0
+            // Chỉ lấy các gói VIP chưa hết hạn
+            if (expiryDate && expiryDate > currentDate) {
+                vipData.push({
+                    id: doc.id,
+                    ...data,
+                });
+            }
+        });
   
-      return maxVipLevel; 
+        // Nếu không có gói VIP nào hợp lệ
+        if (vipData.length === 0) {
+            return 0;
+        }
+  
+        // Duyệt qua các plan và tìm VIP có level cao nhất dựa vào vipData
+        const highestVipLevels = vipData.map(vip => {
+            const planForVip = plans.find(plan => plan.id === vip.planId);
+            return planForVip ? planForVip.level : 0; // Trả về 0 nếu không tìm thấy kế hoạch tương ứng
+        });  
+  
+        // Tìm cấp độ cao nhất từ các cấp độ VIP đã lấy
+        const maxVipLevel = highestVipLevels.reduce((highest, current) => {
+            return current > highest ? current : highest;
+        }, 0); // Bắt đầu với level thấp nhất là 0
+  
+        return maxVipLevel; 
     } catch (error) {
-      console.error("Error fetching VIP plans:", error);
-      return null; // Trả về null nếu có lỗi
+        console.error("Error fetching VIP plans:", error);
+        return 0; // Trả về 0 nếu có lỗi
     }
-  };
+};

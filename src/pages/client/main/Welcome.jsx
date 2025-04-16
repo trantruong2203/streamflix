@@ -1,5 +1,5 @@
 import React from 'react';
-import SlideBanner from '../slideshow/SlideBanner';
+import SlideBanner from '../../../components/client/slideshow/SlideBanner';
 import Main from './Main';
 
 function Welcome(props) {

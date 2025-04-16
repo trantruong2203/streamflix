@@ -4,7 +4,7 @@ import { MdOutlinePayments } from 'react-icons/md';
 import { RiVisaFill } from 'react-icons/ri';
 import { PlansContext } from '../../../context/PlansProvider';
 import { PackageContext } from '../../../context/PackageProvider';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { getOjectById } from '../../../services/FunctionRepon';
 import { ContextAuth } from '../../../context/AuthProvider';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
@@ -21,21 +21,23 @@ function PaymentPage() {
     const pakages = useContext(PackageContext);
     const { accountLogin } = useContext(ContextAuth);
     const showNotification = useNotification();
-    
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
+
     const plan = plans.find(plan => plan.id === id);
     const listPakage = pakages.filter(pakage => pakage.planId === id).sort((a, b) => a.time - b.time);
     const [selectedPlan, setSelectedPlan] = useState(listPakage[0] || {});
     const totalPriceRef = useRef(0);
     useEffect(() => {
-       setSelectedPlan(listPakage[0]);
-    },[pakages]);
+        setSelectedPlan(listPakage[0]);
+    }, [pakages]);
 
-   useEffect(() => {
+    useEffect(() => {
         if (plan) {
             const price = (plan.PricePerMonth * selectedPlan?.time) - (plan.PricePerMonth * selectedPlan?.time * selectedPlan?.discount / 100);
             totalPriceRef.current = price;
         }
-   }, [plan, selectedPlan]);
+    }, [plan, selectedPlan]);
 
 
     const paymentMethods = [
@@ -46,26 +48,37 @@ function PaymentPage() {
         { id: 'vnpay', name: 'VNPAY', icon: <MdOutlinePayments /> }
     ];
 
- const createSubscription = async (id) => {
-    const startDate = new Date();
-    const expiryDate = new Date();
-    expiryDate.setMonth(startDate.getMonth() + (parseInt(selectedPlan.time) || 1));
+    const createSubscription = async (id) => {
+        setIsLoading(true);
+        const startDate = new Date();
+        const expiryDate = new Date();
+        expiryDate.setMonth(startDate.getMonth() + (parseInt(selectedPlan.time) || 1));
         const subscriptionData = {
             planId: plan.id,
             packageId: selectedPlan.id,
             paymentMethod: selectedPayment,
             transactionId: id,
             userId: accountLogin?.id,
-            startDate : startDate,
-            expiryDate : expiryDate,
+            startDate: startDate,
+            expiryDate: expiryDate,
         };
-    await addDocument('subscriptions', subscriptionData);
-    showNotification("Đăng ký gói thành công", "success");
-
- }
+        await addDocument('subscriptions', subscriptionData);
+        showNotification("Đăng ký gói thành công", "success");
+        navigate(`/main`);
+        setIsLoading(false);
+    }
 
     return (
         <div className="px-20 py-25 font-sans text-gray-800 bg-stone-50">
+            {isLoading && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+                        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                        <p className="text-lg font-medium text-gray-700">Đang xử lý thanh toán...</p>
+                        <p className="text-sm text-gray-500 mt-2">Vui lòng đợi trong giây lát</p>
+                    </div>
+                </div>
+            )}
             <h1 className="text-center text-2xl font-semibold mb-1">Phương thức thanh toán</h1>
             <div className="text-center border-b-2 border-blue-600 w-max mx-auto mb-8 pb-1 text-gray-600">Hủy bất cứ lúc nào</div>
 
@@ -78,8 +91,8 @@ function PaymentPage() {
                             <div
                                 key={p.id}
                                 className={`flex justify-between items-center p-3 rounded-md mb-3 cursor-pointer border transition-all ${selectedPlan?.id === p.id
-                                        ? 'border-blue-600 bg-blue-50'
-                                        : 'border-gray-200 hover:border-blue-600'
+                                    ? 'border-blue-600 bg-blue-50'
+                                    : 'border-gray-200 hover:border-blue-600'
                                     } ${p.popular ? 'border-blue-600' : ''}`}
                                 onClick={() => setSelectedPlan(p)}
                             >
@@ -125,7 +138,7 @@ function PaymentPage() {
                                 <div className="flex-1">
                                     <div className="flex justify-between mb-2.5">
                                         <span className="text-gray-500">Tài khoản</span>
-                                        <span className="font-medium">{accountLogin?.email }</span>
+                                        <span className="font-medium">{accountLogin?.email}</span>
                                     </div>
                                     <div className="flex justify-between mb-2.5">
                                         <span className="text-gray-500">Tên gói</span>
@@ -181,8 +194,8 @@ function PaymentPage() {
                             <div
                                 key={method.id}
                                 className={`w-[130px] h-[80px] border rounded-lg flex flex-col items-center justify-center cursor-pointer transition-all p-2.5 ${selectedPayment === method.id
-                                        ? 'border-blue-600'
-                                        : 'border-gray-200 hover:border-blue-600'
+                                    ? 'border-blue-600'
+                                    : 'border-gray-200 hover:border-blue-600'
                                     }`}
                                 onClick={() => setSelectedPayment(method.id)}
                             >
@@ -221,12 +234,12 @@ function PaymentPage() {
                             </p>
                         </div>
 
-                       <PayPalScriptProvider options={initialOptions}>
+                        <PayPalScriptProvider options={initialOptions}>
                             <PayPalButtons
                                 style={{ layout: "vertical" }}
                                 createOrder={(data, actions) => {
                                     const total = totalPriceRef.current;
-                                    const priceInUSD = ( total/ 26000).toFixed(2); // Chuyển từ VND sang USD
+                                    const priceInUSD = (total / 26000).toFixed(2); // Chuyển từ VND sang USD
                                     return actions.order.create({
                                         purchase_units: [{
                                             amount: {

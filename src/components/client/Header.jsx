@@ -11,11 +11,10 @@ const menuItems = [
     { path: "/main/categories", label: "Thể Loại" },
     { path: "/main/newmovie", label: "Phim Mới" },
     { path: "/main/movies", label: "Phim Lẻ" },
-    { path: "/main/series", label: "Phim Bộ" },
+    { path: "/main/movies/series", label: "Phim Bộ" },
     { path: "/main/rentmovie", label: "Phim Thuê" },
     { path: "/main/actors", label: "Hỗ Trợ" },
-    
-
+    { path: "/main/tim-kiem", label: "Tìm Kiếm" },
 ];
 
 const SearchBar = ({ movies }) => {

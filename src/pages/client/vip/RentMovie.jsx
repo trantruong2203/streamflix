@@ -14,12 +14,17 @@ function RentMovie(props) {
     const navigate = useNavigate();
     useEffect(() => {
         const movie = getOjectById(movies, id);
-        const data = plans.filter((item) => item.level >= getOjectById(plans, movie.planID)?.level);
-        setPlanShow(data);
+        if (movie) {
+            const currentPlan = getOjectById(plans, movie.planID);
+            const data = currentPlan ? plans.filter((item) => item.level >= currentPlan.level) : [];
+            setPlanShow(data);
+        } else {
+            setPlanShow([]);
+        }
     },[id, movies, plans]);
 
     const handleChoosePlan = (planId) => {
-       choosePlan == id ?  navigate(`/payment/pay`)  : navigate(`/payment/${choosePlan}`); 
+       choosePlan == id ?  navigate(`/payment/pay/${id}`)  : navigate(`/payment/${choosePlan}`); 
     }
     return (
         <div className='min-h-screen py-25 bg-gradient-to-br from-gray-50 to-gray-100'>

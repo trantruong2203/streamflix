@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import { getOjectById } from '../../../services/FunctionRepon';
 import { ContextCategories } from '../../../context/CategoriesProvider';
 import { ActorContext } from '../../../context/ActorProvide';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FaHeart, FaPlay, FaPlus } from 'react-icons/fa';
 import { MdAttachMoney } from 'react-icons/md';
 import { EpisodesContext } from '../../../context/EpisodesProvider';
@@ -16,6 +16,10 @@ import { TrailersContext } from '../../../context/TrailerProvider';
 import { ContextAuth } from '../../../context/AuthProvider';
 import { PlansContext } from '../../../context/PlansProvider';
 import { handleClick } from '../../../services/FunctionPlayMovie';
+import { useNotification } from '../../../context/NotificationProvide';
+import Login from '../../../components/client/Login';
+import { useState } from 'react';
+
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -46,7 +50,8 @@ function a11yProps(index) {
 }
 
 function MyDetail() {
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
+    const [openLogin, setOpenLogin] = useState(false);
     const movies = useContext(MoviesContext);
     const episodes = useContext(EpisodesContext);
     const trailers = useContext(TrailersContext);
@@ -54,6 +59,7 @@ function MyDetail() {
     const actors = useContext(ActorContext);
     const {accountLogin} = useContext(ContextAuth);
     const plans = useContext(PlansContext);
+    const notification = useNotification();
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -61,144 +67,200 @@ function MyDetail() {
         setValue(newValue);
     };
 
+    const handleOpenLogin = () => {
+        setOpenLogin(true);
+    };
+
+    const handleCloseLogin = () => {
+        setOpenLogin(false);
+    };
+
     // Lấy thông tin phim từ URL
     const movie = movies.find(m => m.id === id);
     const trailer = trailers.find(t => t.idMovie === id);
 
     if (!movie) {
-        return <div className="text-white text-center py-8">Không tìm thấy thông tin phim</div>;
+        return <div className="text-white text-center py-8 text-xl font-semibold">Không tìm thấy thông tin phim</div>;
     }
 
     return (
-        <div >
-            <div >
-                <div className="relative">
-                    <img src={movie.imgBanner} className='h-[80vh] w-full mask-type-alpha fill-gray-700/70 object-cover ' alt="" />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900"></div>
-                </div>
+        <div className="min-h-screen bg-gray-900">
+            <div className="relative">
+                <img 
+                    src={movie.imgBanner} 
+                    className='h-[80vh] w-full object-cover filter brightness-50' 
+                    alt={movie.name} 
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/70 to-gray-900"></div>
             </div>
-            <div className="bg-gray-900 text-white flex">
-            <div className='px-6  w-1/4'>
-            <div>
-                <img src={movie.imgUrl} className='h-full w-full object-cover rounded-xl' alt="" />
-            </div>
-                <div className='mt-4'>
-                    <h2 className='text-2xl font-bold'>{movie.name}</h2>
-                    <h3 className='text-white text-sm font-bold mt-4'>Giới thiệu :</h3>
-                    <p className='text-gray-400 text-sm mt-2'>{movie.description}</p>
-                </div>
-            </div>
-            <div className="container mx-auto px-4 flex-1">
-                <div className='flex items-center gap-6'>
-                    <button type="button" onClick={() => handleClick(movie, accountLogin, plans, navigate)} className='bg-gradient-to-r from-amber-200 to-yellow-400 text-black px-4 py-2 rounded-full font-bold flex items-center gap-2 shadow-lg cursor-pointer hover:shadow-amber-300/50 hover:shadow-xl transition-all duration-300'><FaPlay />Xem ngay</button>
-                    <div className='cursor-pointer hover:text-amber-300 transition-all duration-300 flex items-center gap-2'>
-                        <FaHeart className="text-center" /> 
-                        <span>Yêu thích</span>
+            <div className="container mx-auto px-20 py-8">
+                <div className="flex flex-col md:flex-row gap-15">
+                    {/* Phần thông tin phim bên trái */}
+                    <div className="w-full md:w-1/4 space-y-6">
+                        <div className="rounded-xl overflow-hidden shadow-2xl transform transition-transform duration-300 hover:scale-105">
+                            <img 
+                                src={movie.imgUrl} 
+                                className='w-full h-auto object-cover aspect-[2/3]' 
+                                alt={movie.name} 
+                            />
+                        </div>
+                        <div className="space-y-4">
+                            <h2 className='text-3xl font-bold text-white'>{movie.name}</h2>
+                            <div>
+                                <h3 className='text-white text-lg font-semibold mb-2'>Giới thiệu:</h3>
+                                <p className='text-gray-300 text-sm leading-relaxed'>{movie.description}</p>
+                            </div>
+                        </div>
                     </div>
-                    <div className='cursor-pointer hover:text-amber-300 transition-all duration-300 flex items-center gap-2'>
-                        <FaPlus className="text-center" />
-                        <span>Thêm vào</span>
-                    </div>
-                    <div className='cursor-pointer hover:text-amber-300 transition-all duration-300 flex items-center gap-2'>
-                        <MdAttachMoney className="text-center" />
-                        <span>Thuê Phim</span>
-                    </div>
-                </div>
-                <Box sx={{ width: '100%', marginTop: '20px' }}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                        <Tabs 
-                            value={value} 
-                            onChange={handleChange} 
-                            aria-label="movie detail tabs"
-                            sx={{
+
+                    {/* Phần nội dung chính bên phải */}
+                    <div className="flex-1 space-y-8">
+                        {/* Các nút tương tác */}
+                        <div className='flex flex-wrap items-center gap-4'>
+                            <button 
+                                type="button" 
+                                onClick={() => handleClick(movie, accountLogin, plans, navigate, notification)} 
+                                className='bg-gradient-to-r from-amber-400 to-yellow-500 text-black px-6 py-3 rounded-full font-bold flex items-center gap-2 shadow-lg hover:shadow-amber-300/50 hover:shadow-xl transition-all duration-300 hover:scale-105'
+                            >
+                                <FaPlay className="text-lg" />
+                                <span>Xem ngay</span>
+                            </button>
+                            <div className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'>
+                                <FaHeart className="text-xl group-hover:scale-110 transition-transform" /> 
+                                <span>Yêu thích</span>
+                            </div>
+                            <div className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'>
+                                <FaPlus className="text-xl group-hover:scale-110 transition-transform" />
+                                <span>Thêm vào</span>
+                            </div>
+                            {accountLogin ? (
+                                <Link 
+                                    to={`/payment/rent-movie/${movie.id}`} 
+                                    className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'
+                                >
+                                    <MdAttachMoney className="text-xl group-hover:scale-110 transition-transform" />
+                                    <span>Thuê Phim</span>
+                                </Link>
+                            ) : (
+                                <div 
+                                    onClick={handleOpenLogin} 
+                                    className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'
+                                >
+                                    <MdAttachMoney className="text-xl group-hover:scale-110 transition-transform" />
+                                    <span>Thuê Phim</span>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Tabs */}
+                        <Box sx={{ width: '100%' }}>
+                            <Box sx={{ 
+                                borderBottom: 1, 
+                                borderColor: 'divider',
                                 '& .MuiTab-root': {
                                     color: 'white',
+                                    fontSize: '1rem',
+                                    fontWeight: 500,
+                                    textTransform: 'none',
                                     '&.Mui-selected': {
-                                        color: '#3b82f6',
+                                        color: '#fbbf24',
                                     },
                                 },
                                 '& .MuiTabs-indicator': {
-                                    backgroundColor: '#3b82f6',
+                                    backgroundColor: '#fbbf24',
                                 },
-                            }}
-                        >
-                            <Tab label="Tập phim" {...a11yProps(0)} />
-                            <Tab label="Diễn viên" {...a11yProps(1)} />
-                            <Tab label="Danh mục" {...a11yProps(2)} />
-                            <Tab label="Trailer" {...a11yProps(3)} />
-                        </Tabs>
-                    </Box>
-                    <CustomTabPanel value={value} index={0}>
-                        <div className="space-y-4">
-                            <h2 className="text-2xl font-bold">Các bản chiếu</h2>
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                {episodes
-                                    .filter(episode => episode.idMovie === movie.id)
-                                    .map((episode) => (
-                                        <div 
-                                            key={episode.id} 
-                                            className="bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
-                                            onClick={() => window.open(episode.episodesUrl, '_blank')}
-                                        >
-                                            <div className="text-center">
-                                                <h3 className="text-lg font-medium mb-2">Tập {episode.episodesNumber}</h3>
-                                                <button className="bg-yellow-500 cursor-pointer hover:bg-yellow-600 text-white px-4 py-2 rounded-full transition-colors">
-                                                    Xem ngay
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                            </div>
-                        </div>
-                    </CustomTabPanel>
-                    <CustomTabPanel value={value} index={1}>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            {movie.listActor?.map((actorId) => {
-                                const actor = getOjectById(actors, actorId);
-                                return actor ? (
-                                    <div key={actorId} className="text-center">
-                                        <img 
-                                            src={actor.imgUrl} 
-                                            alt={actor.name}
-                                            className="w-24 h-24 rounded-full mx-auto mb-2 object-cover"
-                                        />
-                                        <p className="font-medium">{actor.name}</p>
-                                    </div>
-                                ) : null;
-                            })}
-                        </div>
-                    </CustomTabPanel>
-                    <CustomTabPanel value={value} index={2}>
-                        <div className="flex flex-wrap gap-2">
-                            {movie.listCate?.map((categoryId) => {
-                                const category = getOjectById(categories, categoryId);
-                                return category ? (
-                                    <span 
-                                        key={categoryId}
-                                        className="px-3 py-1 bg-blue-600 rounded-full text-sm"
-                                    >
-                                        {category.name}
-                                    </span>
-                                ) : null;
-                            })}
-                        </div>
-                    </CustomTabPanel>
-                    <CustomTabPanel value={value} index={3}>
-                        <div className="flex justify-center items-center">
-                            <iframe 
-                                src={trailers.find(t => t.idMovie === movie.id)?.trailerUrl} 
-                                title="Trailer"
-                                width="100%"
-                                height="400px"
-                                allowFullScreen
-                            ></iframe>
-                        </div>
-                    </CustomTabPanel>
-                    
+                            }}>
+                                <Tabs 
+                                    value={value} 
+                                    onChange={handleChange} 
+                                    aria-label="movie detail tabs"
+                                >
+                                    <Tab label="Tập phim" {...a11yProps(0)} />
+                                    <Tab label="Diễn viên" {...a11yProps(1)} />
+                                    <Tab label="Danh mục" {...a11yProps(2)} />
+                                    <Tab label="Trailer" {...a11yProps(3)} />
+                                </Tabs>
+                            </Box>
 
-                </Box>
+                            {/* Tab content */}
+                            <CustomTabPanel value={value} index={0}>
+                                <div className="space-y-6">
+                                    <h2 className="text-2xl font-bold text-white">Các tập phim</h2>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                                        {episodes
+                                            .filter(episode => episode.idMovie === movie.id)
+                                            .map((episode) => (
+                                                <div 
+                                                    key={episode.id} 
+                                                    className="bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300 cursor-pointer transform hover:scale-105 shadow-lg"
+                                                    onClick={() => handleClick(movie, accountLogin, plans, navigate)}
+                                                >
+                                                    <div className="text-center space-y-4">
+                                                        <h3 className="text-xl font-medium text-white">Tập {episode.episodesNumber}</h3>
+                                                        <button className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2 rounded-full transition-colors duration-300 w-full">
+                                                            Xem ngay
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                    </div>
+                                </div>
+                            </CustomTabPanel>
+
+                            <CustomTabPanel value={value} index={1}>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                                    {movie.listActor?.map((actorId) => {
+                                        const actor = getOjectById(actors, actorId);
+                                        return actor ? (
+                                            <div 
+                                                key={actorId} 
+                                                className="text-center group"
+                                            >
+                                                <div className="relative overflow-hidden rounded-full w-24 h-24 mx-auto mb-3">
+                                                    <img 
+                                                        src={actor.imgUrl} 
+                                                        alt={actor.name}
+                                                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+                                                    />
+                                                </div>
+                                                <p className="font-medium text-white group-hover:text-amber-300 transition-colors">{actor.name}</p>
+                                            </div>
+                                        ) : null;
+                                    })}
+                                </div>
+                            </CustomTabPanel>
+
+                            <CustomTabPanel value={value} index={2}>
+                                <div className="flex flex-wrap gap-3">
+                                    {movie.listCate?.map((categoryId) => {
+                                        const category = getOjectById(categories, categoryId);
+                                        return category ? (
+                                            <span 
+                                                key={categoryId}
+                                                className="px-4 py-2 bg-amber-500 text-black rounded-full text-sm font-medium hover:bg-amber-400 transition-colors duration-300"
+                                            >
+                                                {category.name}
+                                            </span>
+                                        ) : null;
+                                    })}
+                                </div>
+                            </CustomTabPanel>
+
+                            <CustomTabPanel value={value} index={3}>
+                                <div className="flex justify-center items-center rounded-xl overflow-hidden shadow-2xl">
+                                    <iframe 
+                                        src={trailer?.trailerUrl} 
+                                        title="Trailer"
+                                        className="w-full aspect-video"
+                                        allowFullScreen
+                                    ></iframe>
+                                </div>
+                            </CustomTabPanel>
+                        </Box>
+                    </div>
+                </div>
             </div>
-            </div>
+            <Login open={openLogin} handleClose={handleCloseLogin} />
         </div>
     );
 }

@@ -14,6 +14,8 @@ import PlayMyMovie from '../pages/client/detail/PlayMyMovie';
 import SubcriptionPlan from '../pages/client/vip/SubcriptionPlan';
 import PaymentPage from '../pages/client/vip/PaymentPage';
 import Pay from '../pages/client/vip/Pay';
+import MovieSearch from '../components/MovieSearch';
+
 const router = [
     { path: '/', element: <Welcome /> },
     {path: '/main', element: <Main />},
@@ -29,7 +31,8 @@ const router = [
     {path: '/main/vip', element: <SubcriptionPlan/>},
     {path: '/payment/:id', element: <PaymentPage/>},
     {path: '/payment/rent-movie/:id', element: <RentMovie/>},
-    {path: '/payment/pay', element: <Pay/>},
+    {path: '/payment/pay/:id', element: <Pay/>},
+    {path: '/main/tim-kiem', element: <MovieSearch />},
 ];
 
 function ClienRouters(props) {

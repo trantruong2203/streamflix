@@ -13,7 +13,7 @@ import { MoviesContext } from '../../../context/MoviesProvider';
 import { PlansContext } from '../../../context/PlansProvider';
 import { filterMovieByPlan } from '../../../services/FunctionRepon';
 
-function SlideShow(props) {
+function SlideShowVip(props) {
     const movies = useContext(MoviesContext);
     const plans = useContext(PlansContext);
    
@@ -27,13 +27,11 @@ function SlideShow(props) {
                 <Swiper
                     slidesPerView={3}
                     spaceBetween={30}
-                    pagination={{
-                        clickable: true,
-                    }}
+                    
                     modules={[Pagination]}
                     className="mySwiper md:flex-1 w-full h-full"
                 >
-                    {filterMovieByPlan(movies,plans,2).map((slide) => (
+                    {filterMovieByPlan(movies,plans,3).map((slide) => (
                         <SwiperSlide key={slide.id} className='flex flex-col text-center text-lg'>
                             <Link to={`/main/movies/detail/${slide.id}`} className="block h-[200px] w-full rounded-lg overflow-hidden relative group">
                                 <img 
@@ -53,4 +51,4 @@ function SlideShow(props) {
     );
 }
 
-export default SlideShow;
+export default SlideShowVip;
