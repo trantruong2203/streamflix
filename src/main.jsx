@@ -17,6 +17,7 @@ import { AccountsProvider } from './context/AccountsProvider.jsx';
 import AuthProvider from './context/AuthProvider.jsx';
 import { FeatureProvider } from './context/FeatureProvider.jsx';
 import { PackageProvider } from './context/PackageProvider.jsx';
+import { RentMoviesProvider } from './context/RentMoviesProvider.jsx';
 const providers = [
   AccountsProvider,
   CategoriesProvider,
@@ -30,7 +31,8 @@ const providers = [
   TrailersProvider,
   AuthProvider,
   FeatureProvider,
-  PackageProvider
+  PackageProvider,
+  RentMoviesProvider
 ];
 const ProviderWrapper = ({ children }) => {
   return providers.reduceRight(

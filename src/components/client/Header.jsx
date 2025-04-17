@@ -6,6 +6,7 @@ import { ContextAuth } from "../../context/AuthProvider";
 import ModalUser from "./ModalUser";
 import { Autocomplete, Stack, TextField } from "@mui/material";
 import { MoviesContext } from "../../context/MoviesProvider";
+import { FaUser } from "react-icons/fa";
 
 const menuItems = [
     { path: "/main/categories", label: "Thể Loại" },
@@ -139,8 +140,12 @@ function Header({ handleLogin }) {
                         Đăng ký gói
                     </Link>
 
-                    {accountLogin ? <ModalUser /> : <button onClick={handleLogin} className="bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold mr-4 cursor-pointer">
-                        Đăng Nhập
+                    {accountLogin ? <ModalUser /> : <button 
+                        onClick={handleLogin} 
+                        className="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-black px-5 py-2 rounded-md font-medium mr-4 cursor-pointer hover:shadow-lg hover:from-amber-500 hover:to-yellow-400 transition-all duration-300 transform hover:scale-105"
+                    >
+                        <FaUser className="text-sm" /> 
+                        <span>Đăng Nhập / Đăng Ký</span>
                     </button>}
 
 

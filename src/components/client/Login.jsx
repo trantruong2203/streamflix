@@ -17,8 +17,9 @@ import { useNotification } from "../../context/NotificationProvide";
 import { auth, googleProvider } from "../../config/firebaseconfig";
 import { signInWithPopup } from "firebase/auth";
 import { addDocument } from "../../services/firebaseService";
+import FogotPassword from "./FogotPassword";
 
-const inner = {useOrEmail: "", password: ""};
+const inner = { useOrEmail: "", password: "" };
 
 const Login = ({ open, handleClose, handleSignup }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,7 +28,7 @@ const Login = ({ open, handleClose, handleSignup }) => {
   const { saveLocal } = useContext(ContextAuth);
   const showNotification = useNotification();
   const [error, setError] = useState("");
- 
+  const [forgot, setForgot] = useState(false);
   const handleInput = (e) => {
     setAccount({ ...account, [e.target.name]: e.target.value });
   };
@@ -46,11 +47,11 @@ const Login = ({ open, handleClose, handleSignup }) => {
 
   const handleSubmit = () => {
     if (!validation()) return;
-    const foundAccount = accounts.find( acc => (acc.email === account.useOrEmail || acc.useName === account.useOrEmail) && acc.password === account.password);
+    const foundAccount = accounts.find(acc => (acc.email === account.useOrEmail || acc.useName === account.useOrEmail) && acc.password === account.password);
     if (!foundAccount) {
       showNotification("Invalid email/username or password", "error")
-    }else {
-      saveLocal("account",foundAccount);
+    } else {
+      saveLocal("account", foundAccount);
       showNotification("Login success", "success");
       handleClose();
       setAccount(inner);
@@ -61,23 +62,23 @@ const Login = ({ open, handleClose, handleSignup }) => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       console.log(result);
-      
+
       const user = result.user;
       const existingCustomer = accounts.find(a => a.email === user.email);
       let loggedInCustomer;
 
       if (!existingCustomer) {
-          const newCustomer = {
-              useName: user.displayName,
-              imgUrl: user.photoURL,
-              email: user.email,
-          };
-          const newAccount = await addDocument('accounts', newCustomer);
-          loggedInCustomer = newAccount;
+        const newCustomer = {
+          useName: user.displayName,
+          imgUrl: user.photoURL,
+          email: user.email,
+        };
+        const newAccount = await addDocument('accounts', newCustomer);
+        loggedInCustomer = newAccount;
       } else {
-          loggedInCustomer = existingCustomer;
+        loggedInCustomer = existingCustomer;
       }
-      saveLocal("account",loggedInCustomer);
+      saveLocal("account", loggedInCustomer);
       showNotification("Login success", "success");
       handleClose();
       setAccount(inner);
@@ -88,7 +89,7 @@ const Login = ({ open, handleClose, handleSignup }) => {
 
   return (
     <Modal open={open} onClose={handleClose}>
-      <Box
+      {forgot ? (<FogotPassword />) : (<Box
         sx={{
           position: "absolute",
           top: "50%",
@@ -100,17 +101,17 @@ const Login = ({ open, handleClose, handleSignup }) => {
           boxShadow: 24,
           p: 4,
         }}
-        className="bg-white rounded-lg shadow-xl p-6 transform transition-all duration-300 hover:scale-105"
+        className="bg-white rounded-lg shadow-xl p-6 transform transition-all duration-300"
       >
-        <Typography variant="h5" align="center" gutterBottom className="text-2xl font-bold text-gray-800 mb-6">
-          Login
+        <Typography variant="h5" align="center" gutterBottom className="text-3xl font-bold text-center text-amber-400 mb-6">
+          Đăng nhập
         </Typography>
 
         <TextField
           fullWidth
           margin="normal"
-          label="Email or Username"
-          placeholder="e.g. example@mail.com or your username"
+          label="Email hoặc tên tài khoản"
+          placeholder="e.g. example@mail.com hoặc tên tài khoản của bạn"
           value={account.useOrEmail}
           name="useOrEmail"
           onChange={handleInput}
@@ -121,19 +122,32 @@ const Login = ({ open, handleClose, handleSignup }) => {
           sx={{
             "& .MuiOutlinedInput-root": {
               "&:hover fieldset": {
-                borderColor: "#2196F3",
+                borderColor: "#ffc600",
                 borderWidth: "2px",
-                boxShadow: "0 0 10px rgba(33, 150, 243, 0.3)",
+                boxShadow: "0 0 10px rgba(255, 198, 0, 0.3)",
+              },
+              "& fieldset": {
+                borderColor: "#d1d5db",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "#ffc600",
+                borderWidth: "2px",
               },
               transition: "all 0.3s ease-in-out",
-            }
+            },
+            "& .MuiInputLabel-root": {
+              color: "#6b7280",
+              "&.Mui-focused": {
+                color: "#f59e0b",
+              },
+            },
           }}
         />
 
         <TextField
           fullWidth
           margin="normal"
-          label="Password"
+          label="Mật khẩu"
           type={showPassword ? "text" : "password"}
           placeholder="e.g. Example2006"
           value={account.password}
@@ -146,7 +160,7 @@ const Login = ({ open, handleClose, handleSignup }) => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword(!showPassword)} className="text-gray-500 hover:text-blue-500">
+                <IconButton onClick={() => setShowPassword(!showPassword)} className="text-gray-500 hover:text-amber-500">
                   {showPassword ? <MdOutlineVisibilityOff /> : <MdOutlineVisibility />}
                 </IconButton>
               </InputAdornment>
@@ -155,50 +169,81 @@ const Login = ({ open, handleClose, handleSignup }) => {
           sx={{
             "& .MuiOutlinedInput-root": {
               "&:hover fieldset": {
-                borderColor: "#2196F3",
+                borderColor: "#ffc600",
                 borderWidth: "2px",
-                boxShadow: "0 0 10px rgba(33, 150, 243, 0.3)",
+                boxShadow: "0 0 10px rgba(255, 198, 0, 0.3)",
+              },
+              "& fieldset": {
+                borderColor: "#d1d5db",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "#ffc600",
+                borderWidth: "2px",
               },
               transition: "all 0.3s ease-in-out",
-            }
+            },
+            "& .MuiInputLabel-root": {
+              color: "#6b7280",
+              "&.Mui-focused": {
+                color: "#f59e0b",
+              },
+            },
           }}
         />
 
         <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
-          <Link href="#" variant="body2" className="text-blue-500 hover:text-blue-700 transition-colors duration-200">
-            Forgot password?
-          </Link>
+          <a onClick={() => setForgot(true)} href="#" variant="body2" className="text-amber-400 hover:text-amber-500 transition-colors duration-200 text-sm font-medium">
+            Quên mật khẩu?
+          </a>
         </Box>
 
-        <Button 
-          onClick={handleSubmit} 
-          fullWidth 
-          type="submit" 
-          variant="contained" 
-          sx={{ mt: 2 }} 
-          color="primary"
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
+        <Button
+          onClick={handleSubmit}
+          fullWidth
+          type="submit"
+          variant="contained"
+          sx={{ 
+            mt: 3,
+            bgcolor: "#f59e0b", 
+            "&:hover": { bgcolor: "#d97706" },
+            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+          }}
+          className="text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105"
         >
-          Login
+          Đăng nhập
         </Button>
-        
-        <Typography align="center" sx={{ mt: 2 }} className="text-gray-600">
-          Don't have an account? <a className="text-blue-500 hover:text-blue-700 cursor-pointer transition-colors duration-200" onClick={handleSignup}>Sign up</a>
+
+        <Typography align="center" sx={{ mt: 2 }} className="text-gray-600 text-sm">
+          Không có tài khoản? <a className="text-amber-400 hover:text-amber-500 cursor-pointer font-medium transition-colors duration-200" onClick={handleSignup}>Đăng ký</a>
         </Typography>
 
-        <Typography align="center" sx={{ mt: 2 }} className="text-gray-500">Or</Typography>
+        <div className="flex items-center my-4">
+          <div className="flex-grow border-t border-gray-300"></div>
+          <Typography variant="body2" className="mx-4 text-gray-500">Hoặc</Typography>
+          <div className="flex-grow border-t border-gray-300"></div>
+        </div>
 
         <Button
           fullWidth
-          variant="contained"
-          sx={{ mt: 2 }}
+          variant="outlined"
+          sx={{ 
+            mt: 1,
+            borderColor: "#f59e0b",
+            color: "#f59e0b",
+            "&:hover": { 
+              bgcolor: "rgba(245, 158, 11, 0.1)", 
+              borderColor: "#d97706" 
+            },
+            boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+          }}
           startIcon={<FaGoogle />}
           onClick={signInWithGoogle}
-          className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
+          className="font-semibold py-2.5 px-4 rounded-lg transition-all duration-300"
         >
-          Continue with Google
+          Tiếp tục với Google
         </Button>
-      </Box>
+      </Box>)}
+
     </Modal>
   );
 };

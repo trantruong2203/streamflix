@@ -28,6 +28,15 @@ function PaymentPage() {
     const listPakage = pakages.filter(pakage => pakage.planId === id).sort((a, b) => a.time - b.time);
     const [selectedPlan, setSelectedPlan] = useState(listPakage[0] || {});
     const totalPriceRef = useRef(0);
+
+    const paymentMethods = [
+        { id: 'card', name: 'Thẻ tín dụng', icon: <RiVisaFill /> },
+        { id: 'momo', name: 'Ví MoMo', icon: <FaAmazonPay /> },
+        { id: 'zalopay', name: 'Ví ZaloPay', icon: <FaApplePay /> },
+        { id: 'shopeepay', name: 'Ví ShopeePay', icon: <FaGooglePay /> },
+        { id: 'vnpay', name: 'VNPAY', icon: <MdOutlinePayments /> }
+    ];
+
     useEffect(() => {
         setSelectedPlan(listPakage[0]);
     }, [pakages]);
@@ -38,15 +47,6 @@ function PaymentPage() {
             totalPriceRef.current = price;
         }
     }, [plan, selectedPlan]);
-
-
-    const paymentMethods = [
-        { id: 'card', name: 'Thẻ tín dụng', icon: <RiVisaFill /> },
-        { id: 'momo', name: 'Ví MoMo', icon: <FaAmazonPay /> },
-        { id: 'zalopay', name: 'Ví ZaloPay', icon: <FaApplePay /> },
-        { id: 'shopeepay', name: 'Ví ShopeePay', icon: <FaGooglePay /> },
-        { id: 'vnpay', name: 'VNPAY', icon: <MdOutlinePayments /> }
-    ];
 
     const createSubscription = async (id) => {
         setIsLoading(true);

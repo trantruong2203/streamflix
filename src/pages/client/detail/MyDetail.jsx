@@ -19,6 +19,7 @@ import { handleClick } from '../../../services/FunctionPlayMovie';
 import { useNotification } from '../../../context/NotificationProvide';
 import Login from '../../../components/client/Login';
 import { useState } from 'react';
+import { RentMoviesContext } from '../../../context/RentMoviesProvider';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -57,11 +58,12 @@ function MyDetail() {
     const trailers = useContext(TrailersContext);
     const categories = useContext(ContextCategories);
     const actors = useContext(ActorContext);
-    const {accountLogin} = useContext(ContextAuth);
+    const { accountLogin } = useContext(ContextAuth);
     const plans = useContext(PlansContext);
     const notification = useNotification();
     const { id } = useParams();
     const navigate = useNavigate();
+    const rentMovies = useContext(RentMoviesContext);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -83,13 +85,31 @@ function MyDetail() {
         return <div className="text-white text-center py-8 text-xl font-semibold">Không tìm thấy thông tin phim</div>;
     }
 
+    const checkMovie = () => {
+        const level = getOjectById(plans, movie.planId)?.level;
+        return checkMovieRent(movie) || checkLevel(level);
+
+    }
+    const checkLevel = (level) => {
+        if (level < 3) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    const checkMovieRent = (movie) => {
+        const rentedMovie = rentMovies.find(rent => rent.movieId === movie.id && rent.idUser === accountLogin?.id && rent.expiryDate.toDate() > new Date());
+        return rentedMovie ? true : false;
+    }
+
     return (
         <div className="min-h-screen bg-gray-900">
             <div className="relative">
-                <img 
-                    src={movie.imgBanner} 
-                    className='h-[80vh] w-full object-cover filter brightness-50' 
-                    alt={movie.name} 
+                <img
+                    src={movie.imgBanner}
+                    className='h-[80vh] w-full object-cover filter brightness-50'
+                    alt={movie.name}
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/70 to-gray-900"></div>
             </div>
@@ -98,10 +118,10 @@ function MyDetail() {
                     {/* Phần thông tin phim bên trái */}
                     <div className="w-full md:w-1/4 space-y-6">
                         <div className="rounded-xl overflow-hidden shadow-2xl transform transition-transform duration-300 hover:scale-105">
-                            <img 
-                                src={movie.imgUrl} 
-                                className='w-full h-auto object-cover aspect-[2/3]' 
-                                alt={movie.name} 
+                            <img
+                                src={movie.imgUrl}
+                                className='w-full h-auto object-cover aspect-[2/3]'
+                                alt={movie.name}
                             />
                         </div>
                         <div className="space-y-4">
@@ -117,45 +137,37 @@ function MyDetail() {
                     <div className="flex-1 space-y-8">
                         {/* Các nút tương tác */}
                         <div className='flex flex-wrap items-center gap-4'>
-                            <button 
-                                type="button" 
-                                onClick={() => handleClick(movie, accountLogin, plans, navigate, notification)} 
+                            <button
+                                type="button"
+                                onClick={() => handleClick(movie, accountLogin, plans, navigate, notification)}
                                 className='bg-gradient-to-r from-amber-400 to-yellow-500 text-black px-6 py-3 rounded-full font-bold flex items-center gap-2 shadow-lg hover:shadow-amber-300/50 hover:shadow-xl transition-all duration-300 hover:scale-105'
                             >
                                 <FaPlay className="text-lg" />
                                 <span>Xem ngay</span>
                             </button>
                             <div className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'>
-                                <FaHeart className="text-xl group-hover:scale-110 transition-transform" /> 
+                                <FaHeart className="text-xl group-hover:scale-110 transition-transform" />
                                 <span>Yêu thích</span>
                             </div>
                             <div className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'>
                                 <FaPlus className="text-xl group-hover:scale-110 transition-transform" />
                                 <span>Thêm vào</span>
                             </div>
-                            {accountLogin ? (
-                                <Link 
-                                    to={`/payment/rent-movie/${movie.id}`} 
+                            {!checkMovie() ? (
+                                <Link
+                                    to={`/payment/rent-movie/${movie.id}`}
                                     className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'
                                 >
                                     <MdAttachMoney className="text-xl group-hover:scale-110 transition-transform" />
                                     <span>Thuê Phim</span>
                                 </Link>
-                            ) : (
-                                <div 
-                                    onClick={handleOpenLogin} 
-                                    className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'
-                                >
-                                    <MdAttachMoney className="text-xl group-hover:scale-110 transition-transform" />
-                                    <span>Thuê Phim</span>
-                                </div>
-                            )}
+                            ) : ("")}
                         </div>
 
                         {/* Tabs */}
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ 
-                                borderBottom: 1, 
+                            <Box sx={{
+                                borderBottom: 1,
                                 borderColor: 'divider',
                                 '& .MuiTab-root': {
                                     color: 'white',
@@ -170,9 +182,9 @@ function MyDetail() {
                                     backgroundColor: '#fbbf24',
                                 },
                             }}>
-                                <Tabs 
-                                    value={value} 
-                                    onChange={handleChange} 
+                                <Tabs
+                                    value={value}
+                                    onChange={handleChange}
                                     aria-label="movie detail tabs"
                                 >
                                     <Tab label="Tập phim" {...a11yProps(0)} />
@@ -190,8 +202,8 @@ function MyDetail() {
                                         {episodes
                                             .filter(episode => episode.idMovie === movie.id)
                                             .map((episode) => (
-                                                <div 
-                                                    key={episode.id} 
+                                                <div
+                                                    key={episode.id}
                                                     className="bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition-all duration-300 cursor-pointer transform hover:scale-105 shadow-lg"
                                                     onClick={() => handleClick(movie, accountLogin, plans, navigate)}
                                                 >
@@ -212,13 +224,13 @@ function MyDetail() {
                                     {movie.listActor?.map((actorId) => {
                                         const actor = getOjectById(actors, actorId);
                                         return actor ? (
-                                            <div 
-                                                key={actorId} 
+                                            <div
+                                                key={actorId}
                                                 className="text-center group"
                                             >
                                                 <div className="relative overflow-hidden rounded-full w-24 h-24 mx-auto mb-3">
-                                                    <img 
-                                                        src={actor.imgUrl} 
+                                                    <img
+                                                        src={actor.imgUrl}
                                                         alt={actor.name}
                                                         className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -235,7 +247,7 @@ function MyDetail() {
                                     {movie.listCate?.map((categoryId) => {
                                         const category = getOjectById(categories, categoryId);
                                         return category ? (
-                                            <span 
+                                            <span
                                                 key={categoryId}
                                                 className="px-4 py-2 bg-amber-500 text-black rounded-full text-sm font-medium hover:bg-amber-400 transition-colors duration-300"
                                             >
@@ -248,8 +260,8 @@ function MyDetail() {
 
                             <CustomTabPanel value={value} index={3}>
                                 <div className="flex justify-center items-center rounded-xl overflow-hidden shadow-2xl">
-                                    <iframe 
-                                        src={trailer?.trailerUrl} 
+                                    <iframe
+                                        src={trailer?.trailerUrl}
                                         title="Trailer"
                                         className="w-full aspect-video"
                                         allowFullScreen

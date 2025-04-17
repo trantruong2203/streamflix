@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button } from '@mui/material';
 import { Avatar } from '@mui/material';
 import { Logout, Favorite, List, AccountCircle, ArrowRight } from '@mui/icons-material';
@@ -7,7 +7,7 @@ import { ContextAuth } from '../../context/AuthProvider';
 
 function ModalUser(props) {
     const { accountLogin, logout } = useContext(ContextAuth);
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleClick = () => {
         setIsOpen(!isOpen);

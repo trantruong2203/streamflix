@@ -101,15 +101,19 @@ export const ROLES = {
     USER: 'user',          // Người dùng thông thường
 };
 const SECRET_KEY = "220396";
-const  upload_preset = "truong";
-const  cloud_name = "dao84jp9k" ;
+const upload_preset = "truong";
+const cloud_name = "dao84jp9k";
 const apiKey = '363671622292875';
-const apiSecret = 'GbmeEupa0n55XTJXBvKraZW20Rc'; 
+const apiSecret = 'GbmeEupa0n55XTJXBvKraZW20Rc';
 
 export const initialOptions = {
     "client-id": "AQR7X4XDiS1loF8S3R2sb4Z99ji9_aSLruiZ8bfXRcjJhXQSforpMFljAJ03AfJSGcRrCJgGdVh66PES",
     currency: "USD",
     intent: "capture"
-  };
+};
 
-export { upload_preset, cloud_name, apiKey, apiSecret, SECRET_KEY } ;
+export const YOUR_SERVICE_ID = "service_xcagcpc";
+export const YOUR_USER_ID = "ceDwMcfbFkedL3rzc";
+export const CONFIRM_CODE = "template_amwo6vt";
+
+export { upload_preset, cloud_name, apiKey, apiSecret, SECRET_KEY };
