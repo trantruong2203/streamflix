@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react';
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton } from '@mui/material';
 import { FeatureContext } from '../../../../context/FeatureProvider';
 
 import { PlansContext } from '../../../../context/PlansProvider';
 import { getOjectById } from '../../../../services/FunctionRepon';
-import { Button } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@mui/icons-material';
 import ModalDelete from '../../../../components/admin/ModalDelete';
 import { useNotification } from '../../../../context/NotificationProvide';
 import { deleteDocument } from '../../../../services/firebaseService';
+
 function TableFeature({handleEdit, handleClose,}) {
     const  features  = useContext(FeatureContext);
     const  plans  = useContext(PlansContext);
@@ -69,8 +69,12 @@ function TableFeature({handleEdit, handleClose,}) {
                                 <TableCell align="left">{row.description}</TableCell>
                                 <TableCell align="left">{row.available}</TableCell>
                                 <TableCell align="left" style={{ display: 'flex', gap: '10px' }}>
-                                    <Button color="primary" onClick={() => handleEdit(row)} icon={<EditOutlined style={{ color: 'blue' }} />} />
-                                    <Button color="warning" onClick={() => onOpenDelete(row)} icon={<DeleteOutlined style={{ color: 'red' }} />} />
+                                    <IconButton color="primary" onClick={() => handleEdit(row)}>
+                                        <EditOutlined />
+                                    </IconButton>
+                                    <IconButton color="error" onClick={() => onOpenDelete(row)}>
+                                        <DeleteOutlined />
+                                    </IconButton>
                                 </TableCell>
                             </TableRow>
                         ))}

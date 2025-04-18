@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Skeleton } from 'antd';
+import { Skeleton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
@@ -56,9 +56,9 @@ function ListMovie(props) {
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
                     {[...Array(24)].map((_, index) => (
                         <div key={index} className="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
-                            <Skeleton.Image active className="w-full h-[280px]" />
+                            <Skeleton variant="rectangular" width="100%" height={280} animation="wave" />
                             <div className="p-3">
-                                <Skeleton active paragraph={{ rows: 1 }} />
+                                <Skeleton variant="text" animation="wave" />
                             </div>
                         </div>
                     ))}

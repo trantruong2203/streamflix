@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { updateDocument } from '../../services/firebaseService'; // Giả sử rằng updateDocument được import từ service này
+import { useNotification } from '../../context/NotificationProvide';
 
 function ResetPassword({ user, handleLogin }) {
     const location = useLocation();
@@ -8,12 +9,29 @@ function ResetPassword({ user, handleLogin }) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+
+    const notification = useNotification();
 
     // Kiểm tra nếu không có userId thì chuyển về trang quên mật khẩu
     if (!user) {
         navigate('/forgot-password');
         return null;
     }
+
+    const validation = () => {
+        if (password !== confirmPassword) {
+            setError("Mật khẩu không khớp");
+            notification("Mật khẩu không khớp", "error");
+            return false;
+        }
+       if (password.length < 6) {
+        setError("Mật khẩu phải có ít nhất 6 ký tự");
+        notification("Mật khẩu phải có ít nhất 6 ký tự", "error");
+        return false;
+       }
+       return true;
+    };
 
     const handlePasswordInput = (e) => {
         setPassword(e.target.value);

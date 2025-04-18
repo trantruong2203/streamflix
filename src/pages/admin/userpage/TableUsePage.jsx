@@ -16,9 +16,9 @@ import {
     IconButton,
     Typography,
     Box,
-    Chip
+    Chip,
+    Button
 } from '@mui/material';
-import { Button } from 'antd';
 import { EditOutlined, DeleteOutlined, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNotification } from '../../../context/NotificationProvide';
 import { deleteDocument } from '../../../services/firebaseService';
@@ -122,18 +122,20 @@ function TableUsePage({ open, setOpen }) {
                                 </TableCell>
                                 <TableCell align="left">
                                     <Box sx={{ display: 'flex', gap: 1 }}>
-                                        <Button 
-                                            type="primary"
+                                        <IconButton 
+                                            color="primary"
                                             onClick={() => handleEdit(row)} 
-                                            icon={<EditOutlined />}
                                             size="small"
-                                        />
-                                        <Button 
-                                            danger
+                                        >
+                                            <EditOutlined />
+                                        </IconButton>
+                                        <IconButton 
+                                            color="error"
                                             onClick={() => onOpenDelete(row)} 
-                                            icon={<DeleteOutlined />}
                                             size="small"
-                                        />
+                                        >
+                                            <DeleteOutlined />
+                                        </IconButton>
                                     </Box>
                                 </TableCell>
                             </TableRow>

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, Button, IconButton } from '@mui/material';
 import { EditOutlined, DeleteOutlined } from '@mui/icons-material';
 import { getOjectById } from '../../../../services/FunctionRepon';
 import { PlansContext } from '../../../../context/PlansProvider';
@@ -7,7 +7,6 @@ import { useNotification } from '../../../../context/NotificationProvide';
 import { deleteDocument } from '../../../../services/firebaseService';
 import { PackageContext } from '../../../../context/PackageProvider';
 import ModalDelete from '../../../../components/admin/ModalDelete';
-import { Button } from 'antd';
 
 function TablePackage({handleEdit}) {
     const plans = useContext(PlansContext)
@@ -64,8 +63,12 @@ function TablePackage({handleEdit}) {
                                 <TableCell align="left">{row.discount}</TableCell>
                                 <TableCell align="left">{row.time}</TableCell>
                                 <TableCell align="left" style={{ display: 'flex', gap: '10px' }}>
-                                    <Button color="primary" onClick={() => handleEdit(row)} icon={<EditOutlined style={{ color: 'blue' }} />} />
-                                    <Button color="warning" onClick={() => onOpenDelete(row)} icon={<DeleteOutlined style={{ color: 'red' }} />} />
+                                    <IconButton color="primary" onClick={() => handleEdit(row)}>
+                                        <EditOutlined />
+                                    </IconButton>
+                                    <IconButton color="error" onClick={() => onOpenDelete(row)}>
+                                        <DeleteOutlined />
+                                    </IconButton>
                                 </TableCell>
                             </TableRow>
                         ))}
