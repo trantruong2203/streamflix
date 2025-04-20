@@ -4,8 +4,9 @@ import emailjs from 'emailjs-com';
 import { CONFIRM_CODE, YOUR_SERVICE_ID, YOUR_USER_ID } from '../../utils/Contants';
 import { Box } from '@mui/material';
 import ResetPassword from './ResetPassword';
+import { useNotification } from '../../context/NotificationProvide';
 
-function FogotPassword({ handleLogin }) {
+function FogotPassword({ setForgot }) {
     const accounts = useContext(AccountsContext);
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
@@ -15,6 +16,7 @@ function FogotPassword({ handleLogin }) {
     const [user, setUser] = useState(null);
     const [resetPassword, setResetPassword] = useState(false);
 
+    const showNotification = useNotification();
     const handleInput = (e) => {
         setEmail(e.target.value);
     };
@@ -27,13 +29,13 @@ function FogotPassword({ handleLogin }) {
     // Thực hiện gửi mã xác nhận qua email
     const handleSubmit = async () => {
         if (!email) {
-            alert("Vui lòng nhập email");
+            showNotification
             return;
         }
 
         const foundUser = accounts.find((user) => user.email === email);
         if (!foundUser) {
-            alert("Email không tồn tại trong hệ thống");
+            showNotification
             return;
         }
 
@@ -50,10 +52,11 @@ function FogotPassword({ handleLogin }) {
             };
 
             await emailjs.send(YOUR_SERVICE_ID, CONFIRM_CODE, templateParams, YOUR_USER_ID);
-            alert("Mã xác nhận đã được gửi đến email của bạn");
+            showNotification("Mã xác nhận đã được gửi đến email của bạn", "success");
+            // Hiển thị modal nhập mã xác nhận
             setIsModalVisible(true);
         } catch (error) {
-            alert("Có lỗi xảy ra khi gửi email. Vui lòng thử lại sau.");
+            showNotification("Đã xảy ra lỗi khi gửi mã xác nhận. Vui lòng thử lại sau.", "error");
             console.error("Lỗi gửi email:", error);
         } finally {
             setLoading(false);
@@ -62,12 +65,13 @@ function FogotPassword({ handleLogin }) {
 
     const handleVerifyCode = () => {
         if (userInputCode === confirmCode) {
-            alert("Mã xác nhận chính xác!");
+            showNotification("Mã xác nhận chính xác", "success");
             setIsModalVisible(false);
             // Chuyển hướng đến trang đặt lại mật khẩu với thông tin người dùng
             setResetPassword(true);
         } else {
-            alert("Mã xác nhận không chính xác. Vui lòng thử lại!");
+            showNotification("Mã xác nhận không chính xác. Vui lòng kiểm tra lại.", "error");
+            setUserInputCode(""); // Xóa mã nhập vào nếu không chính xác
         }
     }
 
@@ -79,7 +83,7 @@ function FogotPassword({ handleLogin }) {
     return (
         <>
             {resetPassword ? (
-                <ResetPassword user={user} />
+                <ResetPassword user={user} setForgot={setForgot}/>
             ) : (
                 <Box
                     sx={{
@@ -118,7 +122,7 @@ function FogotPassword({ handleLogin }) {
             </button>
 
             <div 
-                onClick={handleLogin} 
+                onClick={() => setForgot(false)}
                 className="block mt-6 text-center text-gray-600 hover:text-amber-400 transition duration-200"
             >
                 Trở lại trang đăng nhập

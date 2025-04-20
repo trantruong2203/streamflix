@@ -27,3 +27,10 @@ export const filterMoviesByCategories = (movies, categories, categoryIds) => {
       return movie.listCate.some(categoryId => categoryIds.includes(categoryId));
    });
 };
+
+export const toDateString = (timestamp) => {
+   if (!timestamp || !timestamp.seconds) return 'N/A';
+   const date = new Date(timestamp.seconds * 1000);
+   return date.toLocaleDateString();
+ };
+ 

@@ -17,6 +17,9 @@ import Pay from '../pages/client/vip/Pay';
 import MovieSearch from '../components/MovieSearch';
 import AccountPage from '../pages/client/accountPage/AccountPage';
 import FavoriteMovie from '../pages/client/accountPage/FavoriteMovie';
+import AccountInfor from '../pages/client/accountPage/components/AccountInfor';
+import PlanManage from '../pages/client/accountPage/components/PlanManage';
+import RentMovieLibrary from '../pages/client/accountPage/components/RentMovieLibrary';
 const router = [
     { path: '/', element: <Welcome /> },
     {path: '/main', element: <Main />},
@@ -34,17 +37,30 @@ const router = [
     {path: '/payment/rent-movie/:id', element: <RentMovie/>},
     {path: '/payment/pay/:id', element: <Pay/>},
     {path: '/main/tim-kiem', element: <MovieSearch />},
-    {path: '/main/account', element: <AccountPage/>},
-    {path: '/main/account/favorite', element: <FavoriteMovie/>},
+    {path: '/main/account', element: <AccountPage/>,
+       subRoutes : [
+        {path: '/main/account', element: <AccountInfor/>},
+        {path: '/main/account/plan-manage', element: <PlanManage/>},
+        {path: '/main/account/rent-movies-library', element: <RentMovieLibrary/>},
+       ]
+    },
+    {path: '/main/account/favorite', element: <FavoriteMovie/>}
+    
 ];
+// Recursive function to render both top-level and nested routes
+function renderRoutes(routeArray) {
+    return routeArray.map((route, index) => (
+        <Route key={index} path={route.path} element={route.element}>
+            {route.subRoutes && renderRoutes(route.subRoutes)}
+        </Route>
+    ));
+}
 
 function ClienRouters(props) {
     return (
         <div>
             <Routes>
-                {router.map((route, index) => (
-                    <Route key={index} path={route.path} element={route.element} />
-                ))}
+                {renderRoutes(router)}
             </Routes>
             
         </div>

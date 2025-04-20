@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { updateDocument } from '../../services/firebaseService'; // Giả sử rằng updateDocument được import từ service này
 import { useNotification } from '../../context/NotificationProvide';
 
-function ResetPassword({ user, handleLogin }) {
+function ResetPassword({ user, handleLogin, setForgot }) {
     const location = useLocation();
     const navigate = useNavigate();
     const [password, setPassword] = useState("");
@@ -11,7 +11,7 @@ function ResetPassword({ user, handleLogin }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    const notification = useNotification();
+    const showNotification = useNotification();
 
     // Kiểm tra nếu không có userId thì chuyển về trang quên mật khẩu
     if (!user) {
@@ -22,12 +22,12 @@ function ResetPassword({ user, handleLogin }) {
     const validation = () => {
         if (password !== confirmPassword) {
             setError("Mật khẩu không khớp");
-            notification("Mật khẩu không khớp", "error");
+            showNotification("Mật khẩu không khớp", "error");
             return false;
         }
        if (password.length < 6) {
         setError("Mật khẩu phải có ít nhất 6 ký tự");
-        notification("Mật khẩu phải có ít nhất 6 ký tự", "error");
+        showNotification("Mật khẩu phải có ít nhất 6 ký tự", "error");
         return false;
        }
        return true;
@@ -43,7 +43,7 @@ function ResetPassword({ user, handleLogin }) {
 
     const handleSubmit = async () => {
         if (password !== confirmPassword) {
-            alert("Mật khẩu không khớp");
+            showNotification("Mật khẩu không khớp", "error");
             return;
         }
 
@@ -58,11 +58,12 @@ function ResetPassword({ user, handleLogin }) {
                     password: password
                 }
             );
-            alert("Đặt lại mật khẩu thành công");
+            showNotification("Đặt lại mật khẩu thành công", "success");
+            setForgot(false);
             navigate('/main'); // Chuyển về trang đăng nhập sau khi thành công
         } catch (error) {
-            alert("Có lỗi xảy ra khi đặt lại mật khẩu");
-            console.error("Lỗi đặt lại mật khẩu:", error);
+            showNotification("Đặt lại mật khẩu thất bại", "error");
+            setError("Đặt lại mật khẩu thất bại");
         } finally {
             setLoading(false);
         }

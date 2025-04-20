@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { TextField, Button, Avatar, CircularProgress, styled, Box, Typography } from '@mui/material';
+import React, { useState, useContext, useEffect } from 'react';
+import { TextField, Button, Avatar, CircularProgress, styled, Box, Typography, FormControlLabel, Checkbox, FormControl, FormLabel, RadioGroup, Radio } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import { ContextAuth } from '../../../../context/AuthProvider';
 import { updateDocument } from '../../../../services/firebaseService';
@@ -26,13 +26,13 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 function AccountInfor(props) {
-    const { accountLogin } = useContext(ContextAuth)
-    const [email] = useState(accountLogin?.email);
-    const [name, setName] = useState("");
-    const [avatar, setAvatar] = useState("")
+    const { accountLogin, saveLocal } = useContext(ContextAuth);
+    const [account, setAccount] = useState({});
     const [isLoading, setIsLoading] = useState(false)
     const notification = useNotification()
-
+    useEffect(() => {
+     setAccount(accountLogin);
+    }, [accountLogin]);
 
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
@@ -40,24 +40,17 @@ function AccountInfor(props) {
             const result = new FileReader();
             result.readAsDataURL(file);
             result.onload = () => {
-                setAvatar(result.result);
+                setAccount({ ...account, imgUrl: result.result });
             }
         }
     };
 
     const onSubmit = async () => {
-        if (!avatar) return;
         setIsLoading(true);
         try {
-            await updateDocument("accounts",
-                {
-                    id: accountLogin.id,
-                    email: accountLogin?.email,
-                    useName: name,
-                    imgUrl: avatar
-                }
-            );
-            notification("Cập nhật thông tin tài khoản thành công", "success")
+            await updateDocument("accounts",account);
+            notification("Cập nhật thông tin tài khoản thành công", "success");
+            saveLocal("account", account);
         } catch (error) {
             notification("Có lỗi xảy ra khi cập nhật ảnh đại diện", "error")
         } finally {
@@ -65,17 +58,16 @@ function AccountInfor(props) {
         }
     }
 
-
-    const handleInputName = (e) => {
-        setName(e.target.value);
-    }
+    const handleInput = (e) => {
+        setAccount({ ...account, [e.target.name]: e.target.value });
+    };
 
     return (
         <Box className='pt-10 px-10 pb-10 mt-25 mb-10 mx-10 w-full bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg flex flex-col gap-6 shadow-xl'>
-            <Typography variant="h4" className='text-center font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent'>
+            <Typography variant="h4" className='text-center font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent'>
                 Tài Khoản
             </Typography>
-            <Typography variant="subtitle1" className='text-gray-300 text-center'>
+            <Typography variant="subtitle1" className='text-gray-100 text-center'>
                 Cập nhật thông tin tài khoản
             </Typography>
 
@@ -83,7 +75,7 @@ function AccountInfor(props) {
                 <Box className='flex flex-col gap-6'>
                     <TextField
                         label="Email"
-                        value={email}
+                        value={account?.email}
                         disabled
                         fullWidth
                         sx={{
@@ -101,18 +93,48 @@ function AccountInfor(props) {
                                 borderRadius: '8px',
                             },
                             '& .MuiInputLabel-root': {
-                                color: 'rgba(255, 255, 255, 0.7)',
+                                color: 'rgba(255, 255, 255, 0.9)',
                             },
                             '& .MuiInputBase-input': {
-                                color: 'white',
+                                color: 'rgba(255, 255, 255, 0.95)',
                             },
                         }}
                     />
 
                     <TextField
                         label="Tên hiển thị"
-                        value={name || accountLogin?.useName}
-                        onChange={handleInputName}
+                        value={account?.useName}
+                        onChange={handleInput}
+                        fullWidth
+                        disabled
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                '& fieldset': {
+                                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                                },
+                                '&:hover fieldset': {
+                                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                                },
+                                '&.Mui-focused fieldset': {
+                                    borderColor: 'rgba(255, 255, 255, 0.3)',
+                                },
+                                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                borderRadius: '8px',
+                            },
+                            '& .MuiInputLabel-root': {
+                                color: 'rgba(255, 255, 255, 0.9)',
+                            },
+                            '& .MuiInputBase-input': {
+                                color: 'rgba(255, 255, 255, 0.95)',
+                            },
+                        }}
+                    />
+                    <TextField
+                        label="Số điện thoại"
+                        value={account?.phoneNumber || ""}
+                        name="phoneNumber"
+                        type='text'
+                        onChange={handleInput}
                         fullWidth
                         sx={{
                             '& .MuiOutlinedInput-root': {
@@ -129,20 +151,35 @@ function AccountInfor(props) {
                                 borderRadius: '8px',
                             },
                             '& .MuiInputLabel-root': {
-                                color: 'rgba(255, 255, 255, 0.7)',
+                                color: 'rgba(255, 255, 255, 0.9)',
                             },
                             '& .MuiInputBase-input': {
-                                color: 'white',
+                                color: 'rgba(255, 255, 255, 0.95)',
                             },
                         }}
                     />
+
+                    <FormControl sx={{ flexDirection: 'row', gap: 2, alignItems: 'center' }}>
+                        <FormLabel id="gender" sx={{ color: "rgba(255, 255, 255, 0.95)" }}>Giới tính:</FormLabel>
+                        <RadioGroup
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            defaultValue="female"
+                            name="gender"
+                            onChange={handleInput}
+                            sx={{ flexDirection: 'row', gap: 2 }}
+                        >
+                            <FormControlLabel value="male" sx={{ color: "rgba(255, 255, 255, 0.95)" }} control={<Radio />} label="Nam" />
+                            <FormControlLabel value="female" sx={{ color: "rgba(255, 255, 255, 0.95)" }} control={<Radio />} label="Nữ" />
+                            <FormControlLabel value="other" sx={{ color: "rgba(255, 255, 255, 0.95)" }} control={<Radio />} label="Khác" />
+                        </RadioGroup>
+                    </FormControl>
                 </Box>
 
                 <Box className="flex flex-col items-center gap-6">
                     <Box className="relative">
                         <Avatar
                             alt="Avatar"
-                            src={avatar || accountLogin?.imgUrl}
+                            src={account?.imgUrl}
                             sx={{
                                 width: 150,
                                 height: 150,

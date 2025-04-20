@@ -89,7 +89,7 @@ const Login = ({ open, handleClose, handleSignup }) => {
 
   return (
     <Modal open={open} onClose={handleClose}>
-      {forgot ? (<FogotPassword />) : (<Box
+      {forgot ? (<FogotPassword setForgot={setForgot} />) : (<Box
         sx={{
           position: "absolute",
           top: "50%",

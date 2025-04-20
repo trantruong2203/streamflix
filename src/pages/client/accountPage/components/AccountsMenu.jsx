@@ -5,6 +5,7 @@ import { updateDocument } from '../../../../services/firebaseService';
 import { FaRegUser } from 'react-icons/fa';
 import { GrFavorite } from "react-icons/gr";
 import { CiBoxList, CiGift } from "react-icons/ci";
+import { Link } from 'react-router-dom';
 
 
 
@@ -23,7 +24,6 @@ const MenuItem = styled(Box)(({ theme }) => ({
 
 function AccountsMenu(props) {
     const { accountLogin } = useContext(ContextAuth)
-    const [avatar, setAvatar] = useState(accountLogin?.imgUrl)
     const [isLoading, setIsLoading] = useState(false)
 
    
@@ -33,7 +33,7 @@ function AccountsMenu(props) {
                 <div className="relative mb-6">
                     <Avatar
                         alt="Avatar"
-                        src={avatar}
+                        src={accountLogin?.imgUrl}
                         sx={{ 
                             width: 120, 
                             height: 120,
@@ -62,20 +62,26 @@ function AccountsMenu(props) {
                
 
                 <div className="w-full space-y-2">
-                    <MenuItem>
+                    <Link to="/main/account" className="w-full">
+                        <MenuItem>
                         <FaRegUser className="text-xl text-white" />
                         <Typography className="text-white">Tài khoản</Typography>
-                    </MenuItem>
-
+                        </MenuItem>
+                    </Link>
+                    
+                    <Link to={"/main/account/rent-movies-library"} className="w-full">
                     <MenuItem>
                         <GrFavorite className="text-xl text-white" />
                         <Typography className="text-white">Quản Lý Kho Phim</Typography>
                     </MenuItem>
+                    </Link>
 
+                    <Link to={"/main/account/plan-manage"} className="w-full">
                     <MenuItem>
                         <CiBoxList className="text-xl text-white" />
                         <Typography className="text-white">Quản lý gói đăng ký</Typography>
                     </MenuItem>
+                    </Link>
 
                     <MenuItem>
                         <CiGift className="text-xl text-white" />
