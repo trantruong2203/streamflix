@@ -5,7 +5,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { MoviesContext } from '../../../context/MoviesProvider';
 import { useContext } from 'react';
-import { getOjectById } from '../../../services/FunctionRepon';
+import { checkFavoriteMovie, getFavoriteMovie, getOjectById } from '../../../services/FunctionRepon';
 import { ContextCategories } from '../../../context/CategoriesProvider';
 import { ActorContext } from '../../../context/ActorProvide';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -20,6 +20,8 @@ import { useNotification } from '../../../context/NotificationProvide';
 import Login from '../../../components/client/Login';
 import { useState } from 'react';
 import { RentMoviesContext } from '../../../context/RentMoviesProvider';
+import { addDocument } from '../../../services/firebaseService';
+import { FavoritesContext } from '../../../context/FavoritesProvider';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -64,6 +66,7 @@ function MyDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
     const rentMovies = useContext(RentMoviesContext);
+    const  favorites = useContext(FavoritesContext);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -102,6 +105,9 @@ function MyDetail() {
         const rentedMovie = rentMovies.find(rent => rent.movieId === movie.id && rent.idUser === accountLogin?.id && rent.expiryDate.toDate() > new Date());
         return rentedMovie ? true : false;
     }
+
+
+
 
     return (
         <div className="min-h-screen bg-gray-900">
@@ -145,9 +151,15 @@ function MyDetail() {
                                 <FaPlay className="text-lg" />
                                 <span>Xem ngay</span>
                             </button>
-                            <div className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'>
-                                <FaHeart className="text-xl group-hover:scale-110 transition-transform" />
-                                <span>Yêu thích</span>
+                            <div onClick={() => getFavoriteMovie(accountLogin, movie, favorites, notification)} className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'>
+                                {checkFavoriteMovie(accountLogin, movie, favorites) ? 
+                                  <>
+                                   <FaHeart className="text-xl text-red-600 group-hover:scale-110 transition-transform" />
+                                   <span>Bỏ Yêu thích</span>
+                                  </> : <>
+                                  <FaHeart className="text-xl group-hover:scale-110 transition-transform" />
+                                  <span>Yêu thích</span>
+                                  </> } 
                             </div>
                             <div className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'>
                                 <FaPlus className="text-xl group-hover:scale-110 transition-transform" />

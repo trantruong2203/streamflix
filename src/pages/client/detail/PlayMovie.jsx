@@ -33,7 +33,7 @@ function PlayMovie() {
     const handleEpisodeChange = (e) => {
         setSelectedEpisode(parseInt(e.target.value));
     };
-
+ 
     return (
         <div className="max-w-7xl mx-auto px-4 py-8 bg-gray-900 min-h-screen text-white">
             <div className="relative w-full pt-[56.25%] mb-8 rounded-lg overflow-hidden">

@@ -30,14 +30,16 @@ const SearchBar = ({ movies }) => {
                 options={movies}
                 getOptionLabel={(option) => option.name || ''}
                 renderOption={(props, option) => (
-                    <li {...props} className="flex items-center gap-3 p-2 hover:bg-gray-700 bg-[#1a1a1a]">
+                    <li {...props} 
+                    onClick={() => navigate(`/main/movies/detail/${option.id}`)} 
+                    className="flex items-center gap-3 p-2 hover:bg-gray-700 bg-[#1a1a1a]">
                         <img 
                             src={option.imgUrl} 
                             alt={option.name}
                             className="w-12 h-16 object-cover rounded"
                         />
                         <div 
-                            onClick={() => navigate(`/main/movies/detail/${option.id}`)} 
+                           
                             className="flex flex-col cursor-pointer"
                         >
                             <span className="text-white font-medium">{option.name}</span>

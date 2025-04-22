@@ -9,10 +9,17 @@ function PlayMyMovie() {
     const movies = useContext(MoviesContext);
     const episodes = useContext(EpisodesContext);
     const categories = useContext(ContextCategories);
-    const [selectedEpisode, setSelectedEpisode] = useState(0);
-
+    const [selectedEpisode, setSelectedEpisode] = useState({});
     const movie = movies.find(m => m.id === id);
-    const episode = episodes.find(e => e.idMovie === id);
+
+    useEffect(() => {
+        setSelectedEpisode(getEpisodes());
+    }, []);
+
+const getEpisodes = () => {
+    return episodes?.find(e => e.idMovie == id);
+}
+
 
     if (!movie) {
         return <div className="flex items-center justify-center min-h-screen text-white text-lg">Đang tải...</div>;
@@ -26,7 +33,7 @@ function PlayMyMovie() {
         <div className="max-w-7xl mx-auto px-4 py-25 min-h-screen text-white">
             <div className="w-full h-full mt-10">
                 <iframe 
-                    src={episode?.episodesUrl} 
+                    src={selectedEpisode?.episodesUrl} 
                     title="Video Player" 
                     className=" w-full h-[100vh]"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -46,7 +53,7 @@ function PlayMyMovie() {
 
             <div className="gap-4 mb-8">
                 <select 
-                    value={selectedEpisode} 
+                    value={selectedEpisode?.id} 
                     onChange={handleEpisodeChange}
                     className="px-4 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:ring-2 focus:ring-red-500 min-w-[200px]"
                 >

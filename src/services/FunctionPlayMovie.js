@@ -7,17 +7,23 @@ export const handleClick = async (movie, isLoggedIn, plans, navigate, notificati
         console.log("Bạn cần đăng nhập để xem phim");
         return;
     }
+
+    if (!movie.planID) {
+        notification('Phim không có thông tin gói dịch vụ', 'error');
+        return;
+    }
+
     const status = await checkVipEligibility(isLoggedIn.id, plans, movie);
     if (status) {
         navigate(`/play-my-movie/${movie.id}`);
         return;
     }
     
-    // const checkRentMovie = await checkIfMovieRented(isLoggedIn.id, movie.id);
-    // if (checkRentMovie) {
-    //     navigate(`/play-my-movie/${movie.id}`);
-    //     return;
-    // }
+    const checkRentMovie = await checkIfMovieRented(isLoggedIn.id, movie.id);
+    if (checkRentMovie) {
+        navigate(`/play-my-movie/${movie.id}`);
+        return;
+    }
     
     const plan = plans.find(p => p.id === movie.planID);
     if (!plan) {
@@ -33,9 +39,21 @@ export const handleClick = async (movie, isLoggedIn, plans, navigate, notificati
     }
 };
 
+// chức năng kiểm tra người dùng đa thuê phim hay chưa
+export const checkIfMovieRented = async (userId, movieId) => {
+    const rentMoviesQuery = query(collection(db, "rentMovies"), where("userId", "==", userId));
+    const rentMoviesSnapshot = await getDocs(rentMoviesQuery);
+    return !rentMoviesSnapshot.empty && rentMoviesSnapshot.docs.some(doc => doc.data().movieId === movieId);
+};
+ 
 // Chức năng kiểm tra xem người dùng có đủ điều kiện truy cập nội dung dựa trên cấp độ VIP hay không
 export const checkVipEligibility = async (userId, plans, movie) => {
     try {
+        if (!movie.planID) {
+            console.log("Movie does not have a plan ID");
+            return false;
+        }
+
         // Fetch user's active subscription plans
         const userPlans = await getPlansByUser(userId, plans);
         
@@ -44,7 +62,14 @@ export const checkVipEligibility = async (userId, plans, movie) => {
             console.log("User does not have an active VIP subscription.");
             return false; // No active VIP plan
         }
-        const movieLevel = plans.find(plan => plan.id === movie.planID).level;
+
+        const moviePlan = plans.find(plan => plan.id === movie.planID);
+        if (!moviePlan) {
+            console.log("Movie plan not found");
+            return false;
+        }
+
+        const movieLevel = moviePlan.level;
         const status = userPlans >= movieLevel ? true : false;
         return status; // Trả về trạng thái eligibility
     } catch (error) {
@@ -103,3 +128,4 @@ export const getPlansByUser = async (idUser, plans) => {
         return 0; // Trả về 0 nếu có lỗi
     }
 };
+

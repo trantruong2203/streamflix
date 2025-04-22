@@ -18,6 +18,7 @@ import { auth, googleProvider } from "../../config/firebaseconfig";
 import { signInWithPopup } from "firebase/auth";
 import { addDocument } from "../../services/firebaseService";
 import FogotPassword from "./FogotPassword";
+import { ROLES } from "../../utils/Contants";
 
 const inner = { useOrEmail: "", password: "" };
 
@@ -72,6 +73,7 @@ const Login = ({ open, handleClose, handleSignup }) => {
           useName: user.displayName,
           imgUrl: user.photoURL,
           email: user.email,
+          role: ROLES.USER
         };
         const newAccount = await addDocument('accounts', newCustomer);
         loggedInCustomer = newAccount;

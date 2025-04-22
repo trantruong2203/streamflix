@@ -91,7 +91,6 @@ function TableActor({ page, setPage, find, handleEdit }) {
                     </TableBody>
                 </Table>
             </TableContainer>
-
             <TablePagination
                 component="div"
                 count={searchActor.length}
@@ -99,8 +98,9 @@ function TableActor({ page, setPage, find, handleEdit }) {
                 rowsPerPage={rowsPerPage}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+                
+               
             />
-
             <ModalDelete open={open} onClose={onClose} handleDelete={handleDelete} />
         </div>
     );
