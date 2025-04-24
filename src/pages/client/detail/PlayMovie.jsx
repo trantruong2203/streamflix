@@ -35,7 +35,7 @@ function PlayMovie() {
     };
  
     return (
-        <div className="max-w-7xl mx-auto px-4 py-8 bg-gray-900 min-h-screen text-white">
+        <div className="max-w-7xl mx-auto p-20 bg-stone-600 min-h-screen text-white">
             <div className="relative w-full pt-[56.25%] mb-8 rounded-lg overflow-hidden">
                 <iframe 
                     src={movieData.episodes[selectedServer].server_data[selectedEpisode].link_embed} 
@@ -46,7 +46,7 @@ function PlayMovie() {
                 ></iframe>
             </div>
             
-            <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+            <div className="bg-stone-500 p-6 rounded-lg shadow-lg mb-8">
                 <h1 className="text-2xl font-bold mb-4">{movieData.movie.name}</h1>
                 <p className="text-gray-300 mb-4">{movieData.content}</p>
                 <div className="flex flex-wrap gap-2">

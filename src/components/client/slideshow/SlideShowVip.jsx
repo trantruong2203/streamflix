@@ -35,7 +35,7 @@ function SlideShowVip(props) {
                         <SwiperSlide key={slide.id} className='flex flex-col text-center text-lg'>
                             <Link to={`/main/movies/detail/${slide.id}`} className="block h-[200px] w-full rounded-lg overflow-hidden relative group">
                                 <img 
-                                    src={slide.imgUrl} 
+                                    src={slide.imgBanner || slide.imgUrl || 'https://via.placeholder.com/1920x1080'} 
                                     alt={slide.name} 
                                     className="w-full h-full object-cover rounded-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl" 
                                 />

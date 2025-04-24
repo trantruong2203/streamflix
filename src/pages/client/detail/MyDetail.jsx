@@ -5,7 +5,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { MoviesContext } from '../../../context/MoviesProvider';
 import { useContext } from 'react';
-import { checkFavoriteMovie, getFavoriteMovie, getOjectById } from '../../../services/FunctionRepon';
+import { checkFavoriteMovie, checkMovieList, getFavoriteMovie, getOjectById, moviesList } from '../../../services/FunctionRepon';
 import { ContextCategories } from '../../../context/CategoriesProvider';
 import { ActorContext } from '../../../context/ActorProvide';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -15,13 +15,14 @@ import { EpisodesContext } from '../../../context/EpisodesProvider';
 import { TrailersContext } from '../../../context/TrailerProvider';
 import { ContextAuth } from '../../../context/AuthProvider';
 import { PlansContext } from '../../../context/PlansProvider';
-import { handleClick } from '../../../services/FunctionPlayMovie';
+import { checkVipEligibility, handleClick } from '../../../services/FunctionPlayMovie';
 import { useNotification } from '../../../context/NotificationProvide';
 import Login from '../../../components/client/Login';
 import { useState } from 'react';
 import { RentMoviesContext } from '../../../context/RentMoviesProvider';
 import { addDocument } from '../../../services/firebaseService';
 import { FavoritesContext } from '../../../context/FavoritesProvider';
+import { MovieListContext } from '../../../context/MovieListProvider';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -66,7 +67,8 @@ function MyDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
     const rentMovies = useContext(RentMoviesContext);
-    const  favorites = useContext(FavoritesContext);
+    const favorites = useContext(FavoritesContext);
+    const list = useContext(MovieListContext);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -89,10 +91,11 @@ function MyDetail() {
     }
 
     const checkMovie = () => {
+        if (!accountLogin) return false;
         const level = getOjectById(plans, movie.planId)?.level;
         return checkMovieRent(movie) || checkLevel(level);
-
     }
+
     const checkLevel = (level) => {
         if (level < 3) {
             return true;
@@ -102,8 +105,11 @@ function MyDetail() {
     }
 
     const checkMovieRent = (movie) => {
-        const rentedMovie = rentMovies.find(rent => rent.movieId === movie.id && rent.idUser === accountLogin?.id && rent.expiryDate.toDate() > new Date());
-        return rentedMovie ? true : false;
+        if (!accountLogin) return false;
+
+     const a =  checkVipEligibility(accountLogin, plans, movies);
+        const rentedMovie = rentMovies.find(rent => rent.movieId === movie.id && rent.idUser === accountLogin.id && rent.expiryDate.toDate() > new Date());
+        return rentedMovie || a ? true : false;
     }
 
 
@@ -152,26 +158,39 @@ function MyDetail() {
                                 <span>Xem ngay</span>
                             </button>
                             <div onClick={() => getFavoriteMovie(accountLogin, movie, favorites, notification)} className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'>
-                                {checkFavoriteMovie(accountLogin, movie, favorites) ? 
-                                  <>
-                                   <FaHeart className="text-xl text-red-600 group-hover:scale-110 transition-transform" />
-                                   <span>Bỏ Yêu thích</span>
-                                  </> : <>
-                                  <FaHeart className="text-xl group-hover:scale-110 transition-transform" />
-                                  <span>Yêu thích</span>
-                                  </> } 
+                                {checkFavoriteMovie(accountLogin, movie, favorites) ?
+                                    <>
+                                        <FaHeart className="text-xl text-red-600 group-hover:scale-110 transition-transform" />
+                                        <span>Bỏ Yêu thích</span>
+                                    </> : <>
+                                        <FaHeart className="text-xl group-hover:scale-110 transition-transform" />
+                                        <span>Yêu thích</span>
+                                    </>}
                             </div>
-                            <div className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'>
-                                <FaPlus className="text-xl group-hover:scale-110 transition-transform" />
-                                <span>Thêm vào</span>
+
+                            <div
+                                onClick={() => moviesList(accountLogin, movie, list, notification)}
+                                className='cursor-pointer text-white 
+                            hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'>
+                                {checkMovieList(accountLogin, movie, list)
+                                    ? <>
+                                        <FaPlus className="text-xl text-yellow-400 group-hover:scale-110 transition-transform" />
+                                        <span>Bỏ Thêm vào</span>
+                                    </>
+                                    : <>
+                                        <FaPlus className="text-xl group-hover:scale-110 transition-transform" />
+                                        <span>Thêm vào</span>
+                                    </>
+                                }
+
                             </div>
                             {!checkMovie() ? (
                                 <Link
                                     to={`/payment/rent-movie/${movie.id}`}
                                     className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'
                                 >
-                                    <MdAttachMoney className="text-xl group-hover:scale-110 transition-transform" />
-                                    <span>Thuê Phim</span>
+
+                                    <div className='flex items-center gap-2'>{accountLogin ? <><MdAttachMoney className="text-xl group-hover:scale-110 transition-transform" /> Thuê Phim</> : ""}</div>
                                 </Link>
                             ) : ("")}
                         </div>

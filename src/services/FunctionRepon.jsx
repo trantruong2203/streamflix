@@ -37,8 +37,8 @@ export const toDateString = (timestamp) => {
 };
 
 export const checkFavoriteMovie = (account, movie, favorites) => {
+   if (!account) return false;
    const favoriteMovie = favorites?.find(favorite => favorite.accountId === account.id && favorite.movieId === movie.id);
-   console.log(favoriteMovie);
    return favoriteMovie;
 }
 export const getFavoriteMovie = async (account, movie, favorites, notification) => {
@@ -59,16 +59,45 @@ export const getFavoriteMovie = async (account, movie, favorites, notification) 
    }
 }
 
-export const watchHistory  = async (account,movie,watchHis,episodeId) => {
-     const checkHis = watchHis?.find(w => w.accountId === account.id && w.movieId === movie.id);
+export const watchHistory  = async (account,movieId,watchHis,episodeId) => {
+     const checkHis = watchHis?.find(w => w.accountId === account.id && w.movieId === movieId);
       if(checkHis) {
-          await  updateDocument("watchHistory", {...checkHis, episodeId: episodeId})
+          await  updateDocument("watchHistory", {...checkHis, episodeId: episodeId, createAt: new Date()})
       }else {
           await addDocument("watchHistory", {
             accountId : account.id,
-            movieId : movie.id,
-            episodeId : episodeId
+            movieId : movieId,
+            episodeId : episodeId,
+            createAt: new Date()
           })
       }
+};
 
-}
+export const checkMovieList = (account, movie, list) => {
+   if(!account) return false;
+   const movieList = list?.find( l => l.accountId === account.id && l.movieId === movie.id)
+   return movieList
+};
+
+export const moviesList = async(account, movie, list, notification) => {
+   try {
+      if (!account) {
+         notification("Vui lòng đăng nhập để thực hiện chức năng này", "error");
+         return;
+      }
+      const existingMovie = checkMovieList(account, movie, list);
+      if (existingMovie) {
+         await deleteDocument("movieList", existingMovie);
+         notification("Đã xoá khỏi danh sách xem sau", "success");
+      } else {
+         await addDocument("movieList", {
+            accountId: account.id,
+            movieId: movie.id,
+         });
+         notification("Thêm vào danh sách xem sau thành công", "success");
+      }
+   } catch (error) {
+      notification("Có lỗi xảy ra, vui lòng thử lại", "error");
+      console.error("Error in moviesList:", error);
+   }
+};

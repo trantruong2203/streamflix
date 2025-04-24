@@ -25,37 +25,37 @@ function SlideShow(props) {
                     <p className='text-sm sm:text-base text-blue-200'>Xem toàn bộ </p>
                 </div>
                 <Swiper
-                    slidesPerView={1.5}
+                    slidesPerView={3}
                     breakpoints={{
                         480: {
                             slidesPerView: 2,
-                            spaceBetween: 20,
+                            spaceBetween: 15,
                         },
                         640: {
-                            slidesPerView: 2.5,
+                            slidesPerView: 3,
                             spaceBetween: 20,
                         },
                         768: {
-                            slidesPerView: 3,
-                            spaceBetween: 30,
+                            slidesPerView: 4,
+                            spaceBetween: 25,
                         },
                         1024: {
                             slidesPerView: 4,
                             spaceBetween: 30,
                         },
                     }}
-                    spaceBetween={15}
+                    spaceBetween={10}
                     pagination={{
                         clickable: true,
                     }}
                     modules={[Pagination]}
                     className="mySwiper md:flex-1 w-full h-full"
                 >
-                    {filterMovieByPlan(movies,plans,2).map((slide) => (
+                    {filterMovieByPlan(movies,plans,4).map((slide) => (
                         <SwiperSlide key={slide.id} className='flex flex-col text-center text-lg'>
-                            <Link to={`/main/movies/detail/${slide.id}`} className="block h-[150px] sm:h-[180px] md:h-[200px] w-full rounded-lg overflow-hidden relative group">
+                            <Link to={`/main/movies/detail/${slide.id}`} className="block h-[120px] sm:h-[150px] md:h-[180px] lg:h-[400px] w-full rounded-lg overflow-hidden relative group">
                                 <img 
-                                    src={slide.imgUrl} 
+                                    src={slide.imgUrl || slide.imgUrl || 'https://via.placeholder.com/1920x1080'} 
                                     alt={slide.name} 
                                     className="w-full h-full object-cover rounded-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl" 
                                 />

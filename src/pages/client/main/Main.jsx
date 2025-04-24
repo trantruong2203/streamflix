@@ -44,8 +44,8 @@ function Main(props) {
                         <Link 
                             key={category.id}
                             to={`/main/movies/${category.id}`}
-                            className={`relative group w-full aspect-square ${getRandomGradient()} rounded-lg px-2 py-1 
-                            flex flex-col h-[50px] justify-between text-white 
+                            className={`relative group w-full aspect-square ${getRandomGradient()} rounded-lg px-6 py-1 
+                            flex flex-col h-[100px] justify-center text-white 
                             transform transition-all duration-300 
                             hover:scale-105 hover:shadow-lg
                             cursor-pointer overflow-hidden`}
@@ -82,7 +82,7 @@ function Main(props) {
 
             {/* movies */}
             <div className='mt-6 sm:mt-8 lg:mt-10 space-y-6 sm:space-y-8 lg:space-y-10'>
-                <div className='bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 shadow-xl'>
+                <div className='bg-bgmain rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 shadow-xl'>
                     <SlideShow title="Phim Lẻ Mới" />
                     <SlideShowVip title="Phim Vip Mới" />
                 </div>

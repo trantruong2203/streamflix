@@ -16,10 +16,11 @@ import PaymentPage from '../pages/client/vip/PaymentPage';
 import Pay from '../pages/client/vip/Pay';
 import MovieSearch from '../components/MovieSearch';
 import AccountPage from '../pages/client/accountPage/AccountPage';
-import FavoriteMovie from '../pages/client/accountPage/FavoriteMovie';
+import FavoriteMovie from '../pages/client/favorite/FavoriteMovie';
 import AccountInfor from '../pages/client/accountPage/components/AccountInfor';
 import PlanManage from '../pages/client/accountPage/components/PlanManage';
 import RentMovieLibrary from '../pages/client/accountPage/components/RentMovieLibrary';
+import MoviesList from '../pages/client/movieList/MoviesList';
 const router = [
     { path: '/', element: <Welcome /> },
     {path: '/main', element: <Main />},
@@ -44,7 +45,8 @@ const router = [
         {path: '/main/account/rent-movies-library', element: <RentMovieLibrary/>},
        ]
     },
-    {path: '/main/account/favorite', element: <FavoriteMovie/>}
+    {path: '/main/account/favorite', element: <FavoriteMovie/>},
+    {path: '/main/account/movieList', element: <MoviesList/>}
     
 ];
 // Recursive function to render both top-level and nested routes

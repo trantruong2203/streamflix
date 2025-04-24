@@ -62,7 +62,7 @@ function ModalUser(props) {
                             </Link>
                         </div>
                         <div className='p-3 hover:bg-gray-700 transition-all duration-200 cursor-pointer group'>
-                            <Link to={'/main/account/favorite'} className='flex items-center justify-between'>
+                            <Link to={'/main/account/movieList'} className='flex items-center justify-between'>
                                 <div className='flex items-center gap-3'>
                                     <List className='text-blue-500' />
                                     <p className='text-white text-md'>Danh sách</p>

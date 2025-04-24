@@ -1,2 +1,8 @@
 @import 'tailwindcss';
 
+@theme {
+    --color-midnight: #191B24;
+    --color-tahiti: #191B24;
+    --color-bermuda: #FFD875;
+    --color-bgmain: #262937;
+  }

@@ -22,7 +22,7 @@ function Home(props) {
     return (
         <div>
             <Header handleLogin={handleLogin} />
-            <div className='bg-black'>
+            <div className='bg-midnight'>
              <ClienRouters />
             </div>
             <Footer/>

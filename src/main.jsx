@@ -20,6 +20,9 @@ import { PackageProvider } from './context/PackageProvider.jsx';
 import { RentMoviesProvider } from './context/RentMoviesProvider.jsx';
 import { SubscriptionProvider} from './context/SubscriptionProvider.jsx';
 import { Favoritesprovider } from './context/FavoritesProvider.jsx';
+import { MovieListProvider } from './context/MovieListProvider.jsx';
+import { WatchHistoryProvider } from './context/WatchHistoryProvider.jsx';
+import { CommentsProvider } from './context/CommentsProvider.jsx';
 const providers = [
   AccountsProvider,
   CategoriesProvider,
@@ -36,7 +39,10 @@ const providers = [
   PackageProvider,
   RentMoviesProvider,
   SubscriptionProvider,
-  Favoritesprovider
+  Favoritesprovider,
+  MovieListProvider,
+  WatchHistoryProvider,
+  CommentsProvider
 ];
 const ProviderWrapper = ({ children }) => {
   return providers.reduceRight(
@@ -46,11 +52,9 @@ const ProviderWrapper = ({ children }) => {
 };
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
     <BrowserRouter>
       <ProviderWrapper>
         <App />
       </ProviderWrapper>
-    </BrowserRouter>
-  </StrictMode>,
+    </BrowserRouter>,
 )

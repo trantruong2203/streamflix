@@ -41,7 +41,7 @@ export const handleClick = async (movie, isLoggedIn, plans, navigate, notificati
 
 // chức năng kiểm tra người dùng đa thuê phim hay chưa
 export const checkIfMovieRented = async (userId, movieId) => {
-    const rentMoviesQuery = query(collection(db, "rentMovies"), where("userId", "==", userId));
+    const rentMoviesQuery = query(collection(db, "rentMovies"), where("idUser", "==", userId));
     const rentMoviesSnapshot = await getDocs(rentMoviesQuery);
     return !rentMoviesSnapshot.empty && rentMoviesSnapshot.docs.some(doc => doc.data().movieId === movieId);
 };
