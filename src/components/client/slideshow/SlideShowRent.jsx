@@ -12,6 +12,7 @@ import { filterMoviesByCategories, getOjectById } from '../../../services/Functi
 import { Link } from 'react-router-dom';
 import { FaHeart, FaPlay } from 'react-icons/fa';
 import { IoInformationCircle } from 'react-icons/io5';
+import { CircularProgress } from '@mui/material';
 
 function SlideShowRent(props) {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -101,7 +102,7 @@ function SlideShowRent(props) {
                                                 </div>
                                             </div>
                                             <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 mt-2 sm:mt-3 md:mt-4">
-                                                {Array.isArray(e.listCate) && e.listCate.slice(0, 3).map((listCateId, i) => {
+                                                {Array.isArray(e.listCate) && e.listCate.slice(0, 5).map((listCateId, i) => {
                                                     const category = getOjectById(categories, listCateId);
                                                     return category ? (
                                                         <span key={i} className="text-xs sm:text-sm px-2 sm:px-3 py-0.5 sm:py-1 bg-white/20 rounded-full hover:bg-white/30 cursor-pointer">
@@ -156,7 +157,10 @@ function SlideShowRent(props) {
                 </>
             ) : (
                 <div className="w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh] xl:h-[90vh] flex items-center justify-center bg-gray-900 text-white">
-                    <p className="text-xl">Không có phim nào để hiển thị</p>
+                    <div className="flex flex-col items-center gap-4">
+                        <CircularProgress size={60} sx={{ color: '#fbbf24' }} />
+                        <p className="text-xl text-yellow-400">Đang tải phim...</p>
+                    </div>
                 </div>
             )}
         </div>
