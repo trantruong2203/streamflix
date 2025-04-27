@@ -5,6 +5,7 @@ import SlideShow from '../../../components/client/slideshow/SlideShow';
 import SlideShowRent from '../../../components/client/slideshow/SlideShowRent';
 import SlideBanner from '../../../components/client/slideshow/SlideBanner';
 import SlideShowVip from '../../../components/client/slideshow/SlideShowVip';
+import SlideShowCategory from '../../../components/client/slideshow/SlideShowCategory';
 
 function Main(props) {
     const categories = useContext(ContextCategories);
@@ -85,6 +86,8 @@ function Main(props) {
                 <div className='bg-bgmain rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 shadow-xl'>
                     <SlideShow title="Phim Lẻ Mới" />
                     <SlideShowVip title="Phim Vip Mới" />
+                    <SlideShowCategory title="Phim Lẻ" />
+                    
                 </div>
             </div>
         </div>

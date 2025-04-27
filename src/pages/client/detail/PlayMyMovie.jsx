@@ -24,7 +24,7 @@ function PlayMyMovie() {
     const favorites = useContext(FavoritesContext);
     const list = useContext(MovieListContext);
     const notification = useNotification();
-    const watchHis = useContext(WatchHistoryContext)
+    const watchHis = useContext(WatchHistoryContext);
     const [listEpisodes,setListEpisodes] = useState([]);
 
     useEffect(() => {
@@ -42,8 +42,8 @@ function PlayMyMovie() {
     }
 
     const  addHis = async  (movieEpisodes) => {
-
-       await  watchHistory(accountLogin,id,watchHis,movieEpisodes.id);  
+        const movie = movies.find( m => m.id === id)
+       await  watchHistory(accountLogin,movie,watchHis,movieEpisodes.id);  
     }
         
     const handleEpisodeChange = (selectedId) => {

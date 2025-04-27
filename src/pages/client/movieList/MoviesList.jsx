@@ -2,15 +2,18 @@ import React, { useContext } from 'react';
 import { MovieListContext } from '../../../context/MovieListProvider';
 import { MoviesContext } from '../../../context/MoviesProvider';
 import { useNavigate } from 'react-router-dom';
-import { getOjectById } from '../../../services/FunctionRepon';
+import { filterById, formatDate, getOjectById } from '../../../services/FunctionRepon';
 import { Typography } from '@mui/material';
 import { WatchHistoryContext } from '../../../context/WatchHistoryProvider';
+import { ContextAuth } from '../../../context/AuthProvider';
+
 function MoviesList(props) {
     const movieList = useContext(MovieListContext);
     const navigate = useNavigate();
     const movies = useContext(MoviesContext);
     const watchHis = useContext(WatchHistoryContext);
-    
+    const { accountLogin } = useContext(ContextAuth);
+
     return (
         <div className='md:flex  gap-4 p-20 '>
             <div className='flex-1'>
@@ -47,7 +50,7 @@ function MoviesList(props) {
             <div className='max-md:mt-5'>
                 <Typography variant="h4" className='text-center font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent'>  Lịch sử xem phim  </Typography>
                 <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-4'>
-                    {watchHis.map((movie) => (
+                    {filterById(watchHis,accountLogin?.id,'accountId').sort((a, b) => b.createAt - a.createAt).map((movie) => (
                         <div
                             key={movie.id}
                             onClick={() => {
@@ -69,7 +72,7 @@ function MoviesList(props) {
                             />
                             <div className="p-1">
                                 <h3 className="text-center text-sm font-semibold text-white line-clamp-2">{getOjectById(movies, movie.movieId)?.name}</h3>
-                                <p className='text-sm text-gray-400'>{movie.createAt.toDate().toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                                <p className='text-sm text-gray-400'>{formatDate(movie.createAt)}</p>
                             </div>
                         </div>
                     ))}

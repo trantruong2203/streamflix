@@ -10,6 +10,8 @@ import { MoviesContext } from '../../../context/MoviesProvider';
 import { ContextCategories } from '../../../context/CategoriesProvider';
 import { filterMoviesByCategories, getOjectById } from '../../../services/FunctionRepon';
 import { Link } from 'react-router-dom';
+import { FaHeart, FaPlay } from 'react-icons/fa';
+import { IoInformationCircle } from 'react-icons/io5';
 
 function SlideShowRent(props) {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -90,12 +92,13 @@ function SlideShowRent(props) {
                                             </div>
                                             <p className="text-xs sm:text-sm font-light leading-relaxed hidden sm:block">{converDescription(e.description)}</p>
                                             <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4">
-                                                <Link to={`/main/movies/detail/${e.id}`} className="bg-yellow-500 text-black px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 rounded-lg font-bold hover:bg-yellow-400 transition text-xs sm:text-sm md:text-base">
-                                                    Xem Phim
+                                                <Link to={`/main/movies/detail/${e.id}`} className="bg-gradient-to-tr from-yellow-200 to-amber-50 p-4 text-black rounded-full font-bold   hover:shadow-[0_0_25px_rgba(234,179,8,0.5)] transition text-xs sm:text-sm md:text-base">
+                                                <FaPlay className='text-2xl text-center' />
                                                 </Link>
-                                                <button className="bg-white/20 backdrop-blur-sm text-white px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 rounded-lg font-bold hover:bg-white/30 transition text-xs sm:text-sm md:text-base">
-                                                    Chi Tiết
-                                                </button>
+                                                <div className='flex flex-wrap gap-2 px-6 py-2.5 rounded-full items-center justify-center border border-gray-300 hover:border-white/50 hover:bg-white/10 transition-all duration-300 cursor-pointer sm:gap-3 md:gap-4'>
+                                                <FaHeart className='text-2xl text-center border-r-2 border-gray-300 mr-2 pr-2 hover:text-red-500 transition-colors duration-300' />
+                                                <IoInformationCircle className='text-2xl text-center hover:text-blue-400 transition-colors duration-300' />
+                                                </div>
                                             </div>
                                             <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 mt-2 sm:mt-3 md:mt-4">
                                                 {Array.isArray(e.listCate) && e.listCate.slice(0, 3).map((listCateId, i) => {

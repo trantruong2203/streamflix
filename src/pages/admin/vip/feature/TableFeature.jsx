@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton } from '@mui/material';
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton, TablePagination } from '@mui/material';
 import { FeatureContext } from '../../../../context/FeatureProvider';
 
 import { PlansContext } from '../../../../context/PlansProvider';
@@ -9,27 +9,36 @@ import ModalDelete from '../../../../components/admin/ModalDelete';
 import { useNotification } from '../../../../context/NotificationProvide';
 import { deleteDocument } from '../../../../services/firebaseService';
 
-function TableFeature({handleEdit, handleClose,}) {
+function TableFeature({handleEdit, handleClose, page, setPage}) {
     const  features  = useContext(FeatureContext);
     const  plans  = useContext(PlansContext);
     const [open, setOpen] = useState(false);
     const [deleteItem, setDeleteItem] = useState(null);
+    const showNotification = useNotification();
+    const [rowsPerPage, setRowsPerPage] = useState(5);
    
 
     const onOpenDelete = (item) => {
         setDeleteItem(item);
         setOpen(true);
-    }
+    };
 
     const onCloseDelete = () => {
         setDeleteItem(null);
         setOpen(false);
-    }
+    };
 
+     // Xử lý thay đổi trang
+     const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
 
+    // Xử lý thay đổi số hàng hiển thị trên mỗi trang
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
 
-
-    const showNotification = useNotification();
 
     const handleDelete = async () => {
         if(deleteItem) {
@@ -57,7 +66,7 @@ function TableFeature({handleEdit, handleClose,}) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {features.map((row, index) => (
+                        {features.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
                             <TableRow
                                 key={row.index}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -81,6 +90,17 @@ function TableFeature({handleEdit, handleClose,}) {
                     </TableBody>
                 </Table>
             </TableContainer>
+
+             {/* Pagination */}
+             <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={features.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
 
             <ModalDelete open={open} onClose={onCloseDelete} handleDelete={handleDelete} />
         </div>

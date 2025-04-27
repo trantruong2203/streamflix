@@ -8,7 +8,7 @@ import NewMovie from '../pages/client/newmovie/NewMovie';
 import MovieDetail from '../pages/client/detail/MovieDetail';
 import PlayMovie from '../pages/client/detail/PlayMovie';
 import ListMovie from '../pages/client/movie theater/ListMovie';
-import ListMovieCate from '../pages/client/movie theater/ListMovieCate';
+import ListMovieCate from '../components/client/movieByCate/ListMovieCate';
 import MyDetail from '../pages/client/detail/MyDetail';
 import PlayMyMovie from '../pages/client/detail/PlayMyMovie';
 import SubcriptionPlan from '../pages/client/vip/SubcriptionPlan';

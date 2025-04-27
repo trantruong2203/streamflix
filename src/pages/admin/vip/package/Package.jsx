@@ -41,7 +41,7 @@ function Package(props) {
         <div>
             <MainHeader handleOpen={handleOpen} handleSearch={handleSearch} title="Packages" />
             <ModalPackage error={error} setError={setError} handleClose={handleClose} open={open} packageData={packageData} setPackageData={setPackageData} />
-            <TablePackage handleEdit={handleEdit} />
+            <TablePackage handleEdit={handleEdit} page={page} setPage={setPage} />
         </div>
     );
 }

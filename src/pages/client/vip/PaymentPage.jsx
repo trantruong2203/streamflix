@@ -12,7 +12,8 @@ import { initialOptions } from '../../../utils/Contants';
 import { useRef } from 'react';
 import { Login } from '@mui/icons-material';
 import { useNotification } from '../../../context/NotificationProvide';
-import { addDocument } from '../../../services/firebaseService';
+import { addDocument, updateDocument } from '../../../services/firebaseService';
+import { SubscriptionsContext } from '../../../context/SubscriptionProvider';
 
 function PaymentPage() {
     const [selectedPayment, setSelectedPayment] = useState('card');
@@ -23,7 +24,7 @@ function PaymentPage() {
     const showNotification = useNotification();
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-
+    const subscriptions = useContext(SubscriptionsContext);
     const plan = plans.find(plan => plan.id === id);
     const listPakage = pakages.filter(pakage => pakage.planId === id).sort((a, b) => a.time - b.time);
     const [selectedPlan, setSelectedPlan] = useState(listPakage[0] || {});
@@ -62,8 +63,19 @@ function PaymentPage() {
             startDate: startDate,
             expiryDate: expiryDate,
         };
-        await addDocument('subscriptions', subscriptionData);
-        showNotification("Đăng ký gói thành công", "success");
+
+        const subscriptionExists = subscriptions?.find(sub => sub.userId === accountLogin?.id && sub.planId === plan.id);
+
+        if (subscriptionExists && subscriptionExists.expiryDate.toDate() > startDate) {
+            const a = subscriptionExists.expiryDate.toDate();
+            a.setMonth(a.getMonth() + (parseInt(selectedPlan.time) || 1));
+
+            await updateDocument('subscriptions', { ...subscriptionExists, expiryDate: a });
+            showNotification("Đã gia hạn gói thành công", "success");
+        } else {
+            await addDocument('subscriptions', subscriptionData);
+            showNotification("Đăng ký gói thành công", "success");
+        }
         navigate(`/main`);
         setIsLoading(false);
     }

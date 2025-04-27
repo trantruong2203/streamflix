@@ -23,6 +23,7 @@ import { RentMoviesContext } from '../../../context/RentMoviesProvider';
 import { addDocument } from '../../../services/firebaseService';
 import { FavoritesContext } from '../../../context/FavoritesProvider';
 import { MovieListContext } from '../../../context/MovieListProvider';
+import Comment from '../../../components/client/Comment/Comment';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -301,6 +302,8 @@ function MyDetail() {
                                 </div>
                             </CustomTabPanel>
                         </Box>
+
+                        <Comment />
                     </div>
                 </div>
             </div>

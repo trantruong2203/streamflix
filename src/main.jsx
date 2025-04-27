@@ -23,6 +23,7 @@ import { Favoritesprovider } from './context/FavoritesProvider.jsx';
 import { MovieListProvider } from './context/MovieListProvider.jsx';
 import { WatchHistoryProvider } from './context/WatchHistoryProvider.jsx';
 import { CommentsProvider } from './context/CommentsProvider.jsx';
+import { RepCommentProvider } from './context/RepCommentProvider.jsx';
 const providers = [
   AccountsProvider,
   CategoriesProvider,
@@ -42,7 +43,8 @@ const providers = [
   Favoritesprovider,
   MovieListProvider,
   WatchHistoryProvider,
-  CommentsProvider
+  CommentsProvider,
+  RepCommentProvider
 ];
 const ProviderWrapper = ({ children }) => {
   return providers.reduceRight(

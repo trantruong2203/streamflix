@@ -23,7 +23,7 @@ import { EditOutlined, DeleteOutlined, Visibility, VisibilityOff } from '@mui/ic
 import { useNotification } from '../../../context/NotificationProvide';
 import { deleteDocument } from '../../../services/firebaseService';
 
-function TableUsePage({ open, setOpen }) {
+function TableUsePage({ open, setOpen, user, setUser, errors, setErrors, handleEdit }) {
     const users = useContext(AccountsContext)
     const [deleteItem, setDeleteItem] = useState(null);
     const showNotification = useNotification();
@@ -46,9 +46,6 @@ function TableUsePage({ open, setOpen }) {
 
     return (
         <Box sx={{ p: 3 }}>
-            <Typography variant="h5" sx={{ mb: 3, fontWeight: 'bold' }}>
-                User Management
-            </Typography>
             <TableContainer component={Paper} sx={{ boxShadow: 3, borderRadius: 2 }}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
@@ -112,15 +109,15 @@ function TableUsePage({ open, setOpen }) {
                                                 }
                                             />
                                         </FormControl>
-                                    ) : (
-                                        <Chip 
-                                            label="Google Sign-in" 
-                                            size="small"
-                                            variant="outlined"
-                                        />
-                                    )}
+                                        ) : (
+                                            <Chip 
+                                                label="Google Sign-in" 
+                                                size="small"
+                                                variant="outlined"
+                                            />
+                                        )}
                                 </TableCell>
-                                <TableCell align="left">
+                                <TableCell onClick={() => handleEdit(row)} align="left">
                                     <Box sx={{ display: 'flex', gap: 1 }}>
                                         <IconButton 
                                             color="primary"

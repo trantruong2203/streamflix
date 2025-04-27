@@ -4,22 +4,40 @@ export const getOjectById = (data, id) => {
    return data?.find(e => e.id === id);
 }
 
+export const filterById  = (data, id , title) => {
+   return data?.filter(e => e[title] === id);
+}
+
 export const converDescription = (description) => {
    if (!description) return "";
    if (description.length > 50) {
       return description.slice(0, 50) + "...";
    }
    return description;
+};
+
+
+
+export const formatDate = (timestamp) => {
+   if (!timestamp) return '';
+   const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+   return date.toLocaleDateString('vi-VN', {
+       year: 'numeric',
+       month: 'long',
+       day: 'numeric',
+       hour: '2-digit',
+       minute: '2-digit'
+   });
 }
 
 export const filterMovieByPlan = (data, plans, level) => {
-   return data?.filter(e => {
+   if (!data || !plans || level === undefined) return [];
+   
+   return data.filter(e => {
       const plan = plans.find(p => p.id === e.planID);
       return plan?.level == level
    })
 };
-
-
 
 export const filterMoviesByCategories = (movies, categories, categoryIds) => {
    if (!categoryIds || categoryIds.length === 0) return movies;
@@ -59,18 +77,21 @@ export const getFavoriteMovie = async (account, movie, favorites, notification) 
    }
 }
 
-export const watchHistory  = async (account,movieId,watchHis,episodeId) => {
-     const checkHis = watchHis?.find(w => w.accountId === account.id && w.movieId === movieId);
+export const watchHistory  = async (account,movie,watchHis,episodeId) => {
+     const checkHis = watchHis?.find(w => w.accountId === account.id && w.movieId === movie.id);
       if(checkHis) {
           await  updateDocument("watchHistory", {...checkHis, episodeId: episodeId, createAt: new Date()})
       }else {
           await addDocument("watchHistory", {
             accountId : account.id,
-            movieId : movieId,
+            movieId : movie.id,
             episodeId : episodeId,
             createAt: new Date()
           })
       }
+      console.log("vfdbdb", movie);
+      
+      await updateDocument("movies",{ ...movie , viewsCount: movie.viewsCount + 1 });
 };
 
 export const checkMovieList = (account, movie, list) => {
