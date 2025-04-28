@@ -1,9 +1,8 @@
-
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -38,11 +37,32 @@ export default function KoreaMovies() {
     <div className='mt-5'>
         <h1 className="text-3xl font-bold bg-gradient-to-r from-yellow-500 to-purple-500 bg-clip-text text-transparent p-3">Phim Hàn Quốc Mới</h1>
     <Swiper
-      modules={[Navigation, Pagination]}
-      spaceBetween={0}        // Khoảng cách giữa các slide
-      slidesPerView={6}         // 3 slides hiển thị cùng lúc
-      navigation                // Nút điều hướng (prev/next)
-      pagination={{ clickable: true }} // Chấm tròn chuyển trang
+      modules={[Navigation]}
+      spaceBetween={20}
+      slidesPerView={1}
+      navigation
+      breakpoints={{
+        320: {
+          slidesPerView: 2,
+          spaceBetween: 5
+        },
+        480: {
+          slidesPerView: 2,
+          spaceBetween: 5
+        },
+        768: {
+          slidesPerView: 4,
+          spaceBetween: 10
+        },
+        1024: {
+          slidesPerView: 5,
+          spaceBetween: 20
+        },
+        1280: {
+          slidesPerView: 6,
+          spaceBetween: 20
+        }
+      }}
     >
         
         {movies.map((movie) => (

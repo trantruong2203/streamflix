@@ -86,7 +86,7 @@ function Main(props) {
             <div className='mt-6 sm:mt-8 lg:mt-10 space-y-6 sm:space-y-8 lg:space-y-10'>
                 <div className='bg-bgmain rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 shadow-xl'>
                     <SlideShow title="Phim Lẻ Mới" />
-                    <SlideShowVip title="Phim Vip Mới" />
+                    <SlideShowVip title="Phim Vip Mới" className='mt-15' />
                     <h1 className='text-center text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent border-b-2 border-gray-700 pb-2 mb-4'>Phim Miễn Phí</h1>
                     <KoreaMovies />
                     <UsaMovies />

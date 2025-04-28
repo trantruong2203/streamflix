@@ -55,7 +55,7 @@ function NewMovie(props) {
 
     return (
             <div className="p-5 max-w-7xl mx-auto py-20">
-                <h1 className="text-3xl font-bold text-center text-white mb-8">Phim Lẻ Mới Cập Nhật</h1>
+                <h1 className="text-3xl font-bold text-center text-white mb-8">Phim Mới Cập Nhật</h1>
                 {loading ? <LoadingScreen /> : (
                     <>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">

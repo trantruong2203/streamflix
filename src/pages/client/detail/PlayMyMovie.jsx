@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { checkFavoriteMovie, checkMovieList, getFavoriteMovie, getOjectById, moviesList } from '../../../services/FunctionRepon';
+import { checkFavoriteMovie, checkMovieList, getFavoriteMovie, getOjectById, moviesList, watchHistory } from '../../../services/FunctionRepon';
 import { MoviesContext } from '../../../context/MoviesProvider';
 import { EpisodesContext } from '../../../context/EpisodesProvider';
 import { ContextCategories } from '../../../context/CategoriesProvider';

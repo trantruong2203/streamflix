@@ -38,11 +38,32 @@ export default function UsaMovies() {
     <div className='mt-5'>
         <h1 className="text-3xl font-bold bg-gradient-to-r from-yellow-500 to-purple-500 bg-clip-text text-transparent p-3">Phim Mỹ Mới</h1>
     <Swiper
-      modules={[Navigation, Pagination]}
-      spaceBetween={0}        // Khoảng cách giữa các slide
-      slidesPerView={6}         // 3 slides hiển thị cùng lúc
-      navigation                // Nút điều hướng (prev/next)
-      pagination={{ clickable: true }} // Chấm tròn chuyển trang
+      modules={[Navigation]}
+      spaceBetween={0}
+      slidesPerView={6}
+      navigation             // Nút điều hướng (prev/next)
+      breakpoints={{
+        320: {
+          slidesPerView: 2,
+          spaceBetween: 10
+        },
+        480: {
+          slidesPerView: 2,
+          spaceBetween: 10
+        },
+        768: {
+          slidesPerView: 4,
+          spaceBetween: 15
+        },
+        1024: {
+          slidesPerView: 5,
+          spaceBetween: 20
+        },
+        1280: {
+          slidesPerView: 6,
+          spaceBetween: 20
+        }
+      }}
     >
         
         {movies.map((movie) => (

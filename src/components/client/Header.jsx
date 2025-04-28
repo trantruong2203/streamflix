@@ -79,8 +79,10 @@ function Header({ handleLogin }) {
                     </div>
                 </div>
 
+                <MenuList className="hidden lg:flex" />
+
                 <div className="flex items-center gap-3">
-                    <div className="lg:hidden">
+                    <div className="lg:hidden ">
                         <button
                             onClick={() => setIsSearchOpen(!isSearchOpen)}
                             className="text-white p-2"
@@ -90,7 +92,6 @@ function Header({ handleLogin }) {
                     </div>
 
                     <div className="hidden lg:flex items-center gap-3">
-                        <MenuList />
                         <Link
                             to="/main/vip"
                             className={`text-white p-2 bg-yellow-500 rounded-full px-5 hover:bg-amber-300 cursor-pointer transition-all duration-100 ${accountLogin ? 'block' : 'hidden'}`}
