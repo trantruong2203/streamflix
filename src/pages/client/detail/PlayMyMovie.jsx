@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { checkFavoriteMovie, checkMovieList, getFavoriteMovie, getOjectById, moviesList, watchHistory } from '../../../services/FunctionRepon';
+import { checkFavoriteMovie, checkMovieList, getFavoriteMovie, getOjectById, moviesList } from '../../../services/FunctionRepon';
 import { MoviesContext } from '../../../context/MoviesProvider';
 import { EpisodesContext } from '../../../context/EpisodesProvider';
 import { ContextCategories } from '../../../context/CategoriesProvider';
@@ -11,6 +11,7 @@ import { FavoritesContext } from '../../../context/FavoritesProvider';
 import { MovieListContext } from '../../../context/MovieListProvider';
 import { useNotification } from '../../../context/NotificationProvide';
 import { WatchHistoryContext } from '../../../context/WatchHistoryProvider';
+import { Rating, Typography } from '@mui/material';
 
 function PlayMyMovie() {
     const { id } = useParams();
@@ -25,10 +26,13 @@ function PlayMyMovie() {
     const list = useContext(MovieListContext);
     const notification = useNotification();
     const watchHis = useContext(WatchHistoryContext);
-    const [listEpisodes,setListEpisodes] = useState([]);
+    const [listEpisodes, setListEpisodes] = useState([]);
+    const [rating, setRating] = useState(0);
+
+
 
     useEffect(() => {
-        const movieEpisodes = episodes.filter(ep => ep.idMovie === id).sort((a, b) => a.episodesNumber - b.episodesNumber);  
+        const movieEpisodes = episodes.filter(ep => ep.idMovie === id).sort((a, b) => a.episodesNumber - b.episodesNumber);
         // Set tập đầu tiên làm mặc định
         if (movieEpisodes.length > 0) {
             setListEpisodes(movieEpisodes);
@@ -41,37 +45,37 @@ function PlayMyMovie() {
         return <div className="flex items-center justify-center min-h-screen text-white text-lg">Đang tải...</div>;
     }
 
-    const  addHis = async  (movieEpisodes) => {
-        const movie = movies.find( m => m.id === id)
-       await  watchHistory(accountLogin,movie,watchHis,movieEpisodes.id);  
+    const addHis = async (movieEpisodes) => {
+        const movie = movies.find(m => m.id === id)
+        await watchHistory(accountLogin, movie, watchHis, movieEpisodes.id);
     }
-        
+
     const handleEpisodeChange = (selectedId) => {
-         smoothScrollToTop(1000); 
+        smoothScrollToTop(1000);
         const episode = listEpisodes.find(ep => ep.id === selectedId);
         if (episode) {
             setSelectedEpisode(episode);
-            addHis(episode);     
+            addHis(episode);
         }
     };
 
     function smoothScrollToTop(duration = 500) {
         const start = window.scrollY;
         const startTime = performance.now();
-      
+
         function scroll(currentTime) {
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const ease = 1 - Math.pow(1 - progress, 3); // easing function (easeOutCubic)
-          window.scrollTo(0, start * (1 - ease));
-          if (progress < 1) {
-            requestAnimationFrame(scroll);
-          }
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3); // easing function (easeOutCubic)
+            window.scrollTo(0, start * (1 - ease));
+            if (progress < 1) {
+                requestAnimationFrame(scroll);
+            }
         }
-      
+
         requestAnimationFrame(scroll);
-      }
-      
+    }
+
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-20 min-h-screen text-white">
@@ -88,59 +92,87 @@ function PlayMyMovie() {
             </div>
 
             {/* Control Buttons */}
-            <div className="flex items-center justify-center gap-8 mt-6 mb-8">
-                <button 
-                    onClick={() => getFavoriteMovie(accountLogin, movie, favorites, notification)} 
-                    className='flex items-center gap-2 px-6 py-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-all duration-300 transform hover:scale-105'
-                >
-                    {checkFavoriteMovie(accountLogin, movie, favorites) ? (
-                        <>
-                            <FaHeart className="text-xl text-red-600" />
-                            <span>Bỏ Yêu thích</span>
-                        </>
-                    ) : (
-                        <>
-                            <FaHeart className="text-xl" />
-                            <span>Yêu thích</span>
-                        </>
-                    )}
-                </button>
+            <div className='flex justify-between'>
+                <div className="flex items-center justify-center gap-8 mt-6 mb-8">
+                    <button
+                        onClick={() => getFavoriteMovie(accountLogin, movie, favorites, notification)}
+                        className='flex items-center gap-2 px-6 py-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-all duration-300 transform hover:scale-105'
+                    >
+                        {checkFavoriteMovie(accountLogin, movie, favorites) ? (
+                            <>
+                                <FaHeart className="text-xl text-red-600" />
+                                <span>Bỏ Yêu thích</span>
+                            </>
+                        ) : (
+                            <>
+                                <FaHeart className="text-xl" />
+                                <span>Yêu thích</span>
+                            </>
+                        )}
+                    </button>
 
-                <button
-                    onClick={() => moviesList(accountLogin, movie, list, notification)}
-                    className='flex items-center gap-2 px-6 py-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-all duration-300 transform hover:scale-105'
-                >
-                    {checkMovieList(accountLogin, movie, list) ? (
-                        <>
-                            <FaPlus className="text-xl text-yellow-400" />
-                            <span>Bỏ Thêm vào</span>
-                        </>
-                    ) : (
-                        <>
-                            <FaPlus className="text-xl" />
-                            <span>Thêm vào</span>
-                        </>
-                    )}
-                </button>
+                    <button
+                        onClick={() => moviesList(accountLogin, movie, list, notification)}
+                        className='flex items-center gap-2 px-6 py-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-all duration-300 transform hover:scale-105'
+                    >
+                        {checkMovieList(accountLogin, movie, list) ? (
+                            <>
+                                <FaPlus className="text-xl text-yellow-400" />
+                                <span>Bỏ Thêm vào</span>
+                            </>
+                        ) : (
+                            <>
+                                <FaPlus className="text-xl" />
+                                <span>Thêm vào</span>
+                            </>
+                        )}
+                    </button>
 
-                <button 
-                    onClick={() => setNextEpisode(!nextEpisode)} 
-                    className="flex items-center gap-2 px-6 py-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-all duration-300 transform hover:scale-105"
-                >
-                    <span>Chuyển Tập</span>
-                    <div className={`px-3 py-1 rounded-full ${nextEpisode ? 'bg-yellow-400 text-gray-900' : 'bg-gray-700'}`}>
-                        {nextEpisode ? 'Bật' : 'Tắt'}
+                    <button
+                        onClick={() => setNextEpisode(!nextEpisode)}
+                        className="flex items-center gap-2 px-6 py-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-all duration-300 transform hover:scale-105"
+                    >
+                        <span>Chuyển Tập</span>
+                        <div className={`px-3 py-1 rounded-full ${nextEpisode ? 'bg-yellow-400 text-gray-900' : 'bg-gray-700'}`}>
+                            {nextEpisode ? 'Bật' : 'Tắt'}
+                        </div>
+                    </button>
+                </div>
+
+                <div>
+                    <div className='mt-6 mb-8'>
+                        <Typography component="legend" className='text-white'>Đánh giá</Typography>
+                        <Rating
+                            name="customized-10"
+                            defaultValue={0}
+                            max={10}
+                           
+                            sx={{
+                                '& .MuiRating-iconFilled': {
+                                    color: '#fbbf24',
+                                },
+                                '& .MuiRating-iconHover': {
+                                    color: '#f59e0b',
+                                },
+                                '& .MuiRating-iconEmpty': {
+                                    color: '#ffffff',
+                                },
+                            }}
+                        />
+
+
                     </div>
-                </button>
+                </div>
+
             </div>
 
             {/* Movie Info Section */}
             <div className="bg-midnight p-8 rounded-2xl shadow-xl mb-8 flex gap-8">
                 <div className="relative group">
-                    <img 
-                        src={movie.imgUrl} 
-                        alt={movie.name} 
-                        className='w-[250px] h-[375px] rounded-xl object-cover transform transition-transform duration-300 group-hover:scale-105' 
+                    <img
+                        src={movie.imgUrl}
+                        alt={movie.name}
+                        className='w-[250px] h-[375px] rounded-xl object-cover transform transition-transform duration-300 group-hover:scale-105'
                     />
                 </div>
 
@@ -175,11 +207,10 @@ function PlayMyMovie() {
                         <button
                             key={episode.id}
                             onClick={() => handleEpisodeChange(episode.id)}
-                            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 ${
-                                episode.id === selectedEpisode.id 
-                                    ? 'bg-yellow-400 text-gray-900' 
-                                    : 'bg-tahiti hover:bg-gray-700'
-                            }`}
+                            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 ${episode.id === selectedEpisode.id
+                                ? 'bg-yellow-400 text-gray-900'
+                                : 'bg-tahiti hover:bg-gray-700'
+                                }`}
                         >
                             <FaPlay className="text-sm" />
                             <span className="font-medium">Tập {episode.episodesNumber}</span>

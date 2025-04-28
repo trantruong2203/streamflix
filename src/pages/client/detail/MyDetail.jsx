@@ -24,6 +24,7 @@ import { addDocument } from '../../../services/firebaseService';
 import { FavoritesContext } from '../../../context/FavoritesProvider';
 import { MovieListContext } from '../../../context/MovieListProvider';
 import Comment from '../../../components/client/Comment/Comment';
+import { Rating, Typography } from '@mui/material';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -108,7 +109,7 @@ function MyDetail() {
     const checkMovieRent = (movie) => {
         if (!accountLogin) return false;
 
-     const a =  checkVipEligibility(accountLogin, plans, movies);
+        const a = checkVipEligibility(accountLogin, plans, movies);
         const rentedMovie = rentMovies.find(rent => rent.movieId === movie.id && rent.idUser === accountLogin.id && rent.expiryDate.toDate() > new Date());
         return rentedMovie || a ? true : false;
     }
@@ -149,52 +150,79 @@ function MyDetail() {
                     {/* Phần nội dung chính bên phải */}
                     <div className="flex-1 space-y-8">
                         {/* Các nút tương tác */}
-                        <div className='flex flex-wrap items-center gap-4'>
-                            <button
-                                type="button"
-                                onClick={() => handleClick(movie, accountLogin, plans, navigate, notification)}
-                                className='bg-gradient-to-r from-amber-400 to-yellow-500 text-black px-6 py-3 rounded-full font-bold flex items-center gap-2 shadow-lg hover:shadow-amber-300/50 hover:shadow-xl transition-all duration-300 hover:scale-105'
-                            >
-                                <FaPlay className="text-lg" />
-                                <span>Xem ngay</span>
-                            </button>
-                            <div onClick={() => getFavoriteMovie(accountLogin, movie, favorites, notification)} className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'>
-                                {checkFavoriteMovie(accountLogin, movie, favorites) ?
-                                    <>
-                                        <FaHeart className="text-xl text-red-600 group-hover:scale-110 transition-transform" />
-                                        <span>Bỏ Yêu thích</span>
-                                    </> : <>
-                                        <FaHeart className="text-xl group-hover:scale-110 transition-transform" />
-                                        <span>Yêu thích</span>
-                                    </>}
-                            </div>
-
-                            <div
-                                onClick={() => moviesList(accountLogin, movie, list, notification)}
-                                className='cursor-pointer text-white 
-                            hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'>
-                                {checkMovieList(accountLogin, movie, list)
-                                    ? <>
-                                        <FaPlus className="text-xl text-yellow-400 group-hover:scale-110 transition-transform" />
-                                        <span>Bỏ Thêm vào</span>
-                                    </>
-                                    : <>
-                                        <FaPlus className="text-xl group-hover:scale-110 transition-transform" />
-                                        <span>Thêm vào</span>
-                                    </>
-                                }
-
-                            </div>
-                            {!checkMovie() ? (
-                                <Link
-                                    to={`/payment/rent-movie/${movie.id}`}
-                                    className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'
+                        <div className='flex justify-between'>
+                            <div className='flex flex-wrap items-center gap-4'>
+                                <button
+                                    type="button"
+                                    onClick={() => handleClick(movie, accountLogin, plans, navigate, notification)}
+                                    className='bg-gradient-to-r from-amber-400 to-yellow-500 text-black px-6 py-3 rounded-full font-bold flex items-center gap-2 shadow-lg hover:shadow-amber-300/50 hover:shadow-xl transition-all duration-300 hover:scale-105'
                                 >
+                                    <FaPlay className="text-lg" />
+                                    <span>Xem ngay</span>
+                                </button>
+                                <div onClick={() => getFavoriteMovie(accountLogin, movie, favorites, notification)} className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'>
+                                    {checkFavoriteMovie(accountLogin, movie, favorites) ?
+                                        <>
+                                            <FaHeart className="text-xl text-red-600 group-hover:scale-110 transition-transform" />
+                                            <span>Bỏ Yêu thích</span>
+                                        </> : <>
+                                            <FaHeart className="text-xl group-hover:scale-110 transition-transform" />
+                                            <span>Yêu thích</span>
+                                        </>}
+                                </div>
 
-                                    <div className='flex items-center gap-2'>{accountLogin ? <><MdAttachMoney className="text-xl group-hover:scale-110 transition-transform" /> Thuê Phim</> : ""}</div>
-                                </Link>
-                            ) : ("")}
+                                <div
+                                    onClick={() => moviesList(accountLogin, movie, list, notification)}
+                                    className='cursor-pointer text-white 
+                            hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'>
+                                    {checkMovieList(accountLogin, movie, list)
+                                        ? <>
+                                            <FaPlus className="text-xl text-yellow-400 group-hover:scale-110 transition-transform" />
+                                            <span>Bỏ Thêm vào</span>
+                                        </>
+                                        : <>
+                                            <FaPlus className="text-xl group-hover:scale-110 transition-transform" />
+                                            <span>Thêm vào</span>
+                                        </>
+                                    }
+
+                                </div>
+                                {!checkMovie() ? (
+                                    <Link
+                                        to={`/payment/rent-movie/${movie.id}`}
+                                        className='cursor-pointer text-white hover:text-amber-300 transition-all duration-300 flex items-center gap-2 group'
+                                    >
+
+                                        <div className='flex items-center gap-2'>{accountLogin ? <><MdAttachMoney className="text-xl group-hover:scale-110 transition-transform" /> Thuê Phim</> : ""}</div>
+                                    </Link>
+                                ) : ("")}
+                            </div>
+
+                            <div>
+                                <Typography component="legend" className='text-white'>Đánh giá</Typography>
+                                <Rating 
+                                    name="customized-10" 
+                                    defaultValue={0} 
+                                    max={10}
+                                    readOnly
+                                    sx={{
+                                        '& .MuiRating-iconFilled': {
+                                            color: '#fbbf24',
+                                        },
+                                        '& .MuiRating-iconHover': {
+                                            color: '#f59e0b',
+                                        },
+                                        '& .MuiRating-iconEmpty': {
+                                            color: '#ffffff',
+                                        },
+                                    }}
+                                />
+                                
+
+                            </div>
                         </div>
+
+
 
                         {/* Tabs */}
                         <Box sx={{ width: '100%' }}>

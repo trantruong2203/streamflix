@@ -89,10 +89,21 @@ export const watchHistory  = async (account,movie,watchHis,episodeId) => {
             createAt: new Date()
           })
       }
-      console.log("vfdbdb", movie);
-      
       await updateDocument("movies",{ ...movie , viewsCount: movie.viewsCount + 1 });
 };
+
+export const ratingMovie = async (account, movie, rating) => {
+   const checkRating = rating?.find(r => r.accountId === account.id && r.movieId === movie.id)
+   if(checkRating) {
+      await updateDocument("rating", {...checkRating, rating: rating})
+   }else {
+      await addDocument("rating", {
+         accountId: account.id,
+         movieId: movie.id,
+         rating: rating
+      })
+   }
+}
 
 export const checkMovieList = (account, movie, list) => {
    if(!account) return false;

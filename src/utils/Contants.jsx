@@ -95,6 +95,23 @@ export const listMenu = [
 
 ];
 
+export const listMenuClient = [
+    { path: "/", label: "Trang Chủ" },
+    { path: "/main/categories", label: "Thể Loại" },
+    {
+        path: "/main/free-movies",
+        label: "Phim Miễn Phí",
+        children: [
+            { path: "/main/newmovie", label: "Phim Mới" },
+            { path: "/main/free-movie/phim-le", label: "Phim Lẻ" },
+            { path: "/main/free-movie/phim-bo", label: "Phim Bộ" },
+            { path: "/main/free-movie/phim-anime", label: "Phim Anime" },
+        ]
+    },
+    { path: "/main/actors", label: "Hỗ Trợ" },
+    { path: "/main/tim-kiem", label: "Tìm Kiếm" },
+];
+
 export const ROLES = {
     ADMIN: 'admin',        // Quản trị viên cấp cao
     MODERATOR: 'moderator', // Quản trị viên cấp trung (người kiểm duyệt)
