@@ -112,6 +112,21 @@ export const listMenuClient = [
     { path: "/main/tim-kiem", label: "Tìm Kiếm" },
 ];
 
+export const COLORS = [
+    '#0088FE', // Blue
+    '#00C49F', // Teal
+    '#FFBB28', // Yellow
+    '#FF8042', // Orange
+    '#A28FFB', // Lavender
+    '#F765A3', // Pink
+    '#FF6B6B', // Coral
+    '#4CAF50', // Green
+    '#FFD700', // Gold
+    '#8A2BE2', // BlueViolet
+    '#FF4500', // OrangeRed
+    '#20B2AA'  // LightSeaGreen
+  ];
+
 export const ROLES = {
     ADMIN: 'admin',        // Quản trị viên cấp cao
     MODERATOR: 'moderator', // Quản trị viên cấp trung (người kiểm duyệt)

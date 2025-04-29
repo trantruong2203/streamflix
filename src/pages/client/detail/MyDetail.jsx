@@ -204,7 +204,7 @@ function MyDetail() {
                                     name="customized-10" 
                                     defaultValue={0} 
                                     max={10}
-                                    readOnly
+                                    
                                     sx={{
                                         '& .MuiRating-iconFilled': {
                                             color: '#fbbf24',

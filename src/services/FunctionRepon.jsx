@@ -1,4 +1,6 @@
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { addDocument, deleteDocument, updateDocument } from "./firebaseService";
+import { db } from "../config/firebaseconfig";
 
 export const getOjectById = (data, id) => {
    return data?.find(e => e.id === id);
@@ -133,3 +135,36 @@ export const moviesList = async(account, movie, list, notification) => {
       console.error("Error in moviesList:", error);
    }
 };
+
+export async function getSubscriptionsByMonthAndYear(month, year) {
+   try {
+     // Tạo khoảng thời gian bắt đầu và kết thúc
+     const startDate = new Date(year, month - 1, 1); // Ngày đầu tiên của tháng
+     const endDate = new Date(year, month, 1); // Ngày đầu tiên của tháng tiếp theo
+ 
+     // Thực hiện truy vấn
+     const rentalsRef = collection(db, "subscriptions");
+     const q = query(
+       rentalsRef,
+       where("startDate", ">=", startDate),
+       where("startDate", "<", endDate)
+     );
+ 
+     const querySnapshot = await getDocs(q);
+ 
+     if (querySnapshot.empty) {
+       console.log("Không có dữ liệu nào phù hợp.");
+       return [];
+     }
+ 
+     const results = [];
+     querySnapshot.forEach((doc) => {
+       results.push({ id: doc.id, data: doc.data() });
+     });
+ 
+     return results; // Trả về danh sách tài liệu
+   } catch (error) {
+     console.error("Lỗi truy vấn:", error);
+     return []; // Trả về mảng rỗng trong trường hợp có lỗi
+   }
+ }

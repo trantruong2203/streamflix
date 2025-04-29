@@ -54,6 +54,7 @@ function PaymentPage() {
         const startDate = new Date();
         const expiryDate = new Date();
         expiryDate.setMonth(startDate.getMonth() + (parseInt(selectedPlan.time) || 1));
+        const price = totalPriceRef.current;
         const subscriptionData = {
             planId: plan.id,
             packageId: selectedPlan.id,
@@ -62,6 +63,7 @@ function PaymentPage() {
             userId: accountLogin?.id,
             startDate: startDate,
             expiryDate: expiryDate,
+            price : price
         };
 
         const subscriptionExists = subscriptions?.find(sub => sub.userId === accountLogin?.id && sub.planId === plan.id);
