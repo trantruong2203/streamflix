@@ -14,13 +14,14 @@ import PlayMyMovie from '../pages/client/detail/PlayMyMovie';
 import SubcriptionPlan from '../pages/client/vip/SubcriptionPlan';
 import PaymentPage from '../pages/client/vip/PaymentPage';
 import Pay from '../pages/client/vip/Pay';
-import MovieSearch from '../components/MovieSearch';
 import AccountPage from '../pages/client/accountPage/AccountPage';
 import FavoriteMovie from '../pages/client/favorite/FavoriteMovie';
 import AccountInfor from '../pages/client/accountPage/components/AccountInfor';
 import PlanManage from '../pages/client/accountPage/components/PlanManage';
 import RentMovieLibrary from '../pages/client/accountPage/components/RentMovieLibrary';
 import MoviesList from '../pages/client/movieList/MoviesList';
+import ListSeriMovie from '../pages/client/movie theater/ListSeriMovie';
+import ListAnimeMovie from '../pages/client/movie theater/ListAnimeMovie';
 const router = [
     { path: '/', element: <Welcome /> },
     {path: '/main', element: <Main />},
@@ -29,7 +30,8 @@ const router = [
     {path: '/main/rentmovie', element: <RentMovie />},
     {path: '/movie/:slug', element: <MovieDetail />},
     {path: '/play-movie/:slug', element: <PlayMovie />},
-    {path: '/main/movies', element: <ListMovie />},
+    {path: '/main/free-movie/phim-le', element: <ListMovie />},
+    {path: '/main/free-movie/phim-bo', element: <ListSeriMovie />},
     {path: '/main/movies/:id', element: <ListMovieCate />},
     {path: '/main/movies/detail/:id', element: <MyDetail/>},
     {path: '/play-my-movie/:id', element: <PlayMyMovie/>},
@@ -37,7 +39,6 @@ const router = [
     {path: '/payment/:id', element: <PaymentPage/>},
     {path: '/payment/rent-movie/:id', element: <RentMovie/>},
     {path: '/payment/pay/:id', element: <Pay/>},
-    {path: '/main/tim-kiem', element: <MovieSearch />},
     {path: '/main/account', element: <AccountPage/>,
        subRoutes : [
         {path: '/main/account', element: <AccountInfor/>},
@@ -46,7 +47,8 @@ const router = [
        ]
     },
     {path: '/main/account/favorite', element: <FavoriteMovie/>},
-    {path: '/main/account/movieList', element: <MoviesList/>}
+    {path: '/main/account/movieList', element: <MoviesList/>},
+    {path: '/main/free-movie/phim-anime', element: <ListAnimeMovie/>}
     
 ];
 // Recursive function to render both top-level and nested routes

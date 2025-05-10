@@ -9,7 +9,7 @@ function AdminDashboard(props) {
     return (
         <div className='md:flex'>
               <Menu />
-              <Main />
+              <Main  />
         </div>
     );
 }

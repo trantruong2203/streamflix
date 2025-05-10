@@ -95,6 +95,38 @@ export const listMenu = [
 
 ];
 
+export const listMenuClient = [
+    { path: "/", label: "Trang Chủ" },
+    { path: "/main/categories", label: "Thể Loại" },
+    {
+        path: "/main/free-movies",
+        label: "Phim Miễn Phí",
+        children: [
+            { path: "/main/newmovie", label: "Phim Mới" },
+            { path: "/main/free-movie/phim-le", label: "Phim Lẻ" },
+            { path: "/main/free-movie/phim-bo", label: "Phim Bộ" },
+            { path: "/main/free-movie/phim-anime", label: "Phim Anime" },
+        ]
+    },
+    { path: "/main/actors", label: "Hỗ Trợ" },
+    { path: "/main/tim-kiem", label: "Tìm Kiếm" },
+];
+
+export const COLORS = [
+    '#0088FE', // Blue
+    '#00C49F', // Teal
+    '#FFBB28', // Yellow
+    '#FF8042', // Orange
+    '#A28FFB', // Lavender
+    '#F765A3', // Pink
+    '#FF6B6B', // Coral
+    '#4CAF50', // Green
+    '#FFD700', // Gold
+    '#8A2BE2', // BlueViolet
+    '#FF4500', // OrangeRed
+    '#20B2AA'  // LightSeaGreen
+  ];
+
 export const ROLES = {
     ADMIN: 'admin',        // Quản trị viên cấp cao
     MODERATOR: 'moderator', // Quản trị viên cấp trung (người kiểm duyệt)

@@ -1,17 +1,15 @@
-import { Badge, Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+
 import React, { useContext, useState } from 'react';
 import { MoviesContext } from '../../../context/MoviesProvider';
 import { converDescription } from '../../../services/FunctionRepon';
 import { RentMoviesContext } from '../../../context/RentMoviesProvider';
-
+import PiChart from './PiChart';
+import BarChartPlan from './BarChartPlan';
 function Dashboard(props) {
-    const [month, setMonth] = useState('');
-    const [year, setYear] = useState('');
     const movies = useContext(MoviesContext);
     const rentMovies = useContext(RentMoviesContext);
 
-    const currentYear = new Date().getFullYear();
-    const years = Array.from({ length: currentYear - 1999 }, (_, i) => 2000 + i);
+   
 
     const topRentMovies = rentMovies.reduce((acc, rent) => {
         const movieId = rent.movieId;
@@ -35,109 +33,8 @@ function Dashboard(props) {
 
     return (
         <div className='md:grid grid-cols-2 gap-4'>
-            <div>
-                <div className='flex gap-5 items-center border border-black rounded-t-lg p-3'>
-                    <p className='text-lg font-medium'>Số người đăng ký gói</p>
-                    <Box display="flex" gap={2}>
-                        {/* Select tháng */}
-                        <FormControl size="small">
-                            <InputLabel>Tháng</InputLabel>
-                            <Select
-                                value={month}
-                                label="Tháng"
-                                onChange={(e) => setMonth(e.target.value)}
-                                sx={{ 
-                                    minWidth: '120px',
-                                    backgroundColor: 'white'
-                                }}
-                            >
-                                {[...Array(12)].map((_, i) => (
-                                    <MenuItem key={i + 1} value={i + 1}>
-                                        Tháng {i + 1}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-
-                        {/* Select năm */}
-                        <FormControl size="small">
-                            <InputLabel>Năm</InputLabel>
-                            <Select
-                                value={year}
-                                label="Năm"
-                                onChange={(e) => setYear(e.target.value)}
-                                sx={{ 
-                                    minWidth: '120px',
-                                    backgroundColor: 'white'
-                                }}
-                            >
-                                {years.map((y) => (
-                                    <MenuItem key={y} value={y}>
-                                        {y}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Box>
-                </div>
-
-                <div className='border-x border-b border-black rounded-b-lg p-3 h-[300px]' >
-
-                </div>
-            </div>
-
-            <div>
-                <div className='flex gap-5 items-center border border-black rounded-t-lg p-3'>
-                    <p className='text-lg font-medium'>Tổng tiền gói đăng ký
-                    </p>
-                    <Box display="flex" gap={2}>
-                        {/* Select tháng */}
-                        <FormControl size="small">
-                            <InputLabel>Tháng</InputLabel>
-                            <Select
-                                value={month}
-                                label="Tháng"
-                                onChange={(e) => setMonth(e.target.value)}
-                                sx={{ 
-                                    minWidth: '120px',
-                                    backgroundColor: 'white'
-                                }}
-                            >
-                                {[...Array(12)].map((_, i) => (
-                                    <MenuItem key={i + 1} value={i + 1}>
-                                        Tháng {i + 1}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-
-                        {/* Select năm */}
-                        <FormControl size="small">
-                            <InputLabel>Năm</InputLabel>
-                            <Select
-                                value={year}
-                                label="Năm"
-                                onChange={(e) => setYear(e.target.value)}
-                                sx={{ 
-                                    minWidth: '120px',
-                                    backgroundColor: 'white'
-                                }}
-                            >
-                                {years.map((y) => (
-                                    <MenuItem key={y} value={y}>
-                                        {y}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Box>
-                </div>
-
-                <div className='border-x border-b border-black rounded-b-lg p-3 h-[300px]' >
-
-                </div>
-            </div>
-
+              <PiChart />
+              <BarChartPlan />     
             <div className='bg-midnight rounded-lg'>
                 <div className='flex gap-5 items-center border border-white rounded-t-lg p-3 text-white'>
                     <p className='text-lg font-medium'>Top phim được xem nhiều nhất
