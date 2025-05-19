@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Categories from '../pages/admin/categories/Categories';
 import Dashboard from '../pages/admin/dashboard/Dashboard';
@@ -17,6 +16,7 @@ import Package from '../pages/admin/vip/package/Package';
 import Plans from '../pages/admin/vip/plans/Plans';
 import MovieDetail from '../pages/client/detail/MovieDetail';
 
+
 function AdminRouters(props) {
     const router = [
         { path: "/", element: <Dashboard /> },
@@ -32,8 +32,7 @@ function AdminRouters(props) {
         { path: "/vip/feature", element: <Feature /> },
         { path: "/vip/package", element: <Package /> },
         { path: "/vip/plans", element: <Plans /> },
-        
-
+ 
     ]
     return (
         <div>

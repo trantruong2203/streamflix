@@ -19,6 +19,7 @@ function SelectDate({ setMonth, setYear, month, year, title }) {
                                 sx={{ 
                                     minWidth: '120px',
                                     backgroundColor: 'white'
+                                    
                                 }}
                             >
                                 {[...Array(12)].map((_, i) => (
