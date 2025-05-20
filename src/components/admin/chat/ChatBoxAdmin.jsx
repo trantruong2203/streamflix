@@ -5,7 +5,7 @@ import { RiEmotionHappyLine } from 'react-icons/ri';
 import { ChatContext } from '../../../context/ChatProvider';
 import { AccountsContext } from '../../../context/AccountsProvider';
 import { getOjectById } from '../../../services/FunctionRepon';
-import { addDocument } from '../../../services/firebaseService';
+import { addDocument, updateDocument } from '../../../services/firebaseService';
 
 
 function ChatBoxAdmin({ className }) {
@@ -18,22 +18,24 @@ function ChatBoxAdmin({ className }) {
   const [openChat, setOpenChat] = useState(false);
   const accounts = useContext(AccountsContext);
   const [selectedUserId, setSelectedUserId] = useState(null);
-  
+
 
   const handleSend = async (e) => {
     e.preventDefault();
     if (input.trim() === '' || !selectedUserId) return;
-    
+    setInput('');
     // Thêm tin nhắn mới vào Firestore
     await addDocument("messages", {
       text: input,
       role: "admin",
-      receiver: selectedUserId,
+      sender: selectedUserId,
       timestamp: new Date(),
+      status: false
     });
-    
-    setInput('');
+
+
   };
+
 
   // Auto scroll to bottom when new message arrives
   useEffect(() => {
@@ -42,33 +44,53 @@ function ChatBoxAdmin({ className }) {
 
   // Xử lý danh sách người dùng để chat
   useEffect(() => {
-      const data = [] ;
-      chatContent.map(item => {
-          const check = data.findIndex(i => i.sender === item.sender) ;
-          if(check === -1) {
-              data.push(item);
-          }else {
-             if(item.timestamp > data[check].timestamp) {
-                data[check] = item ;
-             }
-          }
-      })
-      setUserChat(data.sort((a, b) => b.timestamp - a.timestamp));
+    const data = [];
+    chatContent.map(item => {
+      const check = data.findIndex(i => i.sender === item.sender);
+      if (check === -1) {
+        data.push(item);
+      } else {
+        if (item.timestamp > data[check].timestamp) {
+          data[check] = item;
+        }
+      }
+    })
+    setUserChat(data.sort((a, b) => b.timestamp - a.timestamp));
   }, [chatContent]);
+
+  const searchUser = userChat.filter((item) =>
+    getOjectById(accounts, item.sender)?.useName?.toLowerCase().includes(search.toLowerCase())
+  );
 
   // Lọc tin nhắn khi chọn người dùng
   useEffect(() => {
     if (selectedUserId) {
-      const userMessages = chatContent.filter(msg => 
-        (msg.sender === selectedUserId && msg.role === "user") || 
-        (msg.receiver === selectedUserId && msg.role === "admin")
+      const userMessages = chatContent.filter(msg =>
+        (msg.sender === selectedUserId && msg.role === "user") ||
+        (msg.sender === selectedUserId && msg.role === "admin")
       );
       setMessages(userMessages.sort((a, b) => a.timestamp - b.timestamp));
     } else {
       setMessages([]);
     }
   }, [selectedUserId, chatContent]);
+  useEffect(() => {
+    updateStatus();
+  }, [selectedUserId, chatContent]);
 
+  const updateStatus = async () => {
+ 
+    const chatRef = chatContent.filter(item => item.sender === selectedUserId && item.role === "user");
+    await Promise.all(chatRef.map(async (item) => {
+      await updateDocument("messages", {
+        ...item,
+        status: true
+      });
+    }));
+  };
+
+  
+  
 
   return (
     <div >
@@ -104,26 +126,27 @@ function ChatBoxAdmin({ className }) {
                 </div>
               </div>
               <div className="flex-1 overflow-y-auto">
-                {userChat.map(user => {
+                {searchUser.map(user => {
                   const userAccount = getOjectById(accounts, user.sender);
                   if (!userAccount) return null;
-                  
+
                   return (
                     <div
                       key={user.sender}
                       onClick={() => setSelectedUserId(user.sender)}
-                      className={`flex gap-3 items-center p-3 cursor-pointer transition-colors ${
-                        selectedUserId === user.sender
-                          ? 'bg-blue-50/80'
-                          : 'hover:bg-blue-50/40'
-                      }`}
+                      className={`flex gap-3 items-center p-3 cursor-pointer transition-colors ${selectedUserId === user.sender
+                        ? 'bg-blue-50/80'
+                        : 'hover:bg-blue-50/40'
+                        }`}
                     >
                       <img className='w-10 h-10 rounded-full' src={userAccount.imgUrl} alt="" />
                       <div>
                         <div className={`font-semibold text-gray-800`}>
                           {userAccount.useName}
                         </div>
-                        <div className="text-xs text-gray-600">{user.text}</div>
+                        <div className={user.status === false ? "text-black font-semibold" : "text-gray-500"}>
+                          {user.text || "Chưa có tin nhắn"}
+                        </div>
                       </div>
                     </div>
                   );
@@ -142,13 +165,18 @@ function ChatBoxAdmin({ className }) {
                   messages.map((msg, idx) => (
                     <div
                       key={idx}
-                      className={`flex ${msg.role === "admin" ? 'justify-end' : 'justify-start'} mb-2.5`}
+                      className={`flex ${msg.role === "admin" ? 'justify-end' : 'justify-start'} mb-2.5 gap-2`}
                     >
+
+                      {msg.role === "user" ? (
+                        <div className='w-7 h-7 rounded-full flex items-end mt-4.5'>
+                          <img src={getOjectById(accounts, msg.sender)?.imgUrl} alt="" className='w-full h-full rounded-full' />
+                        </div>
+                      ) : ""}
                       <div
-                        className={`py-2 px-3.5 rounded-2xl max-w-[220px] shadow-sm ${
-                          msg.role === "admin"
-                            ? 'bg-blue-500 text-white'
-                            : 'bg-white text-gray-800'
+                        className={`py-2 px-3.5 rounded-2xl max-w-[220px] shadow-sm ${msg.role === "admin"
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-white text-gray-800'
                           }`}
                       >
                         {msg.text}
