@@ -24,6 +24,7 @@ import { MovieListProvider } from './context/MovieListProvider.jsx';
 import { WatchHistoryProvider } from './context/WatchHistoryProvider.jsx';
 import { CommentsProvider } from './context/CommentsProvider.jsx';
 import { RepCommentProvider } from './context/RepCommentProvider.jsx';
+import { ChatProvider } from './context/ChatProvider.jsx';
 const providers = [
   AccountsProvider,
   CategoriesProvider,
@@ -44,7 +45,8 @@ const providers = [
   MovieListProvider,
   WatchHistoryProvider,
   CommentsProvider,
-  RepCommentProvider
+  RepCommentProvider,
+  ChatProvider,
 ];
 const ProviderWrapper = ({ children }) => {
   return providers.reduceRight(

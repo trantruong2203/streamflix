@@ -11,7 +11,6 @@ export const addDocument = async (collectionName, values) => {
       const imgUrl = await uploadImageToCloudinary(values.imgUrl, collectionName);
       values.imgUrl = imgUrl;
     }
-
     // Thêm document vào Firestore
     const docRef = await addDoc(collection(db, collectionName), values);
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { FaStar, FaPlay, FaPlus, FaHeart } from 'react-icons/fa';
 import { MdAttachMoney } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,6 +7,10 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
+import { ContextAuth } from '../../../context/AuthProvider';
+import { FavoritesContext } from '../../../context/FavoritesProvider';
+import { useNotification } from '../../../context/NotificationProvide';
+import { checkFavoriteMovie, getFavoriteMovie } from '../../../services/FunctionRepon';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -45,6 +49,9 @@ function MovieDetail(props) {
     const [error, setError] = useState(null);
     const [episodes, setEpisodes] = useState([]);
     const [value, setValue] = useState(0);
+    const { accountLogin } = useContext(ContextAuth);
+    const favorites = useContext(FavoritesContext);
+    const notification = useNotification();
 
     useEffect(() => {
         const fetchMovie = async () => {
@@ -121,9 +128,24 @@ function MovieDetail(props) {
                     >
                         <FaPlay />Xem ngay
                     </button>
-                    <div className='cursor-pointer hover:text-amber-300 transition-all duration-300 flex items-center gap-2'>
-                        <FaHeart className="text-center" />
-                        <span>Yêu thích</span>
+                    <div 
+                        onClick={() => {
+                            if (!accountLogin) {
+                                notification("Vui lòng đăng nhập để thực hiện chức năng này", "error");
+                                return;
+                            }
+                            const movieData = {
+                                id: movie.slug,
+                                name: movie.name,
+                                thumb_url: movie.thumb_url,
+                                poster_url: movie.poster_url
+                            };
+                            getFavoriteMovie(accountLogin, movieData, favorites, notification);
+                        }}
+                        className='cursor-pointer hover:text-amber-300 transition-all duration-300 flex items-center gap-2'
+                    >
+                        <FaHeart className={checkFavoriteMovie(accountLogin, {id: movie?.slug}, favorites) ? "text-red-600" : ""} />
+                        <span>{checkFavoriteMovie(accountLogin, {id: movie?.slug}, favorites) ? "Bỏ Yêu thích" : "Yêu thích"}</span>
                     </div>
                     <div className='cursor-pointer hover:text-amber-300 transition-all duration-300 flex items-center gap-2'>
                         <FaPlus className="text-center" />
