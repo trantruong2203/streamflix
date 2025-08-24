@@ -1,5 +1,5 @@
 import { Button, Paper, Table, TableCell, TableContainer, TableHead, TableRow, TableBody, Avatar, TablePagination, Popper, ClickAwayListener, Tooltip, IconButton, CircularProgress } from '@mui/material';
-import React, { useContext, useState, useMemo, useCallback } from 'react';
+import React, { useContext, useState  } from 'react';
 import { MoviesContext } from '../../../../context/MoviesProvider';
 import { AuthorsContext } from '../../../../context/AuthorsProvider';
 import { ContextCategories } from '../../../../context/CategoriesProvider';
@@ -27,7 +27,6 @@ function TableMovie({ handleEdit, page, find, setPage }) {
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedCategories, setSelectedCategories] = useState([]);
-    const [selectedEntities, setSelectedEntities] = useState([]);
 
     //Hiển thị thông báo thà
     const showNotification = useNotification();
@@ -89,15 +88,6 @@ function TableMovie({ handleEdit, page, find, setPage }) {
         '&:hover': {
             transform: 'scale(1.05)',
             boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
-        }
-    };
-
-    const iconStyles = {
-        fontSize: '1.2rem',
-        transition: 'all 0.3s ease',
-        '&:hover': {
-            transform: 'scale(1.1)',
-            color: '#1976d2'
         }
     };
 

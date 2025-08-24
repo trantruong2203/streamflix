@@ -14,10 +14,10 @@ import { Route, Routes } from 'react-router-dom';
 import Trailer from '../pages/admin/media_management/trailer/Trailer.jsx';
 import Package from '../pages/admin/vip/package/Package';
 import Plans from '../pages/admin/vip/plans/Plans';
-import MovieDetail from '../pages/client/detail/MovieDetail';
 
 
-function AdminRouters(props) {
+
+function AdminRouters() {
     const router = [
         { path: "/", element: <Dashboard /> },
         { path: "/categories", element: <Categories /> },

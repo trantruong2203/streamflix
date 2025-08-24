@@ -71,15 +71,6 @@ function ModalAddMovie({ open, handleClose, handleChoose, movie, handleSelect, s
         return Object.keys(newErrors).length === 0;
     };
 
-    const validationCate = () => {
-        const newErrors = {};
-        if (movie.listCate.length === 0) {
-            newErrors.listCate = "At least one category is required";
-        }
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    }
-
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -211,7 +202,7 @@ function ModalAddMovie({ open, handleClose, handleChoose, movie, handleSelect, s
                             <div className='flex flex-wrap gap-2 mt-2'>
 
                                 <div className='flex flex-wrap gap-2 mt-2'>
-                                    {movie.listCate?.map((element, index) => (
+                                    {movie.listCate?.map((element) => (
                                         <div
                                             className='relative'>
                                             <DeleteIcon onClick={() => handleSelect(element, "categories")}
@@ -272,7 +263,7 @@ function ModalAddMovie({ open, handleClose, handleChoose, movie, handleSelect, s
                         <div className='mt-3'>
                             <h1 onClick={() => handleChoose("characters")} className='flex cursor-pointer font-bold gap-2 hover:text-blue-600 items-center'>Characters <MdSupervisedUserCircle /></h1>
                             <div className='flex gap-3 mt-2'>
-                                {movie.listCharacter?.map((element, index) => (
+                                {movie.listCharacter?.map((element) => (
                                     <div className='relative'>
                                         <DeleteIcon onClick={() => handleSelect(element, "characters")}
                                             sx={{

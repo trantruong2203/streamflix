@@ -23,7 +23,7 @@ const inner = {
     imgUrl: logo,
     imgBanner: logo
 };
-function Movie(props) {
+function Movie() {
     const [openAddMovie, setOpenAddMovie] = useState(false);
     const [openModalChoose, setOpenModalChoose] = useState(false);
     const [movie, setMovie] = useState(inner);

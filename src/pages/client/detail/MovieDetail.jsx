@@ -41,7 +41,7 @@ function a11yProps(index) {
     };
 }
 
-function MovieDetail(props) {
+function MovieDetail() {
     const navigate = useNavigate();
     const { slug } = useParams();
     const [movie, setMovie] = useState(null);
@@ -192,7 +192,7 @@ function MovieDetail(props) {
                                             {server.server_data && server.server_data.map((episode, epIndex) => (
                                                 <button
                                                     key={epIndex}
-                                                    onClick={() => navigate(`/play-movie/${movie.slug}?ep=${episode.slug}`)}
+                                                    onClick={() => navigate(`/play-movie/${movie.slug}?ep=${episode.server_data.slug}`)}
                                                     className="bg-gray-700 hover:bg-gray-600 p-2 rounded text-sm transition-colors"
                                                 >
                                                     {episode.name}

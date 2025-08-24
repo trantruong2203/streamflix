@@ -5,7 +5,7 @@ import { ContextCategories } from '../../../context/CategoriesProvider';
 import { getOjectById } from '../../../services/FunctionRepon';
 import SlideShowCategory from '../../../components/client/slideshow/SlideShowCategory';
 
-function ListMovieCate(props) {
+function ListMovieCate() {
     const { id } = useParams();
     const movies = useContext(MoviesContext);
     const category = useContext(ContextCategories);

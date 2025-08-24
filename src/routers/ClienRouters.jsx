@@ -60,7 +60,7 @@ function renderRoutes(routeArray) {
     ));
 }
 
-function ClienRouters(props) {
+function ClienRouters() {
     return (
         <div>
             <Routes>

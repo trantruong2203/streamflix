@@ -13,7 +13,7 @@ function FogotPassword({ setForgot }) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [confirmCode, setConfirmCode] = useState("");
     const [userInputCode, setUserInputCode] = useState("");
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(   null);
     const [resetPassword, setResetPassword] = useState(false);
 
     const showNotification = useNotification();

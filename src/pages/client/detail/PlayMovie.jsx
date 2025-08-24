@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { checkFavoriteMovie, checkMovieList, getFavoriteMovie, moviesList } from '../../../services/FunctionRepon';
 import { Rating, Typography } from '@mui/material';
@@ -12,6 +12,7 @@ import Comment from '../../../components/client/Comment/Comment';
 
 function PlayMovie() {
     const { slug } = useParams();
+    const [searchParams] = useSearchParams();
     const [movies, setMovies] = useState(null);
     const [selectedServer, setSelectedServer] = useState(0);
     const [selectedEpisode, setSelectedEpisode] = useState(0);
@@ -25,14 +26,40 @@ function PlayMovie() {
             try {
                 const response = await axios.get(`https://phimapi.com/phim/${slug}`);
                 setMovies(response.data);
-                setSelectedEpisode(0);
+                
+                // Lấy tham số ep từ URL
+                const episodeSlug = searchParams.get('ep');
+                if (episodeSlug && response.data.episodes) {
+                    // Tìm server và episode tương ứng với slug
+                    let foundServer = 0;
+                    let foundEpisode = 0;
+                    
+                    for (let serverIndex = 0; serverIndex < response.data.episodes.length; serverIndex++) {
+                        const server = response.data.episodes[serverIndex];
+                        if (server.server_data) {
+                            for (let episodeIndex = 0; episodeIndex < server.server_data.length; episodeIndex++) {
+                                const episode = server.server_data[episodeIndex];
+                                if (episode.server_data && episode.server_data.slug === episodeSlug) {
+                                    foundServer = serverIndex;
+                                    foundEpisode = episodeIndex;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    setSelectedServer(foundServer);
+                    setSelectedEpisode(foundEpisode);
+                } else {
+                    setSelectedEpisode(0);
+                }
             } catch (error) {
                 console.error("Lỗi khi lấy dữ liệu phim:", error);
             }
         };
 
         fetchMovieData();
-    }, [slug]);
+    }, [slug, searchParams]);
 
     if (!movies) {
         return <div className="flex items-center justify-center min-h-screen text-white text-lg">Đang tải...</div>;
@@ -48,7 +75,8 @@ function PlayMovie() {
     };
 
     const handleEpisodeChange = (e) => {
-        setSelectedEpisode(parseInt(e.target.value));
+        const episodeIndex = parseInt(e.target.value);
+        setSelectedEpisode(episodeIndex);
         smoothScrollToTop(1000);
     };
 
@@ -209,7 +237,7 @@ function PlayMovie() {
                             key={index}
                             value={index}
                             onClick={handleEpisodeChange}
-                            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 ${episode.id === selectedEpisode.id
+                            className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 ${index === selectedEpisode
                                 ? 'bg-yellow-400 text-gray-900'
                                 : 'bg-tahiti hover:bg-gray-700'
                                 }`}

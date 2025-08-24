@@ -4,7 +4,7 @@ import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
-function ListMovie(props) {
+function ListMovie() {
     const navigate = useNavigate();
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -17,7 +17,7 @@ function ListMovie(props) {
             try {
                 setLoading(true);
                 const response = await axios.get(`https://phimapi.com/v1/api/danh-sach/phim-bo?page=${page}&limit=24`);
-                if (response.data.status === "success") {
+                if (response.data.status) {
                     setMovies(response.data.data.items);
                     setTotalPages(response.data.data.params.pagination.totalPages || 1);
                 } else {

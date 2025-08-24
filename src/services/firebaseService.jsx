@@ -1,5 +1,4 @@
-import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc, onSnapshot, query, where, setDoc, getDoc, writeBatch } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import { collection, addDoc, doc, deleteDoc, updateDoc, onSnapshot, writeBatch } from "firebase/firestore";
 import { db } from "../config/firebaseconfig";
 import { deleteImageFromCloudinary, uploadImageToCloudinary } from "../config/cloudinaryConfig";
 

@@ -1,19 +1,18 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
 import { Skeleton } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { MoviesContext } from '../../../context/MoviesProvider';
 import { ContextCategories } from '../../../context/CategoriesProvider';
 
-function ListMovieCate(props) {
+function ListMovieCate() {
     const navigate = useNavigate();
     const { id } = useParams();
    const movies = useContext(MoviesContext);
    const category = useContext(ContextCategories);
     const [movieByCate, setMovieByCate] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error] = useState(null);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 

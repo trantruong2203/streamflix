@@ -9,6 +9,7 @@ import { FaUser } from "react-icons/fa";
 import SearchMovie from "./SearchMovie";
 import { listMenuClient } from "../../utils/Contants";
 import { IoIosSearch } from "react-icons/io";
+import SearchApiMovies from "./SearchApiMovies";
 
 function Header({ handleLogin }) {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -75,7 +76,8 @@ function Header({ handleLogin }) {
                     </Link>
 
                     <div className="hidden lg:block">
-                        <SearchMovie movies={movies} />
+                        {/* <SearchMovie movies={movies} /> */}
+                        <SearchApiMovies />
                     </div>
                 </div>
 

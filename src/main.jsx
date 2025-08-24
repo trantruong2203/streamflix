@@ -25,6 +25,7 @@ import { WatchHistoryProvider } from './context/WatchHistoryProvider.jsx';
 import { CommentsProvider } from './context/CommentsProvider.jsx';
 import { RepCommentProvider } from './context/RepCommentProvider.jsx';
 import { ChatProvider } from './context/ChatProvider.jsx';
+import { SearchAPIProvider } from './context/SearchAPIProvider.jsx';
 const providers = [
   AccountsProvider,
   CategoriesProvider,
@@ -47,6 +48,7 @@ const providers = [
   CommentsProvider,
   RepCommentProvider,
   ChatProvider,
+  SearchAPIProvider,
 ];
 const ProviderWrapper = ({ children }) => {
   return providers.reduceRight(

@@ -8,11 +8,10 @@ import { addDocument } from '../../../services/firebaseService';
 import { getOjectById } from '../../../services/FunctionRepon';
 import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
 
-function RepComment({ open, commentId, setOpen, openRep, closeRep }) {
+function RepComment({ open, commentId, setOpen, openRep }) {
     const [reply, setReply] = useState("");
     const { accountLogin } = useContext(ContextAuth);
     const accounts = useContext(AccountsContext)
-    const movies = useContext(MoviesContext);
     const repComments = useContext(RepCommentContext);
 
     const handleSubmit = async () => {

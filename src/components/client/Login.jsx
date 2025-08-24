@@ -30,6 +30,7 @@ const Login = ({ open, handleClose, handleSignup }) => {
   const showNotification = useNotification();
   const [error, setError] = useState("");
   const [forgot, setForgot] = useState(false);
+  
   const handleInput = (e) => {
     setAccount({ ...account, [e.target.name]: e.target.value });
   };

@@ -7,7 +7,7 @@ import { FaCaretRight } from "react-icons/fa6";
 import { listMenu } from '../../utils/Contants';
 import logo from "../../assets/DeWatermark.ai_1742354548201-removebg-preview.png";
 import { Link } from 'react-router-dom';
-function Menu(props) {
+function Menu() {
     const [show, setShow] = useState("");
     const [showMenu, setShowMenu] = useState(false);
     const handleShow = (id) => {
