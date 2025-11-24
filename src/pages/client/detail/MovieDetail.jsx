@@ -192,7 +192,7 @@ function MovieDetail() {
                                             {server.server_data && server.server_data.map((episode, epIndex) => (
                                                 <button
                                                     key={epIndex}
-                                                    onClick={() => navigate(`/play-movie/${movie.slug}?ep=${episode.server_data.slug}`)}
+                                                    onClick={() => navigate(`/play-movie/${movie.slug}?ep=${episode.slug}`)}
                                                     className="bg-gray-700 hover:bg-gray-600 p-2 rounded text-sm transition-colors"
                                                 >
                                                     {episode.name}
