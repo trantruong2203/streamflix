@@ -7,7 +7,7 @@ import { Typography } from '@mui/material';
 import { WatchHistoryContext } from '../../../context/WatchHistoryProvider';
 import { ContextAuth } from '../../../context/AuthProvider';
 
-function MoviesList(props) {
+function MoviesList() {
     const movieList = useContext(MovieListContext);
     const navigate = useNavigate();
     const movies = useContext(MoviesContext);

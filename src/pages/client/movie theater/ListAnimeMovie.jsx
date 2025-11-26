@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CircularProgress } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 function ListMovie() {
@@ -11,12 +11,22 @@ function ListMovie() {
     const [error, setError] = useState(null);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const { typeList } = useParams();
+    const API_BASE_URL_V1 = import.meta.env.VITE_API_BASE_URL_V1;
+    const limit = 24;
+
 
     useEffect(() => {
         const fetchMovies = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`https://phimapi.com/v1/api/danh-sach/hoat-hinh?page=${page}&limit=24&country=nhat-ban`);
+                const response = await axios.get(`${API_BASE_URL_V1}${typeList}`, {
+                    params: {
+                        page: page,
+                        limit: limit
+                    }
+                });
+                
                 if (response.data.status) {
                     setMovies(response.data.data.items);
                     setTotalPages(response.data.data.params.pagination.totalPages || 1);
@@ -32,7 +42,7 @@ function ListMovie() {
         };
 
         fetchMovies();
-    }, [page]);
+    }, [page, API_BASE_URL_V1, typeList]);
 
     if (error) {
         return (

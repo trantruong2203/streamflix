@@ -13,7 +13,6 @@ export const fetchDataFromAPI = async (apiUrl) => {
     }
 };
 
-// Hàm lưu dữ liệu vào Firebase
 export const saveDataToFirebase = async (collectionName, data) => {
     try {
         // Kiểm tra xem collection đã tồn tại chưa
