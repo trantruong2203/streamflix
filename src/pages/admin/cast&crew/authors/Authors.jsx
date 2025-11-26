@@ -5,7 +5,7 @@ import ModalAuthor from '../authors/ModalAuthor'
 import logo from "../../../../assets/DeWatermark.ai_1742354548201-removebg-preview.png"
 
 const inner = {name: "", description: "", imgUrl : logo};
-function Authors(props) {
+function Authors() {
 const [open, setOpen] = useState(false);
 const [author, setAuthor] = useState(inner);
 const [ error, setError] = useState({});

@@ -6,7 +6,7 @@ import ModalAddMultipleActors from './ModalAddMultipleActors';
 import logo from "../../../../assets/DeWatermark.ai_1742354548201-removebg-preview.png"
 const inner = {name: "", description: "", imgUrl : logo};
 
-function Actors(props) {
+function Actors() {
     const [open, setOpen] = useState(false);
     const [openMultiple, setOpenMultiple] = useState(false);
     const [actor, setActor] = useState(inner);

@@ -1,12 +1,11 @@
 import { Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { useNotification } from '../../../../context/NotificationProvide';
 import { MoviesContext } from '../../../../context/MoviesProvider';
 import { addDocument, updateDocument } from '../../../../services/firebaseService';
 
 function ModalEpisodes({ open, handleClose, setEpisode, episode, errors, setErrors }) {
     const movie = useContext(MoviesContext);
-    const [idMovie, setIdMovie] = useState("");
 
     const handleInput = (e) => {
         setEpisode({ ...episode, [e.target.name]: e.target.value });
@@ -65,7 +64,7 @@ function ModalEpisodes({ open, handleClose, setEpisode, episode, errors, setErro
                         label="idMovie"
                         error={!!errors.idMovie}
                         helperText={errors.idMovie}
-                        value={movie.find((item) => item.id === idMovie)}
+                        value={movie.find((item) => item.id === episode.idMovie)}
                          />}
 
                     />

@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import MainHeader from '../../../../components/admin/MainHeader';
 import ModalEpisodes from './ModalEpisodes';
 import TableEpisodes from './TableEpisodes';
 
 const inner = { episodesNumber: "", episodesUrl: "", idMovie: "" }
-function Episodes(props) {
+function Episodes() {
 
     const [open, setOpen] = useState(false);
     const [episode, setEpisode] = useState(inner);

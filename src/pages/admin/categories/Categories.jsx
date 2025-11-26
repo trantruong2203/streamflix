@@ -4,7 +4,7 @@ import TableCategory from './TableCategory';
 import MainHeader from '../../../components/admin/MainHeader';
 
 const inner = {name : "", description : ""}
-function Categories(props) {
+function Categories() {
     const [open, setOpen] = useState(false);
     const [category, setCategory] = useState(inner);
     const [errors, setErrors] = useState({});

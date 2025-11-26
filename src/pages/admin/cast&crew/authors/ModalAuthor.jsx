@@ -17,7 +17,7 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
   });
 
-function ModalAuthor({ handleClose, open, author, setAuthor, error, setError, handleEdit }) {
+function ModalAuthor({ handleClose, open, author, setAuthor, error, setError }) {
 
     const showNotification = useNotification();
     const handleInput = (e) => {

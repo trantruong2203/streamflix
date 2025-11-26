@@ -33,6 +33,7 @@ function ModalAddMultipleActors({ open, handleClose }) {
                 } catch (error) {
                     setErrors('File JSON không hợp lệ');
                     setJsonData('');
+                    console.log(error);
                 }
             };
             reader.readAsText(file);

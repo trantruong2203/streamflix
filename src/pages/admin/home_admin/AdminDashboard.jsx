@@ -5,7 +5,7 @@ import ChatBoxAdmin from '../../../components/admin/chat/ChatBoxAdmin';
 
 
 
-function AdminDashboard(props) {
+function AdminDashboard() {
     return (
         <div className='md:flex'>
               <Menu />
