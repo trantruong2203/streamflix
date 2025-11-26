@@ -11,18 +11,51 @@ function ListMovie() {
     const [error, setError] = useState(null);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    const { typeList } = "phim-moi-cap-nhat-v2";
+    const END_POINT = "danh-sach/";
+    const limit = 24
+    const [sortType, setSortType] = useState('');
+    const [sortLang, setSortLang] = useState('');
+    const [category, setCategory] = useState('');
+    const [country, setCountry] = useState('');
+    const [year, setYear] = useState('');
+    const [sortField, setSortField] = useState('');
+
+    const filterParams = {
+        sort_field: sortField,
+        sort_type: sortType,
+        sort_lang: sortLang,
+        category: category,
+        country: country,
+        year: year,
+        limit: limit
+    };
 
     useEffect(() => {
         const fetchMovies = async () => {
+            if (!typeList) {
+                console.warn("typeList is missing, skipping fetch.");
+                setLoading(false);
+                return;
+            }
             try {
                 setLoading(true);
-                const response = await axios.get(`https://phimapi.com/v1/api/danh-sach/phim-le?page=${page}&limit=18`);
+                const queryParams = new URLSearchParams({
+                    ...Object.fromEntries(Object.entries(filterParams).filter(([, value]) => value !== '')),
+                    page: page,
+                }).toString();
+                const url = `${API_BASE_URL}${END_POINT}${typeList}?${queryParams}`;
+                const response = await axios.get(url);
+                console.log('URL:', url);
+                console.log('response.data:', response.data);
                 if (response.data.status) {
-                    setMovies(response.data.data.items);
-                    setTotalPages(response.data.data.params.pagination.totalPages || 1);
+                    setMovies(response.data.items);
+                    setTotalPages(response.data.pagination.totalPages);
                 } else {
-                    setError(response.data.msg || 'Không thể tải dữ liệu phim');
+                    setError(response.data.msg);
                 }
+
             } catch (err) {
                 setError('Có lỗi xảy ra khi tải dữ liệu. Vui lòng thử lại sau.');
                 console.error(err);
@@ -32,7 +65,19 @@ function ListMovie() {
         };
 
         fetchMovies();
-    }, [page]);
+    }, [page, API_BASE_URL, sortField, sortType, sortLang, category, country, year, typeList]);
+
+    // Hàm xử lý sự kiện khi người dùng chọn một category mới
+    const handleCategoryChange = (e) => {
+        const newCategory = e.target.value;
+        setCategory(newCategory);
+        setPage(1);
+    };
+
+    const handleSortFieldChange = (e) => {
+        setSortField(e.target.value);
+        setPage(1);
+    };
 
     if (error) {
         return (
@@ -75,7 +120,7 @@ function ListMovie() {
                                     }}
                                 >
                                     <img
-                                        src={`https://phimimg.com/${movie.poster_url}`}
+                                        src={movie.thumb_url}
                                         alt={movie.name}
                                         className="w-full h-[280px] object-cover"
                                         onError={(e) => {
