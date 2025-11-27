@@ -22,6 +22,9 @@ import RentMovieLibrary from '../pages/client/accountPage/components/RentMovieLi
 import MoviesList from '../pages/client/movieList/MoviesList';
 import ListSeriMovie from '../pages/client/movie theater/ListSeriMovie';
 import ListAnimeMovie from '../pages/client/movie theater/ListAnimeMovie';
+import Search from '../pages/client/Search';
+import FAQ from '../pages/client/support/FAQ';
+import { Navigate } from 'react-router-dom';
 const router = [
     { path: '/', element: <Welcome /> },
     {path: '/main', element: <Main />},
@@ -48,6 +51,9 @@ const router = [
     },
     {path: '/main/account/favorite', element: <FavoriteMovie/>},
     {path: '/main/account/movieList', element: <MoviesList/>},
+    {path: '/main/tim-kiem', element: <Search/>},
+    {path: '/main/support', element: <FAQ/>},
+    {path: '/main/free-movies', element: <Navigate to="/main/free-movie/phim-le" replace />},
     
     
 ];

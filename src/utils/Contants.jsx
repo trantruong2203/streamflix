@@ -110,8 +110,8 @@ export const listMenuClient = [
             {path: "/main/free-movie/phim-long-tieng", label: "Phim Lồng Tiếng"},
         ]
     },
-    { path: "/main/free-movie/phim-moi-cap-nhat-v2", label: "Phim Mới" },
-    { path: "/main/actors", label: "Hỗ Trợ" },
+    { path: "/main/list-movie/phim-moi-cap-nhat-v2", label: "Phim Mới" },
+    { path: "/main/support", label: "Hỗ Trợ" },
     { path: "/main/tim-kiem", label: "Tìm Kiếm" },
 ];
 

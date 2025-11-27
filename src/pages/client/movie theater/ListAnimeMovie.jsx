@@ -3,6 +3,7 @@ import axios from 'axios';
 import { CircularProgress } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { listMenuClient } from '../../../utils/Contants';
 
 function ListMovie() {
     const navigate = useNavigate();
@@ -14,6 +15,19 @@ function ListMovie() {
     const { typeList } = useParams();
     const API_BASE_URL_V1 = import.meta.env.VITE_API_BASE_URL_V1;
     const limit = 24;
+
+    const getLabelFromTypeList = (type) => {
+        for (const item of listMenuClient) {
+            if (item.path.includes(type)) return item.label;
+            if (item.children) {
+                const child = item.children.find(c => c.path.includes(type));
+                if (child) return child.label;
+            }
+        }
+        return type; // Fallback to slug if not found
+    };
+
+    const titleLabel = getLabelFromTypeList(typeList);
 
 
     useEffect(() => {
@@ -61,7 +75,7 @@ function ListMovie() {
 
     return (
         <div className="p-5 max-w-7xl mx-auto py-20">
-            <h1 className="text-3xl font-bold text-center text-emerald-50 mb-8">Phim Anime</h1>
+            <h1 className="text-3xl font-bold text-center text-emerald-50 mb-8">{titleLabel}</h1>
             {loading ?
                 <div className="w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh] xl:h-[90vh] flex items-center justify-center bg-gray-900 text-white">
                     <div className="flex flex-col items-center gap-4">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CircularProgress } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 function ListMovie() {
@@ -12,7 +12,7 @@ function ListMovie() {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-    const { typeList } = "phim-moi-cap-nhat-v2";
+    const { typeList } = useParams();
     const END_POINT = "danh-sach/";
     const limit = 24
     const [sortType, setSortType] = useState('');
@@ -45,7 +45,7 @@ function ListMovie() {
                     ...Object.fromEntries(Object.entries(filterParams).filter(([, value]) => value !== '')),
                     page: page,
                 }).toString();
-                const url = `${API_BASE_URL}${END_POINT}${typeList}?${queryParams}`;
+                const url = `${API_BASE_URL}${typeList}?${queryParams}`;
                 const response = await axios.get(url);
                 console.log('URL:', url);
                 console.log('response.data:', response.data);
