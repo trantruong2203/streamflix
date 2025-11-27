@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useMovie } from '../../../hooks/useMovie';
+import { useMovie } from '../../../hooks/useListMovie';
 import FilterBar from '../../../components/client/movie/FilterBar';
 import MovieList from '../../../components/client/movie/MovieList';
 import Pagination from '../../../components/client/movie/Pagination';

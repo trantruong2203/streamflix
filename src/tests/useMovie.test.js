@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import axios from 'axios';
-import { useMovie } from '../hooks/useMovie';
+import { useMovie } from '../hooks/useListMovie';
 
 jest.mock('axios');
 

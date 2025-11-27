@@ -45,6 +45,8 @@ function MovieDetail() {
     const navigate = useNavigate();
     const { slug } = useParams();
     const [movie, setMovie] = useState(null);
+    const URL_API_MOVIE = import.meta.env.VITE_API_BASE_URL_MOVIE;
+    
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [episodes, setEpisodes] = useState([]);
@@ -56,11 +58,11 @@ function MovieDetail() {
     useEffect(() => {
         const fetchMovie = async () => {
             try {
-                const response = await axios.get(`https://phimapi.com/phim/${slug}`);
-                console.log('API Response:', response.data);
+                const response = await axios.get(`${URL_API_MOVIE}${slug}`);
 
                 if (response.data && response.data.movie) {
                     setMovie(response.data.movie);
+                    setEpisodes(response.data.episodes || []);
                 } else {
                     throw new Error('Dữ liệu phim không hợp lệ');
                 }
@@ -72,29 +74,21 @@ function MovieDetail() {
             }
         };
 
-        const fetchEpisodes = async () => {
-            try {
-                const response = await axios.get(`https://phimapi.com/phim/${slug}`);
-                if (response.data && response.data.episodes) {
-                    setEpisodes(response.data.episodes);
-                } else {
-                    setEpisodes([]);
-                }
-            } catch (err) {
-                console.error('Error fetching episodes:', err);
-                setEpisodes([]);
-            }
-        };
-
         if (slug) {
             fetchMovie();
-            fetchEpisodes();
         }
-    }, [slug]);
+    }, [slug, URL_API_MOVIE]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    const convertYoutubeUrl = (url) => {
+    if (!url) return "";
+
+    const videoId = new URL(url).searchParams.get("v");
+    return `https://www.youtube.com/embed/${videoId}`;
+};
 
     if (loading) return <div className="text-white text-center py-8">Đang tải...</div>;
     if (error) return <div className="text-red-500 text-center py-8">{error}</div>;
@@ -236,7 +230,7 @@ function MovieDetail() {
                         <div className="flex justify-center items-center">
                             {movie.trailer_url ? (
                                 <iframe
-                                    src={movie.trailer_url}
+                                    src={convertYoutubeUrl(movie.trailer_url)}
                                     title="Trailer"
                                     width="100%"
                                     height="400px"
