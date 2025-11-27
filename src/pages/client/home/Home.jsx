@@ -5,7 +5,7 @@ import ClienRouters from '../../../routers/ClienRouters';
 import Signup from '../../../components/client/Signup';
 import Login from '../../../components/client/Login';
 import ChatBoxClient from '../../../components/admin/chat/ChatBoxClient';
-function Home(props) {
+function Home() {
      const [openLogin, setOpenLogin] = useState(false);
      const [openSignup, setOpenSignup] = useState(false);
      

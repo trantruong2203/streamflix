@@ -1,6 +1,6 @@
 import React from 'react';
 
-function CardItem(props) {
+function CardItem() {
     return (
         <div>
             

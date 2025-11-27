@@ -4,7 +4,6 @@ import Main from '../pages/client/main/Main';
 import { Route, Routes } from 'react-router-dom';
 import RentMovie from '../pages/client/vip/RentMovie';
 import Categories from '../pages/client/categories/Categories';
-import NewMovie from '../pages/client/newmovie/NewMovie';
 import MovieDetail from '../pages/client/detail/MovieDetail';
 import PlayMovie from '../pages/client/detail/PlayMovie';
 import ListMovie from '../pages/client/movie theater/ListMovie';
@@ -26,7 +25,6 @@ const router = [
     { path: '/', element: <Welcome /> },
     {path: '/main', element: <Main />},
     {path: '/main/categories', element: <Categories />},
-    {path: '/main/newmovie', element: <NewMovie />},
     {path: '/main/rentmovie', element: <RentMovie />},
     {path: '/movie/:slug', element: <MovieDetail />},
     {path: '/play-movie/:slug', element: <PlayMovie />},

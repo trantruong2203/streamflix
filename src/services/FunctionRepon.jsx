@@ -1,6 +1,7 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { addDocument, deleteDocument, updateDocument } from "./firebaseService";
 import { db } from "../config/firebaseconfig";
+import { listMenuClient } from "../utils/Contants";
 
 export const getOjectById = (data, id) => {
    return data?.find(e => e.id === id);
@@ -168,3 +169,15 @@ export async function getSubscriptionsByMonthAndYear(month, year) {
      return []; // Trả về mảng rỗng trong trường hợp có lỗi
    }
  }
+
+ export const getLabelFromTypeList = (slug) => {
+
+    const menuItems = listMenuClient.find(item => item.label === "Phim Miễn Phí")?.children || [];
+
+    // 2. Tìm kiếm (Magic is here)
+    // Logic: Tìm thằng nào mà cái đường dẫn (path) của nó KẾT THÚC bằng cái slug mày đang có
+    const foundItem = menuItems.find(item => item.path.endsWith(`/${slug}`));
+
+    // 3. Trả về kết quả
+    return foundItem ? foundItem.label : 'Danh Sách Phim';
+};
