@@ -98,22 +98,56 @@ export const listMenu = [
 export const listMenuClient = [
     { path: "/", label: "Trang Chủ" },
     { path: "/main/categories", label: "Thể Loại" },
+    { path: "/main/list-movie/phim-moi-cap-nhat-v2", label: "Phim Mới" },
     {
-        path: "/main/free-movies",
         label: "Phim Miễn Phí",
         children: [
             { path: "/main/free-movie/phim-le", label: "Phim Lẻ" },
             { path: "/main/free-movie/phim-bo", label: "Phim Bộ" },
-            { path: "/main/free-movie/phim-anime", label: "Phim Anime" },
+            { path: "/main/free-movie/hoat-hinh", label: "Phim Anime" },
             { path: "/main/free-movie/tv-shows", label: "TV Shows" },
-            {path: "/main/free-movie/phim-thuyet-minh", label: "Phim Thuyết Minh"},
-            {path: "/main/free-movie/phim-long-tieng", label: "Phim Lồng Tiếng"},
+            { path: "/main/free-movie/phim-thuyet-minh", label: "Phim Thuyết Minh" },
+            { path: "/main/free-movie/phim-long-tieng", label: "Phim Lồng Tiếng" },
         ]
     },
-    { path: "/main/list-movie/phim-moi-cap-nhat-v2", label: "Phim Mới" },
-    { path: "/main/support", label: "Hỗ Trợ" },
+    { path: "/main/actors", label: "Hỗ Trợ" },
     { path: "/main/tim-kiem", label: "Tìm Kiếm" },
 ];
+
+// constants.js hoặc để đầu file component
+export const FILTER_OPTIONS = {
+  sort_lang: [
+    { value: '', label: 'Tất cả ngôn ngữ' },
+    { value: 'vietsub', label: 'Vietsub' },
+    { value: 'thuyet-minh', label: 'Thuyết Minh' },
+    { value: 'long-tieng', label: 'Lồng Tiếng' },
+  ],
+  sort_field: [
+    { value: 'modified.time', label: 'Thời gian cập nhật' },
+    { value: 'year', label: 'Năm phát hành' },
+    { value: '_id', label: 'ID Phim' },
+  ],
+  sort_type: [
+    { value: 'asc', label: 'Tăng dần' },
+    { value: 'desc', label: 'Giảm dần' },
+  ],
+  countries: [
+    { value: '', label: 'Tất cả quốc gia' },
+    { value: 'trung-quoc', label: 'Trung Quốc' },
+    { value: 'han-quoc', label: 'Hàn Quốc' },
+    { value: 'au-my', label: 'Âu Mỹ' },
+    { value: 'nhat-ban', label: 'Nhật Bản' },
+    { value: 'hong-kong', label: 'Hồng Kông' },
+    { value: 'viet-nam', label: 'Việt Nam' },
+  ],
+  years: [
+        { value: '', label: 'Tất cả năm' },
+        { value: '2024', label: '2024' },
+        { value: '2023', label: '2023' },
+        { value: '2022', label: '2022' },
+        { value: '2021', label: '2021' },
+    ]
+};
 
 export const COLORS = [
     '#0088FE', // Blue
@@ -128,7 +162,7 @@ export const COLORS = [
     '#8A2BE2', // BlueViolet
     '#FF4500', // OrangeRed
     '#20B2AA'  // LightSeaGreen
-  ];
+];
 
 export const ROLES = {
     ADMIN: 'admin',        // Quản trị viên cấp cao

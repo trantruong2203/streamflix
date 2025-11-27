@@ -24,37 +24,46 @@ function Header({ handleLogin }) {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const MenuList = ({ className = "flex items-center" }) => {
-        return (
-            <ul className={`${className} text-white gap-5 font-sans`}>
-                {listMenuClient.map(({ path, label, children }) => (
-                    <li key={path} className="relative group">
-                        <Link
-                            to={path}
-                            className="hover:text-yellow-400 cursor-pointer transition-all duration-300"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                            {label}
-                        </Link>
-                        {children && (
-                            <div className="absolute left-0 top-full bg-gray-800 min-w-[200px] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                                {children.map((child) => (
-                                    <Link
-                                        key={child.path}
-                                        to={child.path}
-                                        className="block px-4 py-2 text-white hover:bg-gray-700 hover:text-yellow-400 transition-all duration-300"
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                    >
-                                        {child.label}
-                                    </Link>
-                                ))}
-                            </div>
-                        )}
-                    </li>
-                ))}
-            </ul>
-        );
-    };
+const MenuList = ({ className = "flex items-center", setIsMobileMenuOpen }) => {
+
+    if (!listMenuClient) return null;
+
+    return (
+        <ul className={`${className} text-white gap-5 font-sans`}>
+            {listMenuClient?.map(({ path, label, children }) => (
+                <li key={path} className="relative group">
+                    <Link
+                        to={path}
+                        className="hover:text-yellow-400 cursor-pointer transition-all duration-300 block py-2" // Thêm block py-2 để tăng diện tích bấm
+                        onClick={() => {
+                            if (setIsMobileMenuOpen) setIsMobileMenuOpen(false);
+                        }}
+                    >
+                        {label}
+                        {children && <span className="ml-1 text-xs">▼</span>}
+                    </Link>
+
+                    {children && (
+                        <div className="absolute left-0 top-full bg-gray-800 min-w-[200px] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                            {children.map((child) => (
+                                <Link
+                                    key={child.path} 
+                                    to={child.path}
+                                    className="block px-4 py-2 text-white hover:bg-gray-700 hover:text-yellow-400 transition-all duration-300"
+                                    onClick={() => {
+                                        if (setIsMobileMenuOpen) setIsMobileMenuOpen(false);
+                                    }}
+                                >
+                                    {child.label}
+                                </Link>
+                            ))}
+                        </div>
+                    )}
+                </li>
+            ))}
+        </ul>
+    );
+};
 
     return (
         <>
