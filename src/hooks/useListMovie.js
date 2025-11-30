@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL_V1;
-const endPoint = 'danh-sach/';
 const MOVIES_PER_PAGE = 24;
 
 const initialFilters = {
@@ -34,7 +33,7 @@ export function useMovie(typeList) {
             );
 
             const queryParams = new URLSearchParams(cleanFilters).toString();
-            const url = `${API_BASE_URL}${endPoint}${typeList}?${queryParams}&limit=${MOVIES_PER_PAGE}`;
+            const url = `${API_BASE_URL}${typeList}?${queryParams}&limit=${MOVIES_PER_PAGE}`;
 
             const response = await axios.get(url);
 
