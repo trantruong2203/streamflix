@@ -10,6 +10,7 @@ function ListMovie() {
     const navigate = useNavigate();
     const { typeList } = useParams();
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    const endPoint = 'danh-sach/';
 
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -27,7 +28,7 @@ function ListMovie() {
             
             try {
 
-                const url = `${API_BASE_URL}${typeList}?limit=${limit}`;
+                const url = `${API_BASE_URL}${endPoint}${typeList}?limit=${limit}`;
 
                 const response = await axios.get(url);
                 
@@ -48,7 +49,7 @@ function ListMovie() {
         };
 
         fetchMovies();
-    }, [typeList, API_BASE_URL]);
+    }, [typeList, API_BASE_URL, endPoint]);
 
     const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {
