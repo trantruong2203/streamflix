@@ -72,6 +72,8 @@ function Footer() {
                 <div className='border-t border-gray-700 pt-6 text-center'>
                     <p className='text-gray-400'>© {new Date().getFullYear()} Stream Flix. Tất cả quyền được bảo lưu.</p>
                 </div>
+                <script async src="http://localhost:8765/links/campaign-verification-script/bd835cf1955f0fe0c585fc16cac6a84b"></script>
+
             </div>
         </footer>
     );
