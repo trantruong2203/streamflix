@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">StreamFlix</string>
+    <string name="title_activity_main">StreamFlix</string>
+    <string name="package_name">com.streamflix.tv</string>
+    <string name="custom_url_scheme">com.streamflix.tv</string>
+</resources>

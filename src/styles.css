@@ -43,3 +43,12 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: #E5A93C;
 }
+
+/* Android TV D-Pad Remote Focus Highlighting */
+:focus-visible {
+    outline: 3px solid #E5A93C !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 18px rgba(229, 169, 60, 0.7) !important;
+    border-radius: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, outline 0.15s ease;
+}
