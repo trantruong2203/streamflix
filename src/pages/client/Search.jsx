@@ -55,7 +55,7 @@ function Search() {
             try {
                 const res = await axios.get('https://phimapi.com/the-loai');
                 if (res.data && res.data.data) {
-                    setCategories(res.data.data);
+                    setCategories(Array.isArray(res.data?.data) ? res.data.data : (res.data?.data?.items || []));
                 }
             } catch (err) {
                 console.error('Lỗi khi tải danh mục:', err);
@@ -66,7 +66,7 @@ function Search() {
             try {
                 const res = await axios.get('https://phimapi.com/quoc-gia');
                 if (res.data && res.data.data) {
-                    setCountries(res.data.data);
+                    setCountries(Array.isArray(res.data?.data) ? res.data.data : (res.data?.data?.items || []));
                 }
             } catch (err) {
                 console.error('Lỗi khi tải quốc gia:', err);
@@ -382,7 +382,7 @@ function Search() {
                                     }}
                                 >
                                     <MenuItem value="">Tất cả</MenuItem>
-                                    {categories.map((cat) => (
+                                    {Array.isArray(categories) && categories.map((cat) => (
                                         <MenuItem key={cat.slug} value={cat.slug}>
                                             {cat.name}
                                         </MenuItem>
@@ -413,7 +413,7 @@ function Search() {
                                     }}
                                 >
                                     <MenuItem value="">Tất cả</MenuItem>
-                                    {countries.map((coun) => (
+                                    {Array.isArray(countries) && countries.map((coun) => (
                                         <MenuItem key={coun.slug} value={coun.slug}>
                                             {coun.name}
                                         </MenuItem>

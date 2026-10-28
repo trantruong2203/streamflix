@@ -42,7 +42,7 @@ function FavoriteMovie(props) {
                         const internalMovie = getOjectById(movies, item.movieId);
                         const movieTitle = internalMovie?.name || item.name || 'Phim đã lưu';
                         const imgSrc = internalMovie?.imgUrl || item.poster_url || item.thumb_url || '/src/assets/avg001.jpg';
-                        
+
                         return (
                             <div
                                 key={item.id}
