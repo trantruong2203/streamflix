@@ -20,7 +20,7 @@ function Footer() {
     ];
 
     return (
-        <footer className='bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white p-8 md:p-12'>
+        <footer className='bg-stone-950 text-stone-300 border-t border-stone-800/90 p-8 md:p-12'>
             <div className='container mx-auto'>
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-8 mb-8'>
                     {/* Logo và Social Links */}
@@ -35,7 +35,7 @@ function Footer() {
                                     href={social.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className='hover:text-blue-400 transform hover:scale-110 transition-all duration-300'
+                                    className='hover:text-amber-400 transform hover:scale-110 transition-all duration-300'
                                 >
                                     {social.icon}
                                 </a>
@@ -45,7 +45,7 @@ function Footer() {
 
                     {/* Menu Links */}
                     <div className='flex flex-col items-center md:items-start space-y-3'>
-                        <h3 className='text-xl font-bold mb-2 text-blue-400'>Liên kết nhanh</h3>
+                        <h3 className='text-xl font-bold mb-2 text-amber-400 font-serif'>Liên kết nhanh</h3>
                         {menuLinks.map((link, index) => (
                             <Link 
                                 key={index}
@@ -59,7 +59,7 @@ function Footer() {
 
                     {/* Description */}
                     <div className='text-center md:text-left'>
-                        <h3 className='text-xl font-bold mb-2 text-blue-400'>Về StreamFlix</h3>
+                        <h3 className='text-xl font-bold mb-2 text-amber-400 font-serif'>Về StreamFlix</h3>
                         <p className='text-gray-300 text-sm leading-relaxed'>
                             Stream Flix – Phim hay cả rổ - Trang xem phim online chất lượng cao miễn phí Vietsub, 
                             thuyết minh, lồng tiếng full HD. Kho phim mới khổng lồ, phim chiếu rạp, phim bộ, 

@@ -1,22 +1,19 @@
 import React from 'react';
 import CardMovie from './cardMovie';
-import { useNavigate } from 'react-router-dom';
 
 const MovieList = ({ movies }) => {
-    const navigate = useNavigate();
-
-    if (movies.length === 0) {
+    if (!movies || movies.length === 0) {
         return (
-            <div className="col-span-full text-center text-gray-400 py-10">
-                Không tìm thấy phim nào phù hợp với bộ lọc.
+            <div className="col-span-full text-center text-stone-400 py-16 bg-stone-900/50 rounded-xl border border-stone-800 my-6">
+                <p className="text-sm font-mono">Không tìm thấy phim nào phù hợp với bộ lọc đã chọn.</p>
             </div>
         );
     }
 
     return (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3 sm:gap-4 mb-8">
             {movies.map((movie) => (
-                <CardMovie movie={movie} key={movie._id} navigate={navigate} />
+                <CardMovie movie={movie} key={movie._id || movie.slug} />
             ))}
         </div>
     );

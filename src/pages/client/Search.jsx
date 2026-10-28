@@ -205,7 +205,7 @@ function Search() {
                                             borderColor: 'rgba(255, 255, 255, 0.5)',
                                         },
                                         '&.Mui-focused fieldset': {
-                                            borderColor: '#3b82f6',
+                                            borderColor: '#e5a93c',
                                         },
                                         '& input': {
                                             color: 'white',
@@ -225,7 +225,9 @@ function Search() {
                                 onClick={handleSearch}
                                 disabled={!keyword.trim()}
                                 sx={{
-                                    backgroundColor: '#3b82f6',
+                                    backgroundColor: '#e5a93c',
+                                    color: '#18181b',
+                                    fontWeight: 'bold',
                                     '&:hover': {
                                         backgroundColor: '#2563eb',
                                     },
@@ -433,12 +435,16 @@ function Search() {
                                     min={1970}
                                     max={new Date().getFullYear()}
                                     sx={{
-                                        color: '#3b82f6',
+                                        color: '#e5a93c',
                                         '& .MuiSlider-thumb': {
-                                            backgroundColor: '#3b82f6',
+                                            backgroundColor: '#e5a93c',
+                                    color: '#18181b',
+                                    fontWeight: 'bold',
                                         },
                                         '& .MuiSlider-track': {
-                                            backgroundColor: '#3b82f6',
+                                            backgroundColor: '#e5a93c',
+                                    color: '#18181b',
+                                    fontWeight: 'bold',
                                         },
                                     }}
                                 />
@@ -470,7 +476,7 @@ function Search() {
                     <Box className="mb-6">
                         {loading ? (
                             <Box className="flex justify-center items-center py-8">
-                                <CircularProgress sx={{ color: '#3b82f6' }} />
+                                <CircularProgress sx={{ color: '#e5a93c' }} />
                                 <Typography className="ml-3 text-white">Đang tìm kiếm...</Typography>
                             </Box>
                         ) : (
@@ -515,7 +521,7 @@ function Search() {
                                                                 <Chip 
                                                                     label={movie.lang} 
                                                                     size="small" 
-                                                                    className="bg-blue-600 text-white"
+                                                                    className="bg-stone-800 text-amber-300 font-mono border border-amber-500/30"
                                                                 />
                                                             )}
                                                             {movie.quality && (
@@ -532,7 +538,7 @@ function Search() {
                                         ))}
                                     </Grid>
                                 ) : (
-                                    <Alert severity="info" className="bg-blue-900 text-white">
+                                    <Alert severity="info" className="bg-stone-900 text-stone-200 border border-stone-800">
                                         Không tìm thấy kết quả nào cho "{keyword}". Hãy thử từ khóa khác hoặc điều chỉnh bộ lọc.
                                     </Alert>
                                 )}
@@ -554,7 +560,9 @@ function Search() {
                                 '& .MuiPaginationItem-root': {
                                     color: 'white',
                                     '&.Mui-selected': {
-                                        backgroundColor: '#3b82f6',
+                                        backgroundColor: '#e5a93c',
+                                    color: '#18181b',
+                                    fontWeight: 'bold',
                                     },
                                 },
                             }}

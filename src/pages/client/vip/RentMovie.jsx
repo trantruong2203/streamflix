@@ -1,9 +1,9 @@
-import { Badge } from '@mui/material';
 import React, { useContext, useEffect } from 'react';
 import { MoviesContext } from '../../../context/MoviesProvider';
-import { data, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getOjectById } from '../../../services/FunctionRepon';
 import { PlansContext } from '../../../context/PlansProvider';
+import { FaTicketAlt, FaFilm } from 'react-icons/fa';
 
 function RentMovie(props) {
     const { id } = useParams();
@@ -12,6 +12,7 @@ function RentMovie(props) {
     const [choosePlan, setChoosePlan] = React.useState(null);
     const [planShow, setPlanShow] = React.useState([]);
     const navigate = useNavigate();
+
     useEffect(() => {
         const movie = getOjectById(movies, id);
         if (movie) {
@@ -21,43 +22,99 @@ function RentMovie(props) {
         } else {
             setPlanShow([]);
         }
-    },[id, movies, plans]);
+    }, [id, movies, plans]);
 
-    const handleChoosePlan = (planId) => {
-       choosePlan == id ?  navigate(`/payment/pay/${id}`)  : navigate(`/payment/${choosePlan}`); 
-    }
+    const movie = getOjectById(movies, id);
+
+    const handleConfirm = () => {
+        if (!choosePlan) return;
+        choosePlan === id ? navigate(`/payment/pay/${id}`) : navigate(`/payment/${choosePlan}`);
+    };
+
     return (
-        <div className='min-h-screen py-25 bg-gradient-to-br from-gray-50 to-gray-100'>
+        <div className='min-h-screen pt-24 pb-16 bg-stone-950 text-stone-100'>
             <div className='max-w-md mx-auto px-4'>
-                <div className='font-bold text-2xl max-w-xl mx-auto text-center border-b border-black pb-2'>
-                    Phương thức thanh toán
+                <div className="text-center mb-6">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[10px] font-mono tracking-widest uppercase bg-stone-900 text-amber-400 border border-amber-500/30 mb-2">
+                        <FaTicketAlt className="text-[9px]" />
+                        TICKET BOX
+                    </span>
+                    <h1 className='font-bold text-2xl font-serif text-stone-100 tracking-tight'>
+                        Thuê Phim Lẻ Trực Tuyến
+                    </h1>
                 </div>
-                <div className='text-center font-semibold text-blue-600 text-sm mt-4'>Bạn đang chọn thuê phim</div>
-                <div onClick={() => setChoosePlan(id)} className={`flex justify-between items-center mt-4 bg-white p-4 rounded-lg shadow-md ${choosePlan === id ? "border-2 border-blue-600" : ""}`}>
-                    <div className='text-lg font-semibold'>{getOjectById(movies, id)?.name}</div>
-                    <div className='text-lg font-semibold'>{parseInt(getOjectById(movies, id)?.rentalPrice).toLocaleString('vi-VN')} <sup>đ</sup></div>
-                </div>
-                <div className='text-center font-semibold text-blue-600 text-sm mt-4'>Tiết kiệm hơn với combo</div>
-                {planShow.sort((a,b) => a.level - b.level).map((item, index) => (
-                    <Badge onClick={() => setChoosePlan(item.id)} badgeContent={"Lựa chọn tốt nhất"} key={index} color="primary" className={`rounded-lg cursor-pointer mt-4 ${choosePlan === item.id ? "border-2 border-blue-600" : ""}`}>
-                    <div className='p-4 bg-white rounded-lg shadow-md '>
-                        <div className='flex justify-between items-center'>
-                            <div className='text-lg font-semibold'>Gói {item.title}</div>
-                            <div className='text-lg font-semibold'>{parseInt(item.PricePerMonth).toLocaleString('vi-VN')} <sup>đ</sup></div>
-                        </div>
-                        <div className='text-sm text-gray-600 space-y-1 mt-2'>
-                            <p>Thời hạn 1 tháng, gia hạn tự động.</p>
-                            <p>Đã bao gồm phim bạn đang chọn thuê.</p>
-                            <p>Xem phim không giới hạn với hơn 10.000 giờ nội dung đặc sắc.</p>
+
+                {/* Movie rental ticket card */}
+                <div 
+                    onClick={() => setChoosePlan(id)} 
+                    className={`p-4 rounded-xl cursor-pointer border transition-all shadow-md ${
+                        choosePlan === id 
+                            ? 'bg-stone-900 border-amber-500 shadow-amber-500/10' 
+                            : 'bg-stone-900/60 border-stone-800 hover:border-amber-500/40'
+                    }`}
+                >
+                    <div className="text-[10px] font-mono text-amber-400 uppercase tracking-widest mb-1">
+                        Gói thuê phim đơn lẻ
+                    </div>
+                    <div className='flex justify-between items-center'>
+                        <div className='text-base font-semibold text-stone-200 truncate pr-2'>{movie?.name}</div>
+                        <div className='text-lg font-bold font-mono text-amber-400 whitespace-nowrap'>
+                            {parseInt(movie?.rentalPrice || 0).toLocaleString('vi-VN')}đ
                         </div>
                     </div>
-                </Badge>       
-                ))}
-               
-                    <button onClick={handleChoosePlan} className='w-full bg-blue-600 text-white p-3 rounded-full mt-4'>Thanh toán</button>
-                    <div className='text-center text-sm text-blue-600 mt-4'>Xem kho phim và thanh toán sau</div>
+                    <p className="text-xs text-stone-400 font-mono mt-1">Thời hạn xem trong 48 giờ sau khi thanh toán.</p>
+                </div>
+
+                {/* Upsell to monthly plans */}
+                {planShow.length > 0 && (
+                    <div className="mt-8">
+                        <div className='text-xs font-mono uppercase tracking-widest text-stone-400 mb-3 text-center'>
+                            Hoặc nâng cấp gói hội viên tháng (Tiết kiệm hơn)
+                        </div>
+
+                        <div className="space-y-3">
+                            {planShow.sort((a,b) => a.level - b.level).map((item) => (
+                                <div 
+                                    key={item.id}
+                                    onClick={() => setChoosePlan(item.id)}
+                                    className={`p-4 rounded-xl cursor-pointer border transition-all shadow-md ${
+                                        choosePlan === item.id 
+                                            ? 'bg-stone-900 border-amber-500 shadow-amber-500/10' 
+                                            : 'bg-stone-900/60 border-stone-800 hover:border-amber-500/40'
+                                    }`}
+                                >
+                                    <div className='flex justify-between items-center'>
+                                        <div className='text-base font-semibold text-stone-200 font-serif'>Gói {item.title}</div>
+                                        <div className='text-lg font-bold font-mono text-amber-400'>
+                                            {parseInt(item.PricePerMonth).toLocaleString('vi-VN')}đ
+                                            <span className="text-xs text-stone-400 font-sans font-normal">/tháng</span>
+                                        </div>
+                                    </div>
+                                    <div className='text-xs text-stone-400 space-y-0.5 mt-2 font-light'>
+                                        <p>• Thời hạn 1 tháng, xem không giới hạn toàn bộ kho phim.</p>
+                                        <p>• Bao gồm cả bộ phim bạn đang chọn thuê.</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Continue button */}
+                <div className='mt-8'>
+                    <button
+                        onClick={handleConfirm}
+                        disabled={!choosePlan}
+                        className={`w-full py-3 rounded-md font-mono uppercase tracking-wider text-xs font-bold transition-all shadow-lg cursor-pointer ${
+                            choosePlan 
+                                ? 'bg-amber-500 hover:bg-amber-400 text-stone-950 shadow-amber-500/20' 
+                                : 'bg-stone-800 text-stone-500 cursor-not-allowed'
+                        }`}
+                    >
+                        Tiếp tục thanh toán →
+                    </button>
+                </div>
             </div>
-            <div className='text-center text-sm text-gray-600 mt-4'>Chất lượng hình ảnh phụ thuộc vào dịch vụ internet và khả năng thiết bị của bạn. Không phải nội dung nào cũng xem được ở chế độ HD (720p), Full HD (1080p), Ultra HD (4K).</div>
         </div>
     );
 }

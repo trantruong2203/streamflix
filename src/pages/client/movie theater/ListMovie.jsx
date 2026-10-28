@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { CircularProgress } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import {FILTER_OPTIONS} from '../../../utils/Contants';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import CardMovie from '../../../components/client/movie/cardMovie';
 
 function ListMovie() {
@@ -19,7 +18,7 @@ function ListMovie() {
     const limit = 24;
     const [page, setPage] = useState(1);
 
-     useEffect(() => {
+    useEffect(() => {
         const fetchMovies = async () => {
             if (!typeList) return;
 
@@ -27,15 +26,13 @@ function ListMovie() {
             setError(null);
             
             try {
-
-                const url = `${API_BASE_URL}${endPoint}${typeList}?limit=${limit}`;
-
+                const url = `${API_BASE_URL}${endPoint}${typeList}?page=${page}&limit=${limit}`;
                 const response = await axios.get(url);
                 
                 if (response.data.status) {
-                    setMovies(response.data.items);
-                    setTotalPages(response.data.pagination.totalItems > 0 
-                        ? Math.ceil(response.data.pagination.totalItems / 24) 
+                    setMovies(response.data.items || []);
+                    setTotalPages(response.data.pagination?.totalItems > 0 
+                        ? Math.ceil(response.data.pagination.totalItems / limit) 
                         : 1);
                 } else {
                     setError('Không tải được dữ liệu');
@@ -49,7 +46,7 @@ function ListMovie() {
         };
 
         fetchMovies();
-    }, [typeList, API_BASE_URL, endPoint]);
+    }, [typeList, page, API_BASE_URL, endPoint]);
 
     const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {
@@ -58,54 +55,74 @@ function ListMovie() {
         }
     };
 
-    if (error) {
-        return <div className="text-center text-red-500 mt-10">{error}</div>;
+    if (error && (!movies || movies.length === 0)) {
+        return (
+            <div className="w-full min-h-screen pt-28 text-center text-stone-400">
+                <p className="font-mono text-sm mb-4">{error}</p>
+                <button 
+                    onClick={() => window.location.reload()}
+                    className="px-4 py-2 bg-amber-500 text-stone-950 rounded font-mono font-bold text-xs"
+                >
+                    Thử lại
+                </button>
+            </div>
+        );
     }
 
     return (
-        <div className="p-5 max-w-7xl mx-auto py-20 min-h-screen">
-            <h1 className="text-3xl font-bold text-center text-emerald-400 mb-8 uppercase">
-               Phim Mới Cập Nhật
-            </h1>
+        <div className="w-full min-h-screen px-3 sm:px-6 md:px-10 pt-24 pb-16 bg-stone-950 text-stone-100">
+            <div className="text-center mb-8">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[10px] font-mono tracking-widest uppercase bg-stone-900 text-amber-400 border border-amber-500/30 mb-2">
+                    STREAMFLIX VAULT • CẬP NHẬT MỚI
+                </span>
+                <h1 className="text-3xl sm:text-4xl font-bold font-serif text-stone-100 tracking-tight">
+                    Phim Mới Cập Nhật
+                </h1>
+            </div>
 
-            {/* --- PHẦN DANH SÁCH PHIM --- */}
             {loading ? (
-                <div className="flex flex-col items-center justify-center h-64">
-                    <CircularProgress size={60} sx={{ color: '#fbbf24' }} />
-                    <p className="mt-4 text-yellow-400">Đang tải dữ liệu...</p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3 sm:gap-4">
+                    {[...Array(16)].map((_, i) => (
+                        <div key={i} className="animate-pulse">
+                            <div className="aspect-[2/3] w-full bg-stone-800/60 rounded-md border border-stone-700/40"></div>
+                            <div className="h-4 bg-stone-800 rounded w-3/4 mt-2"></div>
+                        </div>
+                    ))}
                 </div>
             ) : (
                 <>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
-                        {movies.length > 0 ? movies.map((movie) => (
-                            <CardMovie movie={movie} key={movie._id} navigate={navigate} />
-                        )) : (
-                            <div className="col-span-full text-center text-gray-400 py-10">
-                                Không tìm thấy phim nào phù hợp với bộ lọc.
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3 sm:gap-4 mb-8">
+                        {movies.length > 0 ? (
+                            movies.map((movie) => (
+                                <CardMovie movie={movie} key={movie._id || movie.slug} />
+                            ))
+                        ) : (
+                            <div className="col-span-full text-center text-stone-400 py-16 bg-stone-900/40 rounded-xl border border-stone-800 font-mono text-xs">
+                                Không tìm thấy phim nào trong danh sách.
                             </div>
                         )}
                     </div>
 
-                    {movies.length > 0 && (
-                        <div className="flex justify-center items-center gap-4 mt-8">
+                    {totalPages > 1 && (
+                        <div className="flex justify-center items-center gap-3 mt-10">
                             <button
                                 onClick={() => handlePageChange(page - 1)}
                                 disabled={page === 1}
-                                className="p-3 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 disabled:bg-gray-700 disabled:cursor-not-allowed transition-all"
+                                className="w-10 h-10 rounded-full bg-stone-900 border border-stone-800 text-amber-400 hover:bg-amber-500 hover:text-stone-950 disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center justify-center cursor-pointer shadow-md"
                             >
-                                <FaArrowLeft />
+                                <FaChevronLeft className="text-xs" />
                             </button>
 
-                            <span className="text-white px-4 py-2 bg-gray-800 rounded-lg border border-gray-700">
-                                Trang <strong className="text-emerald-400">{page}</strong> / {totalPages}
+                            <span className="text-stone-300 px-4 py-2 bg-stone-900/90 rounded-md border border-stone-800 font-mono text-xs tracking-wider">
+                                Trang <strong className="text-amber-400 font-bold">{page}</strong> / {totalPages}
                             </span>
 
                             <button
                                 onClick={() => handlePageChange(page + 1)}
                                 disabled={page === totalPages}
-                                className="p-3 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 disabled:bg-gray-700 disabled:cursor-not-allowed transition-all"
+                                className="w-10 h-10 rounded-full bg-stone-900 border border-stone-800 text-amber-400 hover:bg-amber-500 hover:text-stone-950 disabled:opacity-30 disabled:cursor-not-allowed transition-all flex items-center justify-center cursor-pointer shadow-md"
                             >
-                                <FaArrowRight />
+                                <FaChevronRight className="text-xs" />
                             </button>
                         </div>
                     )}

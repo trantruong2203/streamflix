@@ -29,12 +29,12 @@ const MenuList = ({ className = "flex items-center", setIsMobileMenuOpen }) => {
     if (!listMenuClient) return null;
 
     return (
-        <ul className={`${className} text-white gap-5 font-sans`}>
+        <ul className={`${className} text-stone-200 gap-6 font-mono text-xs uppercase tracking-wider`}>
             {listMenuClient?.map(({ path, label, children }) => (
                 <li key={path || label} className="relative group">
                     <Link
                         to={path || "#"}
-                        className="hover:text-yellow-400 cursor-pointer transition-all duration-300 block py-2" // Thêm block py-2 để tăng diện tích bấm
+                        className="hover:text-amber-400 cursor-pointer transition-all duration-300 block py-2" // Thêm block py-2 để tăng diện tích bấm
                         onClick={() => {
                             if (setIsMobileMenuOpen) setIsMobileMenuOpen(false);
                         }}
@@ -44,12 +44,12 @@ const MenuList = ({ className = "flex items-center", setIsMobileMenuOpen }) => {
                     </Link>
 
                     {children && (
-                        <div className="absolute left-0 top-full bg-gray-800 min-w-[200px] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                        <div className="absolute left-0 top-full bg-stone-900 border border-stone-800 min-w-[200px] rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 overflow-hidden py-1">
                             {children.map((child) => (
                                 <Link
                                     key={child.path || child.label} 
                                     to={child.path}
-                                    className="block px-4 py-2 text-white hover:bg-gray-700 hover:text-yellow-400 transition-all duration-300"
+                                    className="block px-4 py-2 text-stone-300 hover:bg-stone-800 hover:text-amber-400 transition-all duration-200 text-xs font-mono"
                                     onClick={() => {
                                         if (setIsMobileMenuOpen) setIsMobileMenuOpen(false);
                                     }}
@@ -105,7 +105,7 @@ const MenuList = ({ className = "flex items-center", setIsMobileMenuOpen }) => {
                     <div className="hidden lg:flex items-center gap-3">
                         <Link
                             to="/main/vip"
-                            className={`text-white p-2 bg-yellow-500 rounded-full px-5 hover:bg-amber-300 cursor-pointer transition-all duration-100 ${accountLogin ? 'block' : 'hidden'}`}
+                            className={`text-stone-950 font-mono text-xs font-bold uppercase tracking-wider py-2 px-5 bg-amber-500 rounded-md hover:bg-amber-400 cursor-pointer transition-all shadow-md ${accountLogin ? 'block' : 'hidden'}`}
                         >
                             Đăng ký gói
                         </Link>
@@ -115,7 +115,7 @@ const MenuList = ({ className = "flex items-center", setIsMobileMenuOpen }) => {
                         ) : (
                             <button
                                 onClick={handleLogin}
-                                className="flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-amber-500 text-black px-5 py-2 rounded-md font-medium cursor-pointer hover:shadow-lg hover:from-amber-500 hover:to-yellow-400 transition-all duration-300 transform hover:scale-105"
+                                className="flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-stone-950 px-4 py-2 rounded-md font-mono text-xs uppercase tracking-wider font-bold cursor-pointer transition-all shadow-md hover:shadow-amber-500/20"
                             >
                                 <FaUser className="text-sm" />
                                 <span>Đăng Nhập / Đăng Ký</span>
