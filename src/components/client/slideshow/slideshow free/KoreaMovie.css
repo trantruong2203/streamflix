@@ -1,105 +1,57 @@
-/* Custom styles for KoreaMovie component */
+/* Custom retro-neutral styles for movie sliders */
+.retro-swiper,
 .movie-swiper {
-    padding: 20px 0;
+    padding: 10px 0 20px 0 !important;
 }
 
+.retro-swiper .swiper-button-next,
+.retro-swiper .swiper-button-prev,
 .movie-swiper .swiper-button-next,
 .movie-swiper .swiper-button-prev {
     color: #f59e0b;
-    background: rgba(0, 0, 0, 0.7);
-    width: 40px;
-    height: 40px;
+    background: rgba(24, 24, 27, 0.88);
+    backdrop-filter: blur(4px);
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    transition: all 0.3s ease;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    top: 45%;
 }
 
+.retro-swiper .swiper-button-next:hover,
+.retro-swiper .swiper-button-prev:hover,
 .movie-swiper .swiper-button-next:hover,
 .movie-swiper .swiper-button-prev:hover {
-    background: rgba(245, 158, 11, 0.9);
-    color: white;
+    background: #f59e0b;
+    color: #18181b;
+    border-color: #fbbf24;
     transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
 }
 
+.retro-swiper .swiper-button-next::after,
+.retro-swiper .swiper-button-prev::after,
 .movie-swiper .swiper-button-next::after,
 .movie-swiper .swiper-button-prev::after {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 800;
 }
 
-/* Loading animation */
-@keyframes shimmer {
-    0% {
-        background-position: -200px 0;
-    }
-    100% {
-        background-position: calc(200px + 100%) 0;
-    }
-}
-
-.animate-pulse {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Custom hover effects */
-.movie-card {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.6, 1);
-}
-
-.movie-card:hover {
-    transform: translateY(-8px);
-}
-
-/* Image overlay effect */
-.movie-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        45deg,
-        rgba(245, 158, 11, 0.1),
-        rgba(147, 51, 234, 0.1)
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.movie-card:hover .movie-overlay {
-    opacity: 1;
-}
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
+    .retro-swiper .swiper-button-next,
+    .retro-swiper .swiper-button-prev,
     .movie-swiper .swiper-button-next,
     .movie-swiper .swiper-button-prev {
-        width: 35px;
-        height: 35px;
+        width: 32px;
+        height: 32px;
     }
     
+    .retro-swiper .swiper-button-next::after,
+    .retro-swiper .swiper-button-prev::after,
     .movie-swiper .swiper-button-next::after,
     .movie-swiper .swiper-button-prev::after {
-        font-size: 16px;
+        font-size: 13px;
     }
 }
-
-/* Smooth scrolling for the entire component */
-.movie-swiper-container {
-    scroll-behavior: smooth;
-}
-
-/* Custom scrollbar for webkit browsers */
-.movie-swiper-container::-webkit-scrollbar {
-    height: 6px;
-}
-
-.movie-swiper-container::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
-}
-
-.movie-swiper-container::-webkit-scrollbar-thumb {
-    background: linear-gradient(45deg, #f59e0b, #9333ea);
-    border-radius: 3px;
-}
-
-.movie-swiper-container::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(45deg, #d97706, #7c3aed);
-} 
