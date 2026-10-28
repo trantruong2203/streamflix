@@ -8,12 +8,13 @@ export default function useFetchMovie(slug) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const URL_API_MOVIE = import.meta.env.VITE_API_BASE_URL_MOVIE;
+    const URL_API_MOVIE = import.meta.env.VITE_API_BASE_URL_MOVIE || 'https://phimapi.com/phim/';
 
     useEffect(() => {
         const fetchMovie = async () => {
             try {
-                const res = await axios.get(`${URL_API_MOVIE}${slug}`);
+                const baseUrl = URL_API_MOVIE.endsWith('/') ? URL_API_MOVIE : `${URL_API_MOVIE}/`;
+                const res = await axios.get(`${baseUrl}${slug}`);
                 setMovieData(res.data.movie);
                 setEpisodes(res.data.episodes || []);
             } catch (err) {

@@ -14,7 +14,7 @@ function Main(props) {
     const categories = useContext(ContextCategories);
 
     return (
-        <div className='px-2 sm:px-4 md:px-6 sm:py-4 mx-auto max-w-7xl space-y-8'>
+        <div className='w-full max-w-full px-2 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-4 space-y-8'>
             {/* Top Hero Banner */}
             <div className="overflow-hidden rounded-xl border border-stone-800/90 shadow-2xl bg-stone-950">
                 <SlideShowRent />

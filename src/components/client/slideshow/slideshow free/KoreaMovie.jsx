@@ -91,7 +91,9 @@ export default function KoreaMovies() {
                     640: { slidesPerView: 3.2, spaceBetween: 14 },
                     768: { slidesPerView: 4.2, spaceBetween: 16 },
                     1024: { slidesPerView: 5.2, spaceBetween: 18 },
-                    1280: { slidesPerView: 6, spaceBetween: 18 }
+                    1280: { slidesPerView: 6.2, spaceBetween: 18 },
+                    1536: { slidesPerView: 7.2, spaceBetween: 20 },
+                    1920: { slidesPerView: 8.2, spaceBetween: 22 }
                 }}
                 className="retro-swiper !py-2 !px-1"
             >

@@ -29,7 +29,7 @@ function ListAnimeMovie() {
 
     return (
         <div className="p-5 max-w-7xl mx-auto py-20">
-            <h1 className="text-3xl font-bold text-center text-emerald-50 mb-8">{listTitle[2]}</h1>
+            <h1 className="text-3xl font-bold text-center text-emerald-50 mb-8">{listTitle[2] || listTitle[0] || (typeof listTitle === 'string' ? listTitle : 'Danh Sách Phim')}</h1>
 
             <FilterBar
                 filters={filters}

@@ -45,7 +45,7 @@ function MovieDetail() {
     const navigate = useNavigate();
     const { slug } = useParams();
     const [movie, setMovie] = useState(null);
-    const URL_API_MOVIE = import.meta.env.VITE_API_BASE_URL_MOVIE;
+    const URL_API_MOVIE = import.meta.env.VITE_API_BASE_URL_MOVIE || 'https://phimapi.com/phim/';
     
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -58,7 +58,8 @@ function MovieDetail() {
     useEffect(() => {
         const fetchMovie = async () => {
             try {
-                const response = await axios.get(`${URL_API_MOVIE}${slug}`);
+                const baseUrl = URL_API_MOVIE.endsWith('/') ? URL_API_MOVIE : `${URL_API_MOVIE}/`;
+                const response = await axios.get(`${baseUrl}${slug}`);
 
                 if (response.data && response.data.movie) {
                     setMovie(response.data.movie);

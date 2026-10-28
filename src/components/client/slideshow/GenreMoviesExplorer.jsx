@@ -130,7 +130,7 @@ export default function GenreMoviesExplorer() {
                     </div>
 
                     <Link
-                        to={`/main/free-movie/${selectedSlug}`}
+                        to={`/main/the-loai/${selectedSlug}`}
                         className="hidden sm:inline-flex items-center gap-1 text-xs font-mono text-stone-300 hover:text-amber-300 px-3 py-1.5 rounded-md border border-stone-700/80 hover:border-amber-500/50 bg-stone-950/70 transition-all uppercase tracking-wider"
                     >
                         <span>Tất cả phim {activeGenre.name}</span>
@@ -188,8 +188,8 @@ export default function GenreMoviesExplorer() {
                     </button>
                 </div>
             ) : viewMode === 'grid' ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
-                    {activeMovies.slice(0, 12).map((movie) => (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-9 gap-3 sm:gap-4">
+                    {activeMovies.slice(0, 18).map((movie) => (
                         <RetroMovieCard key={movie._id || movie.slug} movie={movie} />
                     ))}
                 </div>
@@ -205,7 +205,9 @@ export default function GenreMoviesExplorer() {
                             640: { slidesPerView: 3.2, spaceBetween: 14 },
                             768: { slidesPerView: 4.2, spaceBetween: 16 },
                             1024: { slidesPerView: 5.2, spaceBetween: 18 },
-                            1280: { slidesPerView: 6, spaceBetween: 18 }
+                            1280: { slidesPerView: 6.2, spaceBetween: 18 },
+                            1536: { slidesPerView: 7.2, spaceBetween: 20 },
+                            1920: { slidesPerView: 8.2, spaceBetween: 22 }
                         }}
                         className="retro-swiper !py-2 !px-1"
                     >

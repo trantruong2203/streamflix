@@ -1,8 +1,43 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL_V1;
-const endPoint = 'danh-sach/';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL_V1 || 'https://phimapi.com/v1/api/';
+const DANH_SACH_SLUGS = [
+    'phim-le',
+    'phim-bo',
+    'hoat-hinh',
+    'tv-shows',
+    'phim-moi-cap-nhat-v2',
+    'phim-moi-cap-nhat',
+    'phim-thuyet-minh',
+    'phim-long-tieng',
+];
+
+const QUOC_GIA_SLUGS = [
+    'au-my',
+    'han-quoc',
+    'trung-quoc',
+    'nhat-ban',
+    'thai-lan',
+    'hong-kong',
+    'viet-nam',
+    'dai-loan',
+    'an-do',
+    'anh',
+    'phap',
+    'duc',
+];
+
+export function getCategoryEndpoint(slug) {
+    if (!slug) return 'the-loai/';
+    if (DANH_SACH_SLUGS.includes(slug)) {
+        return 'danh-sach/';
+    }
+    if (QUOC_GIA_SLUGS.includes(slug)) {
+        return 'quoc-gia/';
+    }
+    return 'the-loai/';
+}
 const MOVIES_PER_PAGE = 24;
 
 const initialFilters = {
@@ -34,6 +69,7 @@ export function useMovie(typeList) {
             );
 
             const queryParams = new URLSearchParams(cleanFilters).toString();
+            const endPoint = getCategoryEndpoint(typeList);
             const url = `${API_BASE_URL}${endPoint}${typeList}?${queryParams}&limit=${MOVIES_PER_PAGE}`;
 
             const response = await axios.get(url);
@@ -46,7 +82,7 @@ export function useMovie(typeList) {
                         : 1
                 );
                 setListTitle(
-                    response.data.data.seoOnPage.titleHead
+                    (response.data.data?.seoOnPage?.titleHead || response.data.data?.titlePage || '')
                         ?.split("|")
                         .map(i => i.trim()) || []
                 );

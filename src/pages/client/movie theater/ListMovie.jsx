@@ -9,7 +9,7 @@ import CardMovie from '../../../components/client/movie/cardMovie';
 function ListMovie() {
     const navigate = useNavigate();
     const { typeList } = useParams();
-    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://phimapi.com/';
     const endPoint = 'danh-sach/';
 
     const [movies, setMovies] = useState([]);

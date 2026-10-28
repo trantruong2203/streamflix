@@ -9,7 +9,7 @@ function SearchApiMovies() {
     const [results, setResults] = useState([]);
     const [error, setError] = useState(null);
 
-    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL_V1;
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL_V1 || 'https://phimapi.com/v1/api/';
     const endPoint = "tim-kiem";
 
     // Debounce search

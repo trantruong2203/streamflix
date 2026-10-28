@@ -33,6 +33,7 @@ const router = [
     {path: '/play-movie/:slug', element: <PlayMovie />},
     {path: '/main/list-movie/:typeList', element: <ListMovie />},
     {path: '/main/free-movie/:typeList', element: <ListAnimeMovie/>},
+    {path: '/main/the-loai/:typeList', element: <ListAnimeMovie/>},
     {path: '/main/movies/:id', element: <ListMovieCate />},
     {path: '/main/movies/detail/:id', element: <MyDetail/>},
     {path: '/play-my-movie/:id', element: <PlayMyMovie/>},

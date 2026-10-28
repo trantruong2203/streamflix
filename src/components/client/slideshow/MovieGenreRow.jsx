@@ -8,7 +8,7 @@ import RetroMovieCard from '../movie/RetroMovieCard';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-export default function MovieGenreRow({ genreSlug, title, subtitle, badge = "REEL SELECTION", limit = 12 }) {
+export default function MovieGenreRow({ genreSlug, title, subtitle, badge = "REEL SELECTION", limit = 18 }) {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -63,7 +63,7 @@ export default function MovieGenreRow({ genreSlug, title, subtitle, badge = "REE
                 </div>
 
                 <Link
-                    to={`/main/free-movie/${genreSlug}`}
+                    to={`/main/the-loai/${genreSlug}`}
                     className="inline-flex items-center gap-1.5 text-xs font-mono text-amber-400/90 hover:text-amber-300 transition-colors uppercase tracking-wider py-1 group self-start sm:self-end"
                 >
                     <span>Khám phá thêm</span>
@@ -94,7 +94,9 @@ export default function MovieGenreRow({ genreSlug, title, subtitle, badge = "REE
                             640: { slidesPerView: 3.2, spaceBetween: 14 },
                             768: { slidesPerView: 4.2, spaceBetween: 16 },
                             1024: { slidesPerView: 5.2, spaceBetween: 18 },
-                            1280: { slidesPerView: 6, spaceBetween: 18 }
+                            1280: { slidesPerView: 6.2, spaceBetween: 18 },
+                            1536: { slidesPerView: 7.2, spaceBetween: 20 },
+                            1920: { slidesPerView: 8.2, spaceBetween: 22 }
                         }}
                         className="retro-swiper !py-2 !px-1"
                     >
