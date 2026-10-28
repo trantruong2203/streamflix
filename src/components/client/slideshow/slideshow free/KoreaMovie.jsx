@@ -20,7 +20,7 @@ export default function KoreaMovies() {
                 setLoading(true);
                 setError(null);
                 const response = await axios.get(`https://phimapi.com/v1/api/quoc-gia/han-quoc?page=1&year=2025&limit=10`);
-                if (response.data.status === "success") {
+                if (response.data.status === "success" || response.data.status === true || response.data?.data?.items) {
                     setMovies(response.data.data.items);
                 } else {
                     setError(response.data.msg || 'Không thể tải dữ liệu phim');

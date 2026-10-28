@@ -427,3 +427,11 @@ yarn-error.log*
 *.sln
 *.sw?
 .vercel
+
+
+# Agent skills
+.agents/skills/
+
+# Agent skills
+.agents/skills/
+

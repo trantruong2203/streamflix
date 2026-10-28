@@ -31,9 +31,9 @@ const MenuList = ({ className = "flex items-center", setIsMobileMenuOpen }) => {
     return (
         <ul className={`${className} text-white gap-5 font-sans`}>
             {listMenuClient?.map(({ path, label, children }) => (
-                <li key={path} className="relative group">
+                <li key={path || label} className="relative group">
                     <Link
-                        to={path}
+                        to={path || "#"}
                         className="hover:text-yellow-400 cursor-pointer transition-all duration-300 block py-2" // Thêm block py-2 để tăng diện tích bấm
                         onClick={() => {
                             if (setIsMobileMenuOpen) setIsMobileMenuOpen(false);
@@ -47,7 +47,7 @@ const MenuList = ({ className = "flex items-center", setIsMobileMenuOpen }) => {
                         <div className="absolute left-0 top-full bg-gray-800 min-w-[200px] rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                             {children.map((child) => (
                                 <Link
-                                    key={child.path} 
+                                    key={child.path || child.label} 
                                     to={child.path}
                                     className="block px-4 py-2 text-white hover:bg-gray-700 hover:text-yellow-400 transition-all duration-300"
                                     onClick={() => {
@@ -134,7 +134,7 @@ const MenuList = ({ className = "flex items-center", setIsMobileMenuOpen }) => {
                             <Close className="text-2xl" />
                         </button>
                         <div className="flex flex-col gap-6">
-                            <MenuList className="flex-col gap-4" />
+                            <MenuList className="flex-col gap-4" setIsMobileMenuOpen={setIsMobileMenuOpen} />
 
                             <div className="flex flex-col gap-4 mt-4">
                                 <Link
